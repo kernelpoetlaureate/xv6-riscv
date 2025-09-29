@@ -11,19 +11,125 @@ char *states[] = {
   [5] "ZOMBIE"
 };
 
+// Helper function to print a string with padding
+void print_padded(char *str, int width, int left_align) {
+  int len = strlen(str);
+  if (left_align) {
+    printf("%s", str);
+    for (int i = len; i < width; i++) printf(" ");
+  } else {
+    for (int i = len; i < width; i++) printf(" ");
+    printf("%s", str);
+  }
+}
+
+// Helper function to print an integer with padding
+void print_int_padded(int val, int width, int left_align) {
+  char buf[16];
+  int len = 0;
+  
+  // Convert int to string manually
+  if (val == 0) {
+    buf[len++] = '0';
+  } else {
+    if (val < 0) {
+      buf[len++] = '-';
+      val = -val;
+    }
+    int digits[16];
+    int digit_count = 0;
+    while (val > 0) {
+      digits[digit_count++] = val % 10;
+      val /= 10;
+    }
+    for (int i = digit_count - 1; i >= 0; i--) {
+      buf[len++] = '0' + digits[i];
+    }
+  }
+  buf[len] = '\0';
+  
+  print_padded(buf, width, left_align);
+}
+
+// Helper function to print uint64 with padding
+void print_uint64_padded(uint64 val, int width, int left_align) {
+  char buf[32];
+  int len = 0;
+  
+  if (val == 0) {
+    buf[len++] = '0';
+  } else {
+    uint64 digits[32];
+    int digit_count = 0;
+    while (val > 0) {
+      digits[digit_count++] = val % 10;
+      val /= 10;
+    }
+    for (int i = digit_count - 1; i >= 0; i--) {
+      buf[len++] = '0' + digits[i];
+    }
+  }
+  buf[len] = '\0';
+  
+  print_padded(buf, width, left_align);
+}
+
+// Helper function to print hex with padding
+void print_hex_padded(uint64 val, int width) {
+  char buf[32];
+  char digits[] = "0123456789abcdef";
+  int len = 0;
+  
+  if (val == 0) {
+    buf[len++] = '0';
+  } else {
+    uint64 temp = val;
+    while (temp > 0) {
+      buf[len++] = digits[temp % 16];
+      temp /= 16;
+    }
+    // Reverse the string
+    for (int i = 0; i < len / 2; i++) {
+      char temp = buf[i];
+      buf[i] = buf[len - 1 - i];
+      buf[len - 1 - i] = temp;
+    }
+  }
+  buf[len] = '\0';
+  
+  printf("0x");
+  print_padded(buf, width, 0);  // Right-aligned for hex
+}
+
 void print_header() {
   printf("PID  PPID NAME             STATE     SIZE(KB) CHAN     \n");
   printf("---- ---- ---------------- --------- -------- ---------\n");
 }
 
 void print_process(struct proc_info *info) {
-  printf("%-4d %-4d %-16s %-9s %-8lu 0x%-7lx\n", 
-         info->pid, 
-         info->parent_pid, 
-         info->name, 
-         states[info->state],
-         info->sz / 1024,  // Convert bytes to KB
-         info->chan);
+  // PID - left aligned, width 4
+  print_int_padded(info->pid, 4, 1);
+  printf(" ");
+  
+  // PPID - left aligned, width 4  
+  print_int_padded(info->parent_pid, 4, 1);
+  printf(" ");
+  
+  // NAME - left aligned, width 16
+  print_padded(info->name, 16, 1);
+  printf(" ");
+  
+  // STATE - left aligned, width 9
+  print_padded(states[info->state], 9, 1);
+  printf(" ");
+  
+  // SIZE(KB) - right aligned, width 8
+  print_uint64_padded(info->sz / 1024, 8, 0);
+  printf(" ");
+  
+  // CHAN - hex with 0x prefix, width 7 for hex part
+  print_hex_padded(info->chan, 7);
+  printf("\n");
 }
 
 void clear_screen() {
@@ -46,7 +152,7 @@ int main(int argc, char *argv[]) {
       printf("Usage: ps [-a] [-t seconds]\n");
       printf("  -a: show all processes including UNUSED\n");
       printf("  -t: set refresh time in seconds (default: 2)\n");
-      printf("  Press Ctrl+C to exit\n");
+      printf("  Program auto-exits after 5 seconds\n");
       exit(0);
     } else if(strcmp(argv[i], "-t") == 0 && i + 1 < argc) {
       refresh_time = atoi(argv[i + 1]);
@@ -55,10 +161,16 @@ int main(int argc, char *argv[]) {
     }
   }
   
-  printf("Real-time Process Table Viewer (refresh every %d seconds)\n", refresh_time);
-  printf("Press Ctrl+C to exit\n\n");
+  // Set auto-exit timeout to 5 seconds
+  const int TIMEOUT_SECONDS = 5;
+  int total_ticks = TIMEOUT_SECONDS * 100;  // Assuming 100 ticks per second
+  int elapsed_ticks = 0;
   
-  while(1) {
+  printf("Real-time Process Table Viewer (refresh every %d sec, auto-exits in %d sec)\n", 
+         refresh_time, TIMEOUT_SECONDS);
+  printf("Press Ctrl+C to exit early\n\n");
+  
+  while(elapsed_ticks < total_ticks) {
     int process_count = 0;
     
     clear_screen();
@@ -77,11 +189,15 @@ int main(int argc, char *argv[]) {
     }
     
     printf("\nTotal active processes: %d\n", process_count);
-    printf("Refreshing in %d seconds... (Ctrl+C to exit)\n", refresh_time);
+    printf("Refreshing in %d seconds... (auto-exits in %d sec)\n", 
+           refresh_time, (TIMEOUT_SECONDS - elapsed_ticks / 100));
     
     // Sleep for the specified time
     pause(refresh_time * 100);  // pause() takes ticks, assuming ~100 ticks per second
+    elapsed_ticks += refresh_time * 100;
   }
+  
+  printf("\nAuto-exiting after %d seconds...\n", TIMEOUT_SECONDS);
   
   exit(0);
 }
