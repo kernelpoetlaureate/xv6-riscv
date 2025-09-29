@@ -31,15 +31,19 @@ filealloc(void)
 {
   struct file *f;
 
+  printf("filealloc: Attempting to allocate a file structure\n");
   acquire(&ftable.lock);
   for(f = ftable.file; f < ftable.file + NFILE; f++){
+    printf("filealloc: Checking file structure at index %ld, ref count: %d\n", f - ftable.file, f->ref);
     if(f->ref == 0){
       f->ref = 1;
       release(&ftable.lock);
+      printf("filealloc: Allocated file structure at index %ld\n", f - ftable.file);
       return f;
     }
   }
   release(&ftable.lock);
+  printf("filealloc: No available file structure to allocate\n");
   return 0;
 }
 
