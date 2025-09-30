@@ -169,9 +169,95 @@ main(void)
       if(chdir(cmd+3) < 0)
         fprintf(2, "cannot cd %s\n", cmd+3);
     } else {
-      if(fork1() == 0)
+      int pid = fork1();
+      if(pid == 0) {
         runcmd(parsecmd(cmd));
-      wait(0);
+      } else {
+        // Parent: attempt to log the child process info briefly (full procinfo)
+        {
+          struct proc_info info;
+          struct proc_info myinfo;
+          char *states[] = { "UNUSED", "USED", "SLEEPING", "RUNNABLE", "RUNNING", "ZOMBIE" };
+          int attempts = 20;
+
+          // get our own name to detect inherited names (e.g., "sh")
+          if(getprocinfo(getpid(), &myinfo) < 0) {
+            myinfo.name[0] = '\0';
+          }
+
+          while(attempts-- > 0) {
+            if(getprocinfo(pid, &info) == 0) {
+              // If child's name equals parent's name (inherited before exec), keep retrying
+              if(strcmp(info.name, myinfo.name) == 0 && attempts > 0) {
+                pause(1);
+                continue;
+              }
+
+              // Write the full procinfo to a per-entry log file to avoid interleaving
+              char fname[32];
+              int pos = 0;
+              const char *pfx = "procinfo_";
+              for(int i = 0; pfx[i]; i++) fname[pos++] = pfx[i];
+              // append pid
+              int x = info.pid;
+              if(x == 0) fname[pos++] = '0';
+              else {
+                int start = pos;
+                while(x > 0){ fname[pos++] = '0' + (x % 10); x /= 10; }
+                // reverse digits
+                for(int l = start, r = pos-1; l < r; l++, r--) { char c = fname[l]; fname[l] = fname[r]; fname[r] = c; }
+              }
+              fname[pos++] = '_';
+              // append uptime ticks
+              x = uptime();
+              if(x == 0) fname[pos++] = '0';
+              else {
+                int start = pos;
+                while(x > 0){ fname[pos++] = '0' + (x % 10); x /= 10; }
+                for(int l = start, r = pos-1; l < r; l++, r--) { char c = fname[l]; fname[l] = fname[r]; fname[r] = c; }
+              }
+              fname[pos] = 0;
+
+              int logfd = open(fname, O_WRONLY|O_CREATE);
+              if(logfd >= 0) {
+                fprintf(logfd, "----- PROCINFO PID %d START -----\n", info.pid);
+                fprintf(logfd, "Ticks: %d\n", uptime());
+                fprintf(logfd, "Name: %s\n", info.name);
+                fprintf(logfd, "State: %s\n", states[info.state]);
+                fprintf(logfd, "Parent PID: %d\n", info.parent_pid);
+                fprintf(logfd, "Killed: %d\n", info.killed);
+                fprintf(logfd, "Exit status: %d\n", info.xstate);
+                fprintf(logfd, "Memory Size: %lu bytes\n", info.sz);
+                fprintf(logfd, "Kernel Stack: 0x%lx\n", info.kstack);
+                fprintf(logfd, "Page table: 0x%lx\n", info.pagetable);
+                fprintf(logfd, "Trapframe: 0x%lx\n", info.trapframe);
+                fprintf(logfd, "Context SP: 0x%lx\n", info.context_sp);
+                fprintf(logfd, "CWD: 0x%lx\n", info.cwd);
+                fprintf(logfd, "Chan: 0x%lx\n", info.chan);
+                fprintf(logfd, "Open files:\n");
+                for(int i = 0; i < 16; i++){
+                  if(info.ofile[i])
+                    fprintf(logfd, "  [%d] 0x%lx\n", i, info.ofile[i]);
+                }
+                fprintf(logfd, "----- PROCINFO PID %d END -----\n", info.pid);
+                close(logfd);
+                // Short console notice to stderr
+                fprintf(2, "[procinfo] PID %d logged to /procinfo.log\n", info.pid);
+              } else {
+                // fallback to stderr if log open fails
+                fprintf(2, "----- PROCINFO PID %d START -----\n", info.pid);
+                fprintf(2, "Name: %s\n", info.name);
+                fprintf(2, "State: %s\n", states[info.state]);
+                fprintf(2, "----- PROCINFO PID %d END -----\n", info.pid);
+              }
+              break;
+            }
+            // pause a bit (ticks) before retrying
+            pause(1);
+          }
+        }
+        wait(0);
+      }
     }
   }
   exit(0);
