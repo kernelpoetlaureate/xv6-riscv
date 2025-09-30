@@ -193,11 +193,30 @@ main(void)
                 continue;
               }
 
-              // Write the full procinfo to a per-entry log file to avoid interleaving
-              char fname[32];
+              // Write the full procinfo to a per-entry log file named by program
+              // Format: procinfo_<prog>_<pid>_<ticks>
+              char fname[48];
               int pos = 0;
               const char *pfx = "procinfo_";
               for(int i = 0; pfx[i]; i++) fname[pos++] = pfx[i];
+
+              // append sanitized program name (info.name). allow letters, digits, '_', max 12 chars
+              int added = 0;
+              const char *sname = info.name;
+              if(!sname || sname[0] == '\0') sname = "proc";
+              for(int i = 0; sname[i] && added < 12; i++){
+                char c = sname[i];
+                if((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || c == '_'){
+                  fname[pos++] = c;
+                  added++;
+                } else {
+                  // replace other chars with '_'
+                  fname[pos++] = '_';
+                  added++;
+                }
+              }
+              fname[pos++] = '_';
+
               // append pid
               int x = info.pid;
               if(x == 0) fname[pos++] = '0';
@@ -208,6 +227,7 @@ main(void)
                 for(int l = start, r = pos-1; l < r; l++, r--) { char c = fname[l]; fname[l] = fname[r]; fname[r] = c; }
               }
               fname[pos++] = '_';
+
               // append uptime ticks
               x = uptime();
               if(x == 0) fname[pos++] = '0';
