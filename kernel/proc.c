@@ -6,6 +6,7 @@
 #include "proc.h"
 #include "defs.h"
 
+
 struct cpu cpus[NCPU];
 
 struct proc proc[NPROC];
@@ -34,13 +35,26 @@ proc_mapstacks(pagetable_t kpgtbl)
 {
   struct proc *p;
   
+  printf("proc_mapstacks: starting, kpgtbl=%p\n", kpgtbl);
+
   for(p = proc; p < &proc[NPROC]; p++) {
+    int proc_id = (int)(p - proc);
+    printf("  mapping stack for proc %d\n", proc_id);
+
     char *pa = kalloc();
-    if(pa == 0)
+    if(pa == 0) {
+      printf("  ERROR: kalloc failed for proc %d\n", proc_id);
       panic("kalloc");
-    uint64 va = KSTACK((int) (p - proc));
+    }
+
+    uint64 va = KSTACK(proc_id);
+    printf("  proc %d: va=0x%lx, pa=0x%lx\n", proc_id, va, (uint64)pa);
+
     kvmmap(kpgtbl, va, (uint64)pa, PGSIZE, PTE_R | PTE_W);
+    printf("  mapped successfully\n");
   }
+
+  printf("proc_mapstacks: done\n");
 }
 
 // initialize the proc table.
