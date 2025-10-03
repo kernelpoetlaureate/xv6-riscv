@@ -1,18 +1,46 @@
-*~
-_*
+# Build artifacts
 *.o
 *.d
 *.asm
 *.sym
-*.img
-vectors.S
-bootblock
-entryother
-initcode
-initcode.out
-kernelmemfs
-mkfs
 kernel/kernel
-user/usys.S
+kernel/kernel.ld
+mkfs/mkfs
+
+# Binary files
+fs.img
+*.bin
+*.exe
+
+# Memory dumps
+memory_dumps/
+memory_dump_*
+
+# Debug files
+.gdb_history
 .gdbinit
-TAGS
+!.gdbinit.tmpl-riscv
+
+# Editor files
+.vscode/
+*.swp
+*~
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Binary output files in user directory
+user/_*
+user/*.o
+user/*.d
+user/*.asm
+user/*.sym
+
+# But keep the source files
+!user/*.c
+!user/*.h
+
+# Temporary and log files
+*.log
+*.tmp
