@@ -150,6 +150,15 @@ class XV6DebugAutomation:
         """Launch GDB and execute initial commands."""
         print("[*] Starting GDB...")
         
+        # Create .gdbinit from template
+        template_path = os.path.join(str(self.project_dir), '.gdbinit.tmpl-riscv')
+        if os.path.exists(template_path):
+            with open(template_path, 'r') as f:
+                template_content = f.read()
+            gdbinit_path = os.path.join(str(self.project_dir), '.gdbinit')
+            with open(gdbinit_path, 'w') as f:
+                f.write(template_content)
+                
         # Build GDB command with explicit init file
         gdb_cmd = f'gdb-multiarch -x .gdbinit kernel/kernel'
         
