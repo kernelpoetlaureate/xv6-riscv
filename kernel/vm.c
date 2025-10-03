@@ -484,3 +484,55 @@ ismapped(pagetable_t pagetable, uint64 va)
   }
   return 0;
 }
+
+// Print a detailed, human-readable decoding of a single PTE.
+// Useful for debugging page-table contents.
+void
+print_pte_detailed(pte_t pte, uint64 va)
+{
+  printf("Virtual Address: 0x%016lx\n", va);
+  printf("Raw PTE value:   0x%016lx\n", pte);
+  printf("\n");
+
+  // Decode flags
+  printf("Flags:\n");
+  printf("  Valid (V):      %d %s\n",
+         (pte & PTE_V) ? 1 : 0,
+         (pte & PTE_V) ? "[VALID]" : "[INVALID - UNMAPPED]");
+  printf("  Read (R):       %d\n", (pte & PTE_R) ? 1 : 0);
+  printf("  Write (W):      %d\n", (pte & PTE_W) ? 1 : 0);
+  printf("  Execute (X):    %d\n", (pte & PTE_X) ? 1 : 0);
+  printf("  User (U):       %d %s\n",
+         (pte & PTE_U) ? 1 : 0,
+         (pte & PTE_U) ? "[USER-ACCESSIBLE]" : "[KERNEL-ONLY]");
+  /* Note: this platform defines only V,R,W,X,U in riscv.h. */
+  printf("  RSW:            0x%x\n", (int)((pte >> 8) & 0x3));
+
+  // Decode PPN and compute physical address
+  if(pte & PTE_V) {
+    uint64 pa = PTE2PA(pte);
+    printf("\nPhysical Address: 0x%016lx\n", pa);
+    printf("PPN breakdown:\n");
+    printf("  PPN[2] (bits 53-28): 0x%07lx (%lu)\n",
+           (pte >> 28) & 0x3FFFFFF, (pte >> 28) & 0x3FFFFFF);
+    printf("  PPN[1] (bits 27-19): 0x%03lx (%lu)\n",
+           (pte >> 19) & 0x1FF, (pte >> 19) & 0x1FF);
+    printf("  PPN[0] (bits 18-10): 0x%03lx (%lu)\n",
+           (pte >> 10) & 0x1FF, (pte >> 10) & 0x1FF);
+
+    // Determine PTE type
+    int is_leaf = (pte & PTE_R) || (pte & PTE_W) || (pte & PTE_X);
+    if(is_leaf) {
+      printf("\nPTE Type: LEAF (maps to physical page)\n");
+      printf("Permissions: %s%s%s\n",
+             (pte & PTE_R) ? "R" : "-",
+             (pte & PTE_W) ? "W" : "-",
+             (pte & PTE_X) ? "X" : "-");
+    } else {
+      printf("\nPTE Type: NON-LEAF (points to next-level page table at 0x%lx)\n", pa);
+    }
+  } else {
+    printf("\nPTE is invalid - page not mapped\n");
+  }
+  printf("\n");
+}

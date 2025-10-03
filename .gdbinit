@@ -1,11 +1,9 @@
 set confirm off
 set architecture riscv:rv64
-set disassemble-next-line auto
-set riscv use-compressed-breakpoints yes
-
-# First connect to QEMU and load symbols
 target remote 127.0.0.1:26000
 symbol-file kernel/kernel
+set disassemble-next-line auto
+set riscv use-compressed-breakpoints yes
 
 # Load Python extensions for memory analysis
 source dump_procs.py
