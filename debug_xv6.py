@@ -53,11 +53,42 @@ class XV6DebugAutomation:
         subprocess.run(['tmux', 'kill-session', '-t', self.tmux_session_name],
                       stderr=subprocess.DEVNULL)
         
-        # Kill any lingering QEMU processes
-        subprocess.run(['pkill', '-f', 'qemu-system-riscv64.*xv6'],
+        # Kill any lingering QEMU processes - multiple approaches for thoroughness
+        print("    [*] Killing any running QEMU instances...")
+        
+        # Try pkill with various patterns
+        subprocess.run(['pkill', '-9', '-f', 'qemu-system-riscv64'],
+                      stderr=subprocess.DEVNULL)
+        subprocess.run(['pkill', '-9', '-f', 'qemu.*fs.img'],
                       stderr=subprocess.DEVNULL)
         
-        time.sleep(0.5)
+        # Use ps to find and kill any remaining QEMU processes
+        try:
+            ps_output = subprocess.check_output(
+                ['ps', 'aux'], 
+                text=True
+            )
+            for line in ps_output.splitlines():
+                if 'qemu-system-riscv64' in line:
+                    parts = line.split()
+                    if len(parts) > 1:
+                        pid = parts[1]
+                        print(f"    [!] Found lingering QEMU process (PID {pid}), killing...")
+                        subprocess.run(['kill', '-9', pid], stderr=subprocess.DEVNULL)
+        except Exception as e:
+            print(f"    [!] Error checking for QEMU processes: {e}")
+        
+        # Run the "Stop QEMU" task if it exists
+        try:
+            subprocess.run(['make', 'stop-qemu'], 
+                          stderr=subprocess.DEVNULL,
+                          cwd=str(self.project_dir))
+        except Exception:
+            pass
+            
+        # Wait to ensure processes are fully terminated and files are released
+        print("    [*] Waiting for resources to be released...")
+        time.sleep(2.0)
     
     def create_tmux_session(self):
         """Create tmux session with QEMU and GDB panes."""
@@ -119,20 +150,18 @@ class XV6DebugAutomation:
         """Launch GDB and execute initial commands."""
         print("[*] Starting GDB...")
         
-        # Build GDB command sequence
-        gdb_init_commands = [
-            'gdb-multiarch kernel/kernel',
-        ]
+        # Build GDB command with explicit init file
+        gdb_cmd = f'gdb-multiarch -x .gdbinit kernel/kernel'
         
         # Send GDB launch command to GDB pane (pane 1)
         subprocess.run([
             'tmux', 'send-keys', '-t', f'{self.tmux_session_name}:debug.1',
-            gdb_init_commands[0], 'Enter'
+            gdb_cmd, 'Enter'
         ], check=True)
         
-        # Wait for GDB to initialize
-        time.sleep(2)
-        
+        # Wait for GDB to initialize and run init commands
+        time.sleep(3)
+
         if auto_commands:
             print("[*] Executing initial GDB commands...")
             for cmd in auto_commands:
@@ -168,6 +197,34 @@ class XV6DebugAutomation:
             '-t', self.tmux_session_name
         ])
     
+    def start_telnet_dump(self):
+        """Launch the telnet proc dump in background if available."""
+        proc_dump_script = os.path.join(str(self.project_dir), 'tools', 'run_proc_dump.sh')
+        
+        if os.path.exists(proc_dump_script):
+            print(f"[*] Found telnet proc dump wrapper at {proc_dump_script}; launching in background")
+            try:
+                # Make the script executable
+                os.chmod(proc_dump_script, 0o755)
+                
+                # Launch in background with nohup
+                monitor_port = 4444  # Default QEMU monitor port
+                dump_cmd = ['bash', proc_dump_script, '--port', str(monitor_port)]
+                
+                # Use DEVNULL for stdout and stderr to avoid blocking
+                subprocess.Popen(
+                    dump_cmd,
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL,
+                    cwd=str(self.project_dir)
+                )
+                print(f"    [✓] Launched telnet proc dumper (port {monitor_port})")
+                return True
+            except Exception as e:
+                print(f"    [!] Failed to launch telnet proc dumper: {e}")
+                return False
+        return False
+
     def run(self, auto_commands=None, no_attach=False):
         """Execute the complete debugging setup workflow."""
         print("="*60)
@@ -188,8 +245,11 @@ class XV6DebugAutomation:
         if not self.start_qemu():
             print("[ERROR] Failed to start QEMU")
             return False
+            
+        # Step 5: Launch telnet-based proc dumper in background if available
+        self.start_telnet_dump()
         
-        # Step 5: Start GDB with auto-commands
+        # Step 6: Start GDB with auto-commands
         self.start_gdb(auto_commands)
         
         # Step 6: Attach to session (unless no_attach flag set)
