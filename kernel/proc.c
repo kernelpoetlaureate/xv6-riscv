@@ -27,6 +27,9 @@ extern char trampoline[]; // trampoline.S
 // must be acquired before any p->lock.
 struct spinlock wait_lock;
 
+// Forward declaration of dump_proctable
+void dump_proctable(void);
+
 // Allocate a page for each process's kernel stack.
 // Map it high in memory, followed by an invalid
 // guard page.
@@ -70,6 +73,7 @@ procinit(void)
       p->state = UNUSED;
       p->kstack = KSTACK((int) (p - proc));
   }
+  dump_proctable(); // Dump process table during startup
 }
 
 // Must be called with interrupts disabled,
@@ -243,6 +247,8 @@ userinit(void)
   p->state = RUNNABLE;
 
   release(&p->lock);
+
+  dump_proctable(); // Dump process table after init process starts
 }
 
 // Shrink user memory by n bytes.
@@ -697,5 +703,14 @@ procdump(void)
       state = "???";
     printf("%d %s %s", p->pid, state, p->name);
     printf("\n");
+  }
+}
+
+// Function to dump the process table
+void dump_proctable(void) {
+  struct proc *p;
+  printf("Full Process Table Dump:\n");
+  for (p = proc; p < &proc[NPROC]; p++) {
+    printf("proc=%p pid=%d state=%d name=%s\n", p, p->pid, p->state, p->name);
   }
 }
