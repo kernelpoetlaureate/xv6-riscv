@@ -711,6 +711,7 @@ void dump_proctable(void) {
   struct proc *p;
   printf("Full Process Table Dump:\n");
   for (p = proc; p < &proc[NPROC]; p++) {
-    printf("proc=%p pid=%d state=%d name=%s\n", p, p->pid, p->state, p->name);
+    printf("proc=%p pid=%d state=%d chan=%p killed=%d xstate=%d parent=%p kstack=0x%lx sz=%lu pagetable=%p trapframe=%p context.ra=0x%lx ofile[0]=%p cwd=%p name=%s\n",
+           p, p->pid, p->state, p->chan, p->killed, p->xstate, p->parent, p->kstack, p->sz, p->pagetable, p->trapframe, p->context.ra, p->ofile[0], p->cwd, p->name);
   }
 }
