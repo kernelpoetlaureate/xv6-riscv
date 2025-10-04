@@ -17,6 +17,9 @@ extern char etext[];  // kernel.ld sets this to end of kernel code.
 
 extern char trampoline[]; // trampoline.S
 
+// Forward declaration for page-table printer.
+void print_pagetable(pagetable_t pagetable, int level, uint64 idx_base);
+
 // Make a direct-map page table for the kernel.
 pagetable_t
 kvmmake(void)
@@ -67,6 +70,9 @@ kvminit(void)
 {
   kernel_pagetable = kvmmake();
     printf("kernel_pagetable address: %p\n", kernel_pagetable);
+    // Print the contents of the kernel page table for debugging.
+    // This will recurse through page-table levels and print only valid entries.
+    print_pagetable(kernel_pagetable, 2, 0);
 
 }
 
@@ -277,6 +283,37 @@ freewalk(pagetable_t pagetable)
     }
   }
   kfree((void*)pagetable);
+}
+
+// Recursive printer for a page table. level is 2 (top) down to 0 (leaf).
+// idx_base is the virtual address base for entries at this level (used for display).
+void
+print_pagetable(pagetable_t pagetable, int level, uint64 idx_base)
+{
+  if(pagetable == 0)
+    return;
+
+  for(int i = 0; i < 512; i++){
+    pte_t pte = pagetable[i];
+    if((pte & PTE_V) == 0)
+      continue;
+
+    uint64 va_index = idx_base | ((uint64)i << PXSHIFT(level));
+
+    if((pte & (PTE_R|PTE_W|PTE_X)) == 0){
+      // This PTE points to a lower-level page table.
+      // Use %016lx to print 64-bit hex values in xv6's printf implementation.
+      printf("L%d VA_idx=0x%lx: PTE-> next-level table at PA=0x%lx, PTE=0x%lx\n",
+        level, va_index, PTE2PA(pte), pte);
+      print_pagetable((pagetable_t)PTE2PA(pte), level-1, va_index);
+    } else {
+      // Leaf mapping: extract physical address and flags.
+      uint64 pa = PTE2PA(pte);
+      uint64 flags = PTE_FLAGS(pte);
+      printf("L%d VA_idx=0x%lx: leaf PTE PA=0x%lx, PTE=0x%lx, flags=0x%lx\n",
+        level, va_index, pa, pte, flags);
+    }
+  }
 }
 
 // Free user memory pages,
