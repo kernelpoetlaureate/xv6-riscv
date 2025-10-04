@@ -8,6 +8,9 @@
 #include "proc.h"
 #include "fs.h"
 
+// proc table is defined in proc.c
+extern struct proc proc[NPROC];
+
 /*
  * the kernel's page table.
  */
@@ -70,9 +73,10 @@ kvminit(void)
 {
   kernel_pagetable = kvmmake();
     printf("kernel_pagetable address: %p\n", kernel_pagetable);
+    printf("proc table address: %p\n", proc);
     // Print the contents of the kernel page table for debugging.
     // This will recurse through page-table levels and print only valid entries.
-    print_pagetable(kernel_pagetable, 2, 0);
+   // print_pagetable(kernel_pagetable, 2, 0);
 
 }
 
