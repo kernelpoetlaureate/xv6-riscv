@@ -116,8 +116,17 @@ procinit(void)
   // Optionally call verbose dump for index
 #define VERBOSE_DUMP_AT_BOOT 1
 #define VERBOSE_DUMP_INDEX 62
+#define VERBOSE_DUMP_ALL_AT_BOOT 1
 #if VERBOSE_DUMP_AT_BOOT
-    proc_verbose_dump(&proc[VERBOSE_DUMP_INDEX]);
+#if VERBOSE_DUMP_ALL_AT_BOOT
+  // Dump every proc[] entry verbosely, in order, to get deterministic output.
+  for (int i = 0; i < NPROC; i++) {
+    printf("--- verbose dump proc[%d] at %p ---\n", i, &proc[i]);
+    proc_verbose_dump(&proc[i]);
+  }
+#else
+  proc_verbose_dump(&proc[VERBOSE_DUMP_INDEX]);
+#endif
 #endif
 }
 
