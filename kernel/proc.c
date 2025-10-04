@@ -57,11 +57,17 @@ procinit(void)
       p->kstack = KSTACK((int) (p - proc));
   }
   // Print a one-line summary of each proc for debugging (safe: locks initialized).
+  static const char *state_name[] = {
+    "UNUSED", "USED", "SLEEPING", "RUNNABLE", "RUNNING", "ZOMBIE"
+  };
   for(int i = 0; i < NPROC; i++){
     struct proc *pp = &proc[i];
     acquire(&pp->lock);
-    printf("proc[%d] addr=%p pid=%d state=%d kstack=0x%lx\n",
-           i, pp, pp->pid, pp->state, pp->kstack);
+    const char *sname = "?";
+    if(pp->state >= 0 && pp->state <= ZOMBIE)
+      sname = state_name[pp->state];
+    printf("proc[%d] addr=%p pid=%d state=%s kstack=0x%lx pagetable=%p trapframe=%p parent=%p name=\"%s\" ctx_sp=0x%lx\n",
+           i, pp, pp->pid, sname, pp->kstack, pp->pagetable, pp->trapframe, pp->parent, pp->name, pp->context.sp);
     release(&pp->lock);
   }
 }
