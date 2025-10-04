@@ -48,6 +48,8 @@ kinit()
 void
 freerange(void *pa_start, void *pa_end)
 {
+  if(kmem_log_boot && kmem_initializing)
+    printf("freerange: pa_start=%p pa_end=%p\n", pa_start, pa_end);
   char *p;
   p = (char*)PGROUNDUP((uint64)pa_start);
   for(; p + PGSIZE <= (char*)pa_end; p += PGSIZE)
