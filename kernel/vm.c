@@ -66,6 +66,8 @@ void
 kvminit(void)
 {
   kernel_pagetable = kvmmake();
+    printf("kernel_pagetable address: %p\n", kernel_pagetable);
+
 }
 
 // Switch the current CPU's h/w page table register to
