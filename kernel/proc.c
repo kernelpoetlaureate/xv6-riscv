@@ -70,6 +70,48 @@ procinit(void)
            i, pp, pp->pid, sname, pp->kstack, pp->pagetable, pp->trapframe, pp->parent, pp->name, pp->context.sp);
     release(&pp->lock);
   }
+
+  // One-shot raw PCB hexdump at boot. Set to 1 to enable and choose index.
+#define DUMP_PCB_AT_BOOT 1
+#define DUMP_PCB_INDEX 1
+#if DUMP_PCB_AT_BOOT
+  {
+    int idx = DUMP_PCB_INDEX;
+    if(idx >= 0 && idx < NPROC){
+      struct proc *pp = &proc[idx];
+      acquire(&pp->lock);
+      printf("--- raw hexdump proc[%d] at %p size=%d ---\n", idx, pp, (int)sizeof(*pp));
+      // hexdump helper (prints 16 bytes/line)
+      static const char *hex = "0123456789abcdef";
+      unsigned char *b = (unsigned char*)pp;
+      int len = sizeof(*pp);
+      for(int i = 0; i < len; i += 16){
+  // line address
+  printf("%p: ", b + i);
+        for(int j = 0; j < 16; j++){
+          if(i + j < len){
+            unsigned char byte = b[i + j];
+            printf("%c%c ", hex[byte >> 4], hex[byte & 0xF]);
+          } else {
+            printf("   ");
+          }
+        }
+        // ASCII
+        printf(" ");
+        for(int j = 0; j < 16 && i + j < len; j++){
+          unsigned char c = b[i + j];
+          if(c >= 32 && c < 127)
+            printf("%c", c);
+          else
+            printf(".");
+        }
+        printf("\n");
+      }
+      printf("--- end hexdump proc[%d] ---\n", idx);
+      release(&pp->lock);
+    }
+  }
+#endif
 }
 
 // Must be called with interrupts disabled,
