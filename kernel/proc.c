@@ -56,6 +56,14 @@ procinit(void)
       p->state = UNUSED;
       p->kstack = KSTACK((int) (p - proc));
   }
+  // Print a one-line summary of each proc for debugging (safe: locks initialized).
+  for(int i = 0; i < NPROC; i++){
+    struct proc *pp = &proc[i];
+    acquire(&pp->lock);
+    printf("proc[%d] addr=%p pid=%d state=%d kstack=0x%lx\n",
+           i, pp, pp->pid, pp->state, pp->kstack);
+    release(&pp->lock);
+  }
 }
 
 // Must be called with interrupts disabled,
