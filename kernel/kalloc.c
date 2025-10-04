@@ -23,11 +23,26 @@ struct {
   struct run *freelist;
 } kmem;
 
+// Enable automatic boot-time free-list logging by default, but
+// only while the allocator is being initialized. This keeps
+// normal kfree/kalloc quiet after boot.
+static int kmem_log_boot = 1;       // set to 0 to disable boot logging
+static int kmem_initializing = 0;   // true while kinit/freerange runs
+static uint64 kmem_freed_pages = 0;
+
 void
 kinit()
 {
   initlock(&kmem.lock, "kmem");
+  if(kmem_log_boot) {
+    kmem_initializing = 1;
+    printf("kinit: freerange from %p to %p\n", end, (void*)PHYSTOP);
+  }
   freerange(end, (void*)PHYSTOP);
+  if(kmem_log_boot) {
+    kmem_initializing = 0;
+    printf("kinit: finished freerange; freed pages=%lu\n", kmem_freed_pages);
+  }
 }
 
 void
@@ -53,6 +68,11 @@ kfree(void *pa)
 
   // Fill with junk to catch dangling refs.
   memset(pa, 1, PGSIZE);
+
+  if(kmem_log_boot && kmem_initializing){
+    printf("kfree: freeing page at %p\n", pa);
+    kmem_freed_pages++;
+  }
 
   r = (struct run*)pa;
 
