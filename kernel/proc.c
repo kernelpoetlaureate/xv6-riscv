@@ -17,6 +17,7 @@ struct spinlock pid_lock;
 
 extern void forkret(void);
 static void freeproc(struct proc *p);
+static void proc_verbose_dump(struct proc *p);
 
 extern char trampoline[]; // trampoline.S
 
@@ -112,7 +113,39 @@ procinit(void)
     }
   }
 #endif
+  // Optionally call verbose dump for index
+#define VERBOSE_DUMP_AT_BOOT 1
+#define VERBOSE_DUMP_INDEX 62
+#if VERBOSE_DUMP_AT_BOOT
+    proc_verbose_dump(&proc[VERBOSE_DUMP_INDEX]);
+#endif
 }
+
+// Verbose per-proc printer (print all struct proc fields in human form).
+static void
+proc_verbose_dump(struct proc *p)
+{
+  if(p == 0) return;
+  acquire(&p->lock);
+  printf("verbose dump proc at %p:\n", p);
+  printf(" lock.locked=%d name=%p cpu=%p\n", p->lock.locked, p->lock.name, p->lock.cpu);
+  printf(" state=%d pid=%d killed=%d xstate=%d chan=%p\n", p->state, p->pid, p->killed, p->xstate, p->chan);
+  printf(" parent=%p kstack=0x%lx sz=0x%lx pagetable=%p trapframe=%p\n",
+         p->parent, p->kstack, p->sz, p->pagetable, p->trapframe);
+  printf(" context: ra=0x%lx sp=0x%lx s0=0x%lx s1=0x%lx s2=0x%lx s3=0x%lx\n",
+         p->context.ra, p->context.sp, p->context.s0, p->context.s1, p->context.s2, p->context.s3);
+  printf(" context cont: s4=0x%lx s5=0x%lx s6=0x%lx s7=0x%lx s8=0x%lx s9=0x%lx\n",
+         p->context.s4, p->context.s5, p->context.s6, p->context.s7, p->context.s8, p->context.s9);
+  printf(" context cont2: s10=0x%lx s11=0x%lx\n", p->context.s10, p->context.s11);
+  printf(" ofile ptrs:\n");
+  for(int i = 0; i < NOFILE; i++){
+    printf("  ofile[%d]=%p\n", i, p->ofile[i]);
+  }
+  printf(" cwd=%p name=\"%s\"\n", p->cwd, p->name);
+  release(&p->lock);
+}
+
+
 
 // Must be called with interrupts disabled,
 // to prevent race with process being moved
