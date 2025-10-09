@@ -3,6 +3,10 @@
 #include "kernel/stat.h"
 #include "user/user.h"
 
+// Kernel virtual base: user addresses should be below this.
+// KERNBASE is 0x80000000 in xv6/riscv.
+#define KERNBASE 0x80000000UL
+
 // parse address string: supports 0x... hex and decimal
 unsigned long
 parse_addr(const char *s)
@@ -48,6 +52,10 @@ main(int argc, char **argv)
   }
 
   unsigned long addr = parse_addr(argv[1]);
+  if(addr >= KERNBASE){
+    printf("memdump: address 0x%lx is in kernel space (>= 0x%lx); refusing\n", addr, (unsigned long)KERNBASE);
+    exit(1);
+  }
   int length = 64;
   if(argc >= 3) length = atoi(argv[2]);
 
