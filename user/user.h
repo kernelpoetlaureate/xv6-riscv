@@ -50,6 +50,7 @@ void printf(const char*, ...) __attribute__ ((format (printf, 1, 2)));
 int kread(uint64 addr, int len, char *dst);
 int pageinfo(uint64 dst, int max);
 int pageinfo_va(uint64 dst, uint64 vaddr);
+int pageinfo_phys(uint64 dst, uint64 paddr);
 
 // umalloc.c
 void* malloc(uint);

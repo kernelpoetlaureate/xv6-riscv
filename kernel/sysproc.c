@@ -5,8 +5,10 @@
 #include "memlayout.h"
 #include "spinlock.h"
 #include "proc.h"
-#include "vm.h"
 #include "pageinfo.h"
+extern pagetable_t kernel_pagetable;
+#include "vm.h"
+extern char end[]; // declared in kalloc.c; needed for phys memory checks
 
 uint64
 sys_exit(void)
@@ -148,6 +150,7 @@ sys_pageinfo(void)
 // syscall pageinfo_va(dst_user_ptr, vaddr)
 // copy the pageinfo entry for the physical page backing vaddr in the
 // current process into user buffer at dst. Returns 0 on success.
+// Now supports looking up kernel virtual addresses as well.
 uint64
 sys_pageinfo_va(void)
 {
@@ -159,9 +162,38 @@ sys_pageinfo_va(void)
   struct proc *p = myproc();
   if(!p) return -1;
 
-  // find physical address backing this virtual address in this process
+  // First try to find in the current process pagetable
   uint64 pa = walkaddr(p->pagetable, va);
-  if(pa == 0) return -1;
+  
+  // If not found in the process pagetable, try the kernel pagetable
+  if(pa == 0) {
+    pa = walkaddr_any(kernel_pagetable, va);
+    if(pa == 0) return -1;  // Not found in either pagetable
+  }
+
+  if(pageinfo_copy_entry_to_user(dst, (void*)pa) < 0)
+    return -1;
+  return 0;
+}
+
+// syscall pageinfo_phys(dst_user_ptr, phys_addr)
+// Copy the pageinfo entry for the specified physical address directly.
+// Returns 0 on success.
+uint64
+sys_pageinfo_phys(void)
+{
+  uint64 dst;
+  uint64 pa;
+  argaddr(0, &dst);
+  argaddr(1, &pa);
+
+  // Verify the physical address is within valid range
+  if(pa < (uint64)end || pa >= PHYSTOP)
+    return -1;
+
+  // Make sure pa is page-aligned
+  if((pa % PGSIZE) != 0)
+    pa = PGROUNDDOWN(pa);
 
   if(pageinfo_copy_entry_to_user(dst, (void*)pa) < 0)
     return -1;

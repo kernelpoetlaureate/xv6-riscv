@@ -6,6 +6,8 @@
 #include "defs.h"
 #include "pageinfo.h"
 
+extern uint ticks;
+
 // static compile-time number of pages covered
 #define PI_NPAGES (PHYSTOP / PGSIZE)
 
@@ -43,7 +45,7 @@ pageinfo_set_alloc(void *pa, unsigned char type, int owner_pid, const char *tag)
   acquire(&pi_lock);
   p->type = type;
   p->owner_pid = owner_pid;
-  p->alloc_tick = 0;
+  p->alloc_tick = ticks; // Record current tick count for allocation time tracking
   p->ref = 1;
   if(tag){
     int i;

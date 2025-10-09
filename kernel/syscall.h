@@ -23,3 +23,4 @@
 #define SYS_kread  22
 #define SYS_pageinfo 23
 #define SYS_pageinfo_va 24
+#define SYS_pageinfo_phys 25

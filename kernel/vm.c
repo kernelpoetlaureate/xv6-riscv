@@ -150,6 +150,27 @@ walkaddr(pagetable_t pagetable, uint64 va)
   return pa;
 }
 
+// Look up a virtual address in any page table (including kernel),
+// return the physical address, or 0 if not mapped.
+// Does not require PTE_U, so can look up kernel-only pages.
+uint64
+walkaddr_any(pagetable_t pagetable, uint64 va)
+{
+  pte_t *pte;
+  uint64 pa;
+
+  if(va >= MAXVA)
+    return 0;
+
+  pte = walk(pagetable, va, 0);
+  if(pte == 0)
+    return 0;
+  if((*pte & PTE_V) == 0)
+    return 0;
+  pa = PTE2PA(*pte);
+  return pa;
+}
+
 // Create PTEs for virtual addresses starting at va that refer to
 // physical addresses starting at pa.
 // va and size MUST be page-aligned.
@@ -182,7 +203,20 @@ mappages(pagetable_t pagetable, uint64 va, uint64 size, uint64 pa, int perm)
     int owner = 0;
     struct proc *p = myproc();
     if(p) owner = p->pid;
-    unsigned char t = (pagetable == kernel_pagetable) ? PGTYPE_KERNEL : PGTYPE_USER;
+    
+    // Determine page type with more granularity
+    unsigned char t = PGTYPE_UNKNOWN;
+    if(pagetable == kernel_pagetable) {
+      t = PGTYPE_KERNEL;
+    } else {
+      // User or page table page
+      if(perm & PTE_U) {
+        t = PGTYPE_USER;    // User page
+      } else {
+        t = PGTYPE_PAGETABLE;  // Page table page
+      }
+    }
+    
     pageinfo_set_mapped((void*)pa, a, owner, t);
     if(a == last)
       break;

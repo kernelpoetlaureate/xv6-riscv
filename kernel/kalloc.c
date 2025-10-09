@@ -149,6 +149,35 @@ kalloc(void)
   int owner = 0;
   struct proc *p = myproc();
   if(p) owner = p->pid;
-  pageinfo_set_alloc((void*)r, PGTYPE_UNKNOWN, owner, "kalloc");
+
+  // Use more detailed tagging to identify kernel subsystem
+  const char* tag = "kalloc";
+  
+  // Check if we're in a specific kernel context to provide better tagging
+  if (p == 0) {
+    // No process context - early boot or pure kernel
+    tag = "kernel-core";
+  } else if (p->pid == 0) {
+    // Init process
+    tag = "kernel-init";
+  } else if (p->name[0] != 0) {
+    // Try to identify kernel subsystem based on the process name
+    if (strncmp(p->name, "sh", 2) == 0)
+      tag = "shell";
+    else if (strncmp(p->name, "init", 4) == 0)
+      tag = "init";
+    else if (strncmp(p->name, "cat", 3) == 0)
+      tag = "cat";
+    else if (strncmp(p->name, "ls", 2) == 0)
+      tag = "ls";
+    // Add more common process names if needed
+  }
+  
+  // Set the page type more precisely
+  unsigned char type = PGTYPE_KERNEL;
+  if(p && p->pid > 0)
+    type = PGTYPE_USER;
+  
+  pageinfo_set_alloc((void*)r, type, owner, tag);
   return (void*)r;
 }

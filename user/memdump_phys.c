@@ -25,36 +25,63 @@ static const char *type_name(unsigned char t){
   }
 }
 
-int main(int argc, char **argv)
-{
-  if(argc < 2){
-    printf("usage: memdump_phys <virtual-address-hex>\n");
-    return 1;
-  }
-
-  // parse virtual address from argv[1]
-  uint64 vaddr = 0;
+// Parse a hex string into a uint64 value
+uint64 parse_hex(char *s) {
+  uint64 val = 0;
   // simple hex parser: allow 0x... or plain hex
-  char *s = argv[1];
   if(s[0]=='0' && s[1]=='x') s += 2;
   for(; *s; s++){
     char c = *s;
-    vaddr <<= 4;
-    if(c >= '0' && c <= '9') vaddr |= (c - '0');
-    else if(c >= 'a' && c <= 'f') vaddr |= (c - 'a' + 10);
-    else if(c >= 'A' && c <= 'F') vaddr |= (c - 'A' + 10);
+    val <<= 4;
+    if(c >= '0' && c <= '9') val |= (c - '0');
+    else if(c >= 'a' && c <= 'f') val |= (c - 'a' + 10);
+    else if(c >= 'A' && c <= 'F') val |= (c - 'A' + 10);
     else break;
   }
+  return val;
+}
 
-  struct pageinfo_user pi;
-  int r = pageinfo_va((uint64)&pi, vaddr);
-  if(r < 0){
-    printf("pageinfo_va failed for vaddr 0x%lx\n", vaddr);
+void print_pageinfo(struct pageinfo_user *pi, uint64 addr, int is_physical) {
+  printf("pageinfo for %s=0x%lx:\n", is_physical ? "pa" : "va", addr);
+  printf("  type=%s (%d) owner_pid=%d mapped_va=0x%lx tag=%s ref=%lu alloc_tick=%lu\n",
+    type_name(pi->type), pi->type, pi->owner_pid, pi->mapped_va, pi->tag, pi->ref, pi->alloc_tick);
+}
+
+int main(int argc, char **argv)
+{
+  if(argc < 2 || argc > 3){
+    printf("usage: memdump_phys <virtual-address-hex> [-p]\n");
+    printf("       memdump_phys <physical-address-hex> -p\n");
+    printf("Options:\n");
+    printf("  -p    Treat the address as a physical address\n");
     return 1;
   }
 
-  printf("pageinfo for va=0x%lx:\n", vaddr);
-  printf("  type=%s (%d) owner_pid=%d mapped_va=0x%lx tag=%s ref=%lu alloc_tick=%lu\n",
-    type_name(pi.type), pi.type, pi.owner_pid, pi.mapped_va, pi.tag, pi.ref, pi.alloc_tick);
+  int is_physical = 0;
+  if(argc == 3 && strcmp(argv[2], "-p") == 0) {
+    is_physical = 1;
+  }
+
+  // Parse the address from argv[1]
+  uint64 addr = parse_hex(argv[1]);
+
+  struct pageinfo_user pi;
+  int r;
+  
+  if(is_physical) {
+    r = pageinfo_phys((uint64)&pi, addr);
+    if(r < 0){
+      printf("pageinfo_phys failed for physical address 0x%lx\n", addr);
+      return 1;
+    }
+  } else {
+    r = pageinfo_va((uint64)&pi, addr);
+    if(r < 0){
+      printf("pageinfo_va failed for virtual address 0x%lx\n", addr);
+      return 1;
+    }
+  }
+
+  print_pageinfo(&pi, addr, is_physical);
   return 0;
 }
