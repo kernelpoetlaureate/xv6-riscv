@@ -31,34 +31,39 @@ parse_addr(const char *s)
   return val;
 }
 
+// Print a memory region. 'base' is the address to display as the
+// start of the region (for kernel reads this will be the kernel
+// virtual address requested), 'start' points to the buffer holding
+// the bytes to print (may be in user space), and 'length' is how
+// many bytes to print.
 void
-dump_memory_range(char *start, int length)
+dump_memory_range(unsigned long base, char *start, int length)
 {
   // print header: Memory at 0x...
   printf("Memory at ");
-  printf("%p", (void*)start);
+  printf("%p", (void*)base);
   printf(":\n");
 
   // helper: convert nibble (0..15) to hex char
   char hexchar[16];
   for(int i = 0; i < 16; i++) hexchar[i] = "0123456789ABCDEF"[i];
 
-  for(int i = 0; i < length && i < 64; i++) { // Limit output
+  for(int i = 0; i < length; i++) {
     if(i % 16 == 0) {
       // print newline then 4-digit hex offset (zero-padded).
       printf("\n");
       int off = i & 0xFFFF;
       // four hex digits: print high nibble to low
-  printf("%c", hexchar[(off >> 12) & 0xF]);
-  printf("%c", hexchar[(off >> 8) & 0xF]);
-  printf("%c", hexchar[(off >> 4) & 0xF]);
-  printf("%c", hexchar[(off >> 0) & 0xF]);
-  printf(": ");
+      printf("%c", hexchar[(off >> 12) & 0xF]);
+      printf("%c", hexchar[(off >> 8) & 0xF]);
+      printf("%c", hexchar[(off >> 4) & 0xF]);
+      printf("%c", hexchar[(off >> 0) & 0xF]);
+      printf(": ");
     }
     unsigned char b = (unsigned char)start[i];
-  printf("%c", hexchar[(b >> 4) & 0xF]);
-  printf("%c", hexchar[b & 0xF]);
-  printf(" ");
+    printf("%c", hexchar[(b >> 4) & 0xF]);
+    printf("%c", hexchar[b & 0xF]);
+    printf(" ");
   }
   printf("\n");
 }
@@ -88,10 +93,10 @@ main(int argc, char **argv)
       free(buf);
       exit(1);
     }
-    dump_memory_range(buf, length);
+    dump_memory_range(addr, buf, length);
     free(buf);
     exit(0);
   }
-  dump_memory_range((char *)addr, length);
+  dump_memory_range((unsigned long)addr, (char *)addr, length);
   exit(0);
 }
