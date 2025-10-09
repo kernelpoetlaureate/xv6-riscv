@@ -1,0 +1,2714 @@
+rm -f *.tex *.dvi *.idx *.aux *.log *.ind *.ilg \
+*/*.o */*.d */*.asm */*.sym \
+kernel/kernel fs.img \
+mkfs/mkfs .gdbinit \
+        user/usys.S \
+user/_cat user/_echo user/_forktest user/_grep user/_init user/_kill user/_ln user/_ls user/_mkdir user/_rm user/_sh user/_stressfs user/_usertests user/_grind user/_wc user/_zombie user/_logstress user/_forphan user/_dorphan 
+riscv64-linux-gnu-gcc -g -c -o kernel/entry.o kernel/entry.S
+riscv64-linux-gnu-gcc -Wall -Werror -Wno-unknown-attributes -O -fno-omit-frame-pointer -ggdb -gdwarf-2 -MD -mcmodel=medany -ffreestanding -fno-common -nostdlib -fno-builtin-strncpy -fno-builtin-strncmp -fno-builtin-strlen -fno-builtin-memset -fno-builtin-memmove -fno-builtin-memcmp -fno-builtin-log -fno-builtin-bzero -fno-builtin-strchr -fno-builtin-exit -fno-builtin-malloc -fno-builtin-putc -fno-builtin-free -fno-builtin-memcpy -Wno-main -fno-builtin-printf -fno-builtin-fprintf -fno-builtin-vprintf -I. -fno-stack-protector -fno-pie -no-pie   -c -o kernel/start.o kernel/start.c
+riscv64-linux-gnu-gcc -Wall -Werror -Wno-unknown-attributes -O -fno-omit-frame-pointer -ggdb -gdwarf-2 -MD -mcmodel=medany -ffreestanding -fno-common -nostdlib -fno-builtin-strncpy -fno-builtin-strncmp -fno-builtin-strlen -fno-builtin-memset -fno-builtin-memmove -fno-builtin-memcmp -fno-builtin-log -fno-builtin-bzero -fno-builtin-strchr -fno-builtin-exit -fno-builtin-malloc -fno-builtin-putc -fno-builtin-free -fno-builtin-memcpy -Wno-main -fno-builtin-printf -fno-builtin-fprintf -fno-builtin-vprintf -I. -fno-stack-protector -fno-pie -no-pie   -c -o kernel/console.o kernel/console.c
+riscv64-linux-gnu-gcc -Wall -Werror -Wno-unknown-attributes -O -fno-omit-frame-pointer -ggdb -gdwarf-2 -MD -mcmodel=medany -ffreestanding -fno-common -nostdlib -fno-builtin-strncpy -fno-builtin-strncmp -fno-builtin-strlen -fno-builtin-memset -fno-builtin-memmove -fno-builtin-memcmp -fno-builtin-log -fno-builtin-bzero -fno-builtin-strchr -fno-builtin-exit -fno-builtin-malloc -fno-builtin-putc -fno-builtin-free -fno-builtin-memcpy -Wno-main -fno-builtin-printf -fno-builtin-fprintf -fno-builtin-vprintf -I. -fno-stack-protector -fno-pie -no-pie   -c -o kernel/printf.o kernel/printf.c
+riscv64-linux-gnu-gcc -Wall -Werror -Wno-unknown-attributes -O -fno-omit-frame-pointer -ggdb -gdwarf-2 -MD -mcmodel=medany -ffreestanding -fno-common -nostdlib -fno-builtin-strncpy -fno-builtin-strncmp -fno-builtin-strlen -fno-builtin-memset -fno-builtin-memmove -fno-builtin-memcmp -fno-builtin-log -fno-builtin-bzero -fno-builtin-strchr -fno-builtin-exit -fno-builtin-malloc -fno-builtin-putc -fno-builtin-free -fno-builtin-memcpy -Wno-main -fno-builtin-printf -fno-builtin-fprintf -fno-builtin-vprintf -I. -fno-stack-protector -fno-pie -no-pie   -c -o kernel/uart.o kernel/uart.c
+riscv64-linux-gnu-gcc -Wall -Werror -Wno-unknown-attributes -O -fno-omit-frame-pointer -ggdb -gdwarf-2 -MD -mcmodel=medany -ffreestanding -fno-common -nostdlib -fno-builtin-strncpy -fno-builtin-strncmp -fno-builtin-strlen -fno-builtin-memset -fno-builtin-memmove -fno-builtin-memcmp -fno-builtin-log -fno-builtin-bzero -fno-builtin-strchr -fno-builtin-exit -fno-builtin-malloc -fno-builtin-putc -fno-builtin-free -fno-builtin-memcpy -Wno-main -fno-builtin-printf -fno-builtin-fprintf -fno-builtin-vprintf -I. -fno-stack-protector -fno-pie -no-pie   -c -o kernel/kalloc.o kernel/kalloc.c
+riscv64-linux-gnu-gcc -Wall -Werror -Wno-unknown-attributes -O -fno-omit-frame-pointer -ggdb -gdwarf-2 -MD -mcmodel=medany -ffreestanding -fno-common -nostdlib -fno-builtin-strncpy -fno-builtin-strncmp -fno-builtin-strlen -fno-builtin-memset -fno-builtin-memmove -fno-builtin-memcmp -fno-builtin-log -fno-builtin-bzero -fno-builtin-strchr -fno-builtin-exit -fno-builtin-malloc -fno-builtin-putc -fno-builtin-free -fno-builtin-memcpy -Wno-main -fno-builtin-printf -fno-builtin-fprintf -fno-builtin-vprintf -I. -fno-stack-protector -fno-pie -no-pie   -c -o kernel/spinlock.o kernel/spinlock.c
+riscv64-linux-gnu-gcc -Wall -Werror -Wno-unknown-attributes -O -fno-omit-frame-pointer -ggdb -gdwarf-2 -MD -mcmodel=medany -ffreestanding -fno-common -nostdlib -fno-builtin-strncpy -fno-builtin-strncmp -fno-builtin-strlen -fno-builtin-memset -fno-builtin-memmove -fno-builtin-memcmp -fno-builtin-log -fno-builtin-bzero -fno-builtin-strchr -fno-builtin-exit -fno-builtin-malloc -fno-builtin-putc -fno-builtin-free -fno-builtin-memcpy -Wno-main -fno-builtin-printf -fno-builtin-fprintf -fno-builtin-vprintf -I. -fno-stack-protector -fno-pie -no-pie   -c -o kernel/string.o kernel/string.c
+riscv64-linux-gnu-gcc -Wall -Werror -Wno-unknown-attributes -O -fno-omit-frame-pointer -ggdb -gdwarf-2 -MD -mcmodel=medany -ffreestanding -fno-common -nostdlib -fno-builtin-strncpy -fno-builtin-strncmp -fno-builtin-strlen -fno-builtin-memset -fno-builtin-memmove -fno-builtin-memcmp -fno-builtin-log -fno-builtin-bzero -fno-builtin-strchr -fno-builtin-exit -fno-builtin-malloc -fno-builtin-putc -fno-builtin-free -fno-builtin-memcpy -Wno-main -fno-builtin-printf -fno-builtin-fprintf -fno-builtin-vprintf -I. -fno-stack-protector -fno-pie -no-pie   -c -o kernel/main.o kernel/main.c
+riscv64-linux-gnu-gcc -Wall -Werror -Wno-unknown-attributes -O -fno-omit-frame-pointer -ggdb -gdwarf-2 -MD -mcmodel=medany -ffreestanding -fno-common -nostdlib -fno-builtin-strncpy -fno-builtin-strncmp -fno-builtin-strlen -fno-builtin-memset -fno-builtin-memmove -fno-builtin-memcmp -fno-builtin-log -fno-builtin-bzero -fno-builtin-strchr -fno-builtin-exit -fno-builtin-malloc -fno-builtin-putc -fno-builtin-free -fno-builtin-memcpy -Wno-main -fno-builtin-printf -fno-builtin-fprintf -fno-builtin-vprintf -I. -fno-stack-protector -fno-pie -no-pie   -c -o kernel/vm.o kernel/vm.c
+riscv64-linux-gnu-gcc -Wall -Werror -Wno-unknown-attributes -O -fno-omit-frame-pointer -ggdb -gdwarf-2 -MD -mcmodel=medany -ffreestanding -fno-common -nostdlib -fno-builtin-strncpy -fno-builtin-strncmp -fno-builtin-strlen -fno-builtin-memset -fno-builtin-memmove -fno-builtin-memcmp -fno-builtin-log -fno-builtin-bzero -fno-builtin-strchr -fno-builtin-exit -fno-builtin-malloc -fno-builtin-putc -fno-builtin-free -fno-builtin-memcpy -Wno-main -fno-builtin-printf -fno-builtin-fprintf -fno-builtin-vprintf -I. -fno-stack-protector -fno-pie -no-pie   -c -o kernel/proc.o kernel/proc.c
+riscv64-linux-gnu-gcc -g -c -o kernel/swtch.o kernel/swtch.S
+riscv64-linux-gnu-gcc -g -c -o kernel/trampoline.o kernel/trampoline.S
+riscv64-linux-gnu-gcc -Wall -Werror -Wno-unknown-attributes -O -fno-omit-frame-pointer -ggdb -gdwarf-2 -MD -mcmodel=medany -ffreestanding -fno-common -nostdlib -fno-builtin-strncpy -fno-builtin-strncmp -fno-builtin-strlen -fno-builtin-memset -fno-builtin-memmove -fno-builtin-memcmp -fno-builtin-log -fno-builtin-bzero -fno-builtin-strchr -fno-builtin-exit -fno-builtin-malloc -fno-builtin-putc -fno-builtin-free -fno-builtin-memcpy -Wno-main -fno-builtin-printf -fno-builtin-fprintf -fno-builtin-vprintf -I. -fno-stack-protector -fno-pie -no-pie   -c -o kernel/trap.o kernel/trap.c
+riscv64-linux-gnu-gcc -Wall -Werror -Wno-unknown-attributes -O -fno-omit-frame-pointer -ggdb -gdwarf-2 -MD -mcmodel=medany -ffreestanding -fno-common -nostdlib -fno-builtin-strncpy -fno-builtin-strncmp -fno-builtin-strlen -fno-builtin-memset -fno-builtin-memmove -fno-builtin-memcmp -fno-builtin-log -fno-builtin-bzero -fno-builtin-strchr -fno-builtin-exit -fno-builtin-malloc -fno-builtin-putc -fno-builtin-free -fno-builtin-memcpy -Wno-main -fno-builtin-printf -fno-builtin-fprintf -fno-builtin-vprintf -I. -fno-stack-protector -fno-pie -no-pie   -c -o kernel/syscall.o kernel/syscall.c
+riscv64-linux-gnu-gcc -Wall -Werror -Wno-unknown-attributes -O -fno-omit-frame-pointer -ggdb -gdwarf-2 -MD -mcmodel=medany -ffreestanding -fno-common -nostdlib -fno-builtin-strncpy -fno-builtin-strncmp -fno-builtin-strlen -fno-builtin-memset -fno-builtin-memmove -fno-builtin-memcmp -fno-builtin-log -fno-builtin-bzero -fno-builtin-strchr -fno-builtin-exit -fno-builtin-malloc -fno-builtin-putc -fno-builtin-free -fno-builtin-memcpy -Wno-main -fno-builtin-printf -fno-builtin-fprintf -fno-builtin-vprintf -I. -fno-stack-protector -fno-pie -no-pie   -c -o kernel/sysproc.o kernel/sysproc.c
+riscv64-linux-gnu-gcc -Wall -Werror -Wno-unknown-attributes -O -fno-omit-frame-pointer -ggdb -gdwarf-2 -MD -mcmodel=medany -ffreestanding -fno-common -nostdlib -fno-builtin-strncpy -fno-builtin-strncmp -fno-builtin-strlen -fno-builtin-memset -fno-builtin-memmove -fno-builtin-memcmp -fno-builtin-log -fno-builtin-bzero -fno-builtin-strchr -fno-builtin-exit -fno-builtin-malloc -fno-builtin-putc -fno-builtin-free -fno-builtin-memcpy -Wno-main -fno-builtin-printf -fno-builtin-fprintf -fno-builtin-vprintf -I. -fno-stack-protector -fno-pie -no-pie   -c -o kernel/bio.o kernel/bio.c
+riscv64-linux-gnu-gcc -Wall -Werror -Wno-unknown-attributes -O -fno-omit-frame-pointer -ggdb -gdwarf-2 -MD -mcmodel=medany -ffreestanding -fno-common -nostdlib -fno-builtin-strncpy -fno-builtin-strncmp -fno-builtin-strlen -fno-builtin-memset -fno-builtin-memmove -fno-builtin-memcmp -fno-builtin-log -fno-builtin-bzero -fno-builtin-strchr -fno-builtin-exit -fno-builtin-malloc -fno-builtin-putc -fno-builtin-free -fno-builtin-memcpy -Wno-main -fno-builtin-printf -fno-builtin-fprintf -fno-builtin-vprintf -I. -fno-stack-protector -fno-pie -no-pie   -c -o kernel/fs.o kernel/fs.c
+riscv64-linux-gnu-gcc -Wall -Werror -Wno-unknown-attributes -O -fno-omit-frame-pointer -ggdb -gdwarf-2 -MD -mcmodel=medany -ffreestanding -fno-common -nostdlib -fno-builtin-strncpy -fno-builtin-strncmp -fno-builtin-strlen -fno-builtin-memset -fno-builtin-memmove -fno-builtin-memcmp -fno-builtin-log -fno-builtin-bzero -fno-builtin-strchr -fno-builtin-exit -fno-builtin-malloc -fno-builtin-putc -fno-builtin-free -fno-builtin-memcpy -Wno-main -fno-builtin-printf -fno-builtin-fprintf -fno-builtin-vprintf -I. -fno-stack-protector -fno-pie -no-pie   -c -o kernel/log.o kernel/log.c
+riscv64-linux-gnu-gcc -Wall -Werror -Wno-unknown-attributes -O -fno-omit-frame-pointer -ggdb -gdwarf-2 -MD -mcmodel=medany -ffreestanding -fno-common -nostdlib -fno-builtin-strncpy -fno-builtin-strncmp -fno-builtin-strlen -fno-builtin-memset -fno-builtin-memmove -fno-builtin-memcmp -fno-builtin-log -fno-builtin-bzero -fno-builtin-strchr -fno-builtin-exit -fno-builtin-malloc -fno-builtin-putc -fno-builtin-free -fno-builtin-memcpy -Wno-main -fno-builtin-printf -fno-builtin-fprintf -fno-builtin-vprintf -I. -fno-stack-protector -fno-pie -no-pie   -c -o kernel/sleeplock.o kernel/sleeplock.c
+riscv64-linux-gnu-gcc -Wall -Werror -Wno-unknown-attributes -O -fno-omit-frame-pointer -ggdb -gdwarf-2 -MD -mcmodel=medany -ffreestanding -fno-common -nostdlib -fno-builtin-strncpy -fno-builtin-strncmp -fno-builtin-strlen -fno-builtin-memset -fno-builtin-memmove -fno-builtin-memcmp -fno-builtin-log -fno-builtin-bzero -fno-builtin-strchr -fno-builtin-exit -fno-builtin-malloc -fno-builtin-putc -fno-builtin-free -fno-builtin-memcpy -Wno-main -fno-builtin-printf -fno-builtin-fprintf -fno-builtin-vprintf -I. -fno-stack-protector -fno-pie -no-pie   -c -o kernel/file.o kernel/file.c
+riscv64-linux-gnu-gcc -Wall -Werror -Wno-unknown-attributes -O -fno-omit-frame-pointer -ggdb -gdwarf-2 -MD -mcmodel=medany -ffreestanding -fno-common -nostdlib -fno-builtin-strncpy -fno-builtin-strncmp -fno-builtin-strlen -fno-builtin-memset -fno-builtin-memmove -fno-builtin-memcmp -fno-builtin-log -fno-builtin-bzero -fno-builtin-strchr -fno-builtin-exit -fno-builtin-malloc -fno-builtin-putc -fno-builtin-free -fno-builtin-memcpy -Wno-main -fno-builtin-printf -fno-builtin-fprintf -fno-builtin-vprintf -I. -fno-stack-protector -fno-pie -no-pie   -c -o kernel/pipe.o kernel/pipe.c
+riscv64-linux-gnu-gcc -Wall -Werror -Wno-unknown-attributes -O -fno-omit-frame-pointer -ggdb -gdwarf-2 -MD -mcmodel=medany -ffreestanding -fno-common -nostdlib -fno-builtin-strncpy -fno-builtin-strncmp -fno-builtin-strlen -fno-builtin-memset -fno-builtin-memmove -fno-builtin-memcmp -fno-builtin-log -fno-builtin-bzero -fno-builtin-strchr -fno-builtin-exit -fno-builtin-malloc -fno-builtin-putc -fno-builtin-free -fno-builtin-memcpy -Wno-main -fno-builtin-printf -fno-builtin-fprintf -fno-builtin-vprintf -I. -fno-stack-protector -fno-pie -no-pie   -c -o kernel/exec.o kernel/exec.c
+riscv64-linux-gnu-gcc -Wall -Werror -Wno-unknown-attributes -O -fno-omit-frame-pointer -ggdb -gdwarf-2 -MD -mcmodel=medany -ffreestanding -fno-common -nostdlib -fno-builtin-strncpy -fno-builtin-strncmp -fno-builtin-strlen -fno-builtin-memset -fno-builtin-memmove -fno-builtin-memcmp -fno-builtin-log -fno-builtin-bzero -fno-builtin-strchr -fno-builtin-exit -fno-builtin-malloc -fno-builtin-putc -fno-builtin-free -fno-builtin-memcpy -Wno-main -fno-builtin-printf -fno-builtin-fprintf -fno-builtin-vprintf -I. -fno-stack-protector -fno-pie -no-pie   -c -o kernel/sysfile.o kernel/sysfile.c
+riscv64-linux-gnu-gcc -g -c -o kernel/kernelvec.o kernel/kernelvec.S
+riscv64-linux-gnu-gcc -Wall -Werror -Wno-unknown-attributes -O -fno-omit-frame-pointer -ggdb -gdwarf-2 -MD -mcmodel=medany -ffreestanding -fno-common -nostdlib -fno-builtin-strncpy -fno-builtin-strncmp -fno-builtin-strlen -fno-builtin-memset -fno-builtin-memmove -fno-builtin-memcmp -fno-builtin-log -fno-builtin-bzero -fno-builtin-strchr -fno-builtin-exit -fno-builtin-malloc -fno-builtin-putc -fno-builtin-free -fno-builtin-memcpy -Wno-main -fno-builtin-printf -fno-builtin-fprintf -fno-builtin-vprintf -I. -fno-stack-protector -fno-pie -no-pie   -c -o kernel/plic.o kernel/plic.c
+riscv64-linux-gnu-gcc -Wall -Werror -Wno-unknown-attributes -O -fno-omit-frame-pointer -ggdb -gdwarf-2 -MD -mcmodel=medany -ffreestanding -fno-common -nostdlib -fno-builtin-strncpy -fno-builtin-strncmp -fno-builtin-strlen -fno-builtin-memset -fno-builtin-memmove -fno-builtin-memcmp -fno-builtin-log -fno-builtin-bzero -fno-builtin-strchr -fno-builtin-exit -fno-builtin-malloc -fno-builtin-putc -fno-builtin-free -fno-builtin-memcpy -Wno-main -fno-builtin-printf -fno-builtin-fprintf -fno-builtin-vprintf -I. -fno-stack-protector -fno-pie -no-pie   -c -o kernel/virtio_disk.o kernel/virtio_disk.c
+riscv64-linux-gnu-ld -z max-page-size=4096 -T kernel/kernel.ld -o kernel/kernel kernel/entry.o kernel/start.o kernel/console.o kernel/printf.o kernel/uart.o kernel/kalloc.o kernel/spinlock.o kernel/string.o kernel/main.o kernel/vm.o kernel/proc.o kernel/swtch.o kernel/trampoline.o kernel/trap.o kernel/syscall.o kernel/sysproc.o kernel/bio.o kernel/fs.o kernel/log.o kernel/sleeplock.o kernel/file.o kernel/pipe.o kernel/exec.o kernel/sysfile.o kernel/kernelvec.o kernel/plic.o kernel/virtio_disk.o 
+riscv64-linux-gnu-ld: warning: kernel/kernel has a LOAD segment with RWX permissions
+riscv64-linux-gnu-objdump -S kernel/kernel > kernel/kernel.asm
+riscv64-linux-gnu-objdump -t kernel/kernel | sed '1,/SYMBOL TABLE/d; s/ .* / /; /^$/d' > kernel/kernel.sym
+gcc -Wno-unknown-attributes -I. -o mkfs/mkfs mkfs/mkfs.c
+riscv64-linux-gnu-gcc -Wall -Werror -Wno-unknown-attributes -O -fno-omit-frame-pointer -ggdb -gdwarf-2 -MD -mcmodel=medany -ffreestanding -fno-common -nostdlib -fno-builtin-strncpy -fno-builtin-strncmp -fno-builtin-strlen -fno-builtin-memset -fno-builtin-memmove -fno-builtin-memcmp -fno-builtin-log -fno-builtin-bzero -fno-builtin-strchr -fno-builtin-exit -fno-builtin-malloc -fno-builtin-putc -fno-builtin-free -fno-builtin-memcpy -Wno-main -fno-builtin-printf -fno-builtin-fprintf -fno-builtin-vprintf -I. -fno-stack-protector -fno-pie -no-pie   -c -o user/ulib.o user/ulib.c
+perl user/usys.pl > user/usys.S
+riscv64-linux-gnu-gcc -Wall -Werror -Wno-unknown-attributes -O -fno-omit-frame-pointer -ggdb -gdwarf-2 -MD -mcmodel=medany -ffreestanding -fno-common -nostdlib -fno-builtin-strncpy -fno-builtin-strncmp -fno-builtin-strlen -fno-builtin-memset -fno-builtin-memmove -fno-builtin-memcmp -fno-builtin-log -fno-builtin-bzero -fno-builtin-strchr -fno-builtin-exit -fno-builtin-malloc -fno-builtin-putc -fno-builtin-free -fno-builtin-memcpy -Wno-main -fno-builtin-printf -fno-builtin-fprintf -fno-builtin-vprintf -I. -fno-stack-protector -fno-pie -no-pie -c -o user/usys.o user/usys.S
+riscv64-linux-gnu-gcc -Wall -Werror -Wno-unknown-attributes -O -fno-omit-frame-pointer -ggdb -gdwarf-2 -MD -mcmodel=medany -ffreestanding -fno-common -nostdlib -fno-builtin-strncpy -fno-builtin-strncmp -fno-builtin-strlen -fno-builtin-memset -fno-builtin-memmove -fno-builtin-memcmp -fno-builtin-log -fno-builtin-bzero -fno-builtin-strchr -fno-builtin-exit -fno-builtin-malloc -fno-builtin-putc -fno-builtin-free -fno-builtin-memcpy -Wno-main -fno-builtin-printf -fno-builtin-fprintf -fno-builtin-vprintf -I. -fno-stack-protector -fno-pie -no-pie   -c -o user/printf.o user/printf.c
+riscv64-linux-gnu-gcc -Wall -Werror -Wno-unknown-attributes -O -fno-omit-frame-pointer -ggdb -gdwarf-2 -MD -mcmodel=medany -ffreestanding -fno-common -nostdlib -fno-builtin-strncpy -fno-builtin-strncmp -fno-builtin-strlen -fno-builtin-memset -fno-builtin-memmove -fno-builtin-memcmp -fno-builtin-log -fno-builtin-bzero -fno-builtin-strchr -fno-builtin-exit -fno-builtin-malloc -fno-builtin-putc -fno-builtin-free -fno-builtin-memcpy -Wno-main -fno-builtin-printf -fno-builtin-fprintf -fno-builtin-vprintf -I. -fno-stack-protector -fno-pie -no-pie   -c -o user/umalloc.o user/umalloc.c
+riscv64-linux-gnu-gcc -Wall -Werror -Wno-unknown-attributes -O -fno-omit-frame-pointer -ggdb -gdwarf-2 -MD -mcmodel=medany -ffreestanding -fno-common -nostdlib -fno-builtin-strncpy -fno-builtin-strncmp -fno-builtin-strlen -fno-builtin-memset -fno-builtin-memmove -fno-builtin-memcmp -fno-builtin-log -fno-builtin-bzero -fno-builtin-strchr -fno-builtin-exit -fno-builtin-malloc -fno-builtin-putc -fno-builtin-free -fno-builtin-memcpy -Wno-main -fno-builtin-printf -fno-builtin-fprintf -fno-builtin-vprintf -I. -fno-stack-protector -fno-pie -no-pie   -c -o user/cat.o user/cat.c
+riscv64-linux-gnu-ld -z max-page-size=4096 -T user/user.ld -o user/_cat user/cat.o user/ulib.o user/usys.o user/printf.o user/umalloc.o
+riscv64-linux-gnu-objdump -S user/_cat > user/cat.asm
+riscv64-linux-gnu-objdump -t user/_cat | sed '1,/SYMBOL TABLE/d; s/ .* / /; /^$/d' > user/cat.sym
+riscv64-linux-gnu-gcc -Wall -Werror -Wno-unknown-attributes -O -fno-omit-frame-pointer -ggdb -gdwarf-2 -MD -mcmodel=medany -ffreestanding -fno-common -nostdlib -fno-builtin-strncpy -fno-builtin-strncmp -fno-builtin-strlen -fno-builtin-memset -fno-builtin-memmove -fno-builtin-memcmp -fno-builtin-log -fno-builtin-bzero -fno-builtin-strchr -fno-builtin-exit -fno-builtin-malloc -fno-builtin-putc -fno-builtin-free -fno-builtin-memcpy -Wno-main -fno-builtin-printf -fno-builtin-fprintf -fno-builtin-vprintf -I. -fno-stack-protector -fno-pie -no-pie   -c -o user/echo.o user/echo.c
+riscv64-linux-gnu-ld -z max-page-size=4096 -T user/user.ld -o user/_echo user/echo.o user/ulib.o user/usys.o user/printf.o user/umalloc.o
+riscv64-linux-gnu-objdump -S user/_echo > user/echo.asm
+riscv64-linux-gnu-objdump -t user/_echo | sed '1,/SYMBOL TABLE/d; s/ .* / /; /^$/d' > user/echo.sym
+riscv64-linux-gnu-gcc -Wall -Werror -Wno-unknown-attributes -O -fno-omit-frame-pointer -ggdb -gdwarf-2 -MD -mcmodel=medany -ffreestanding -fno-common -nostdlib -fno-builtin-strncpy -fno-builtin-strncmp -fno-builtin-strlen -fno-builtin-memset -fno-builtin-memmove -fno-builtin-memcmp -fno-builtin-log -fno-builtin-bzero -fno-builtin-strchr -fno-builtin-exit -fno-builtin-malloc -fno-builtin-putc -fno-builtin-free -fno-builtin-memcpy -Wno-main -fno-builtin-printf -fno-builtin-fprintf -fno-builtin-vprintf -I. -fno-stack-protector -fno-pie -no-pie   -c -o user/forktest.o user/forktest.c
+# forktest has less library code linked in - needs to be small
+# in order to be able to max out the proc table.
+riscv64-linux-gnu-ld -z max-page-size=4096 -N -e main -Ttext 0 -o user/_forktest user/forktest.o user/ulib.o user/usys.o
+riscv64-linux-gnu-ld: warning: user/_forktest has a LOAD segment with RWX permissions
+riscv64-linux-gnu-objdump -S user/_forktest > user/forktest.asm
+riscv64-linux-gnu-gcc -Wall -Werror -Wno-unknown-attributes -O -fno-omit-frame-pointer -ggdb -gdwarf-2 -MD -mcmodel=medany -ffreestanding -fno-common -nostdlib -fno-builtin-strncpy -fno-builtin-strncmp -fno-builtin-strlen -fno-builtin-memset -fno-builtin-memmove -fno-builtin-memcmp -fno-builtin-log -fno-builtin-bzero -fno-builtin-strchr -fno-builtin-exit -fno-builtin-malloc -fno-builtin-putc -fno-builtin-free -fno-builtin-memcpy -Wno-main -fno-builtin-printf -fno-builtin-fprintf -fno-builtin-vprintf -I. -fno-stack-protector -fno-pie -no-pie   -c -o user/grep.o user/grep.c
+riscv64-linux-gnu-ld -z max-page-size=4096 -T user/user.ld -o user/_grep user/grep.o user/ulib.o user/usys.o user/printf.o user/umalloc.o
+riscv64-linux-gnu-objdump -S user/_grep > user/grep.asm
+riscv64-linux-gnu-objdump -t user/_grep | sed '1,/SYMBOL TABLE/d; s/ .* / /; /^$/d' > user/grep.sym
+riscv64-linux-gnu-gcc -Wall -Werror -Wno-unknown-attributes -O -fno-omit-frame-pointer -ggdb -gdwarf-2 -MD -mcmodel=medany -ffreestanding -fno-common -nostdlib -fno-builtin-strncpy -fno-builtin-strncmp -fno-builtin-strlen -fno-builtin-memset -fno-builtin-memmove -fno-builtin-memcmp -fno-builtin-log -fno-builtin-bzero -fno-builtin-strchr -fno-builtin-exit -fno-builtin-malloc -fno-builtin-putc -fno-builtin-free -fno-builtin-memcpy -Wno-main -fno-builtin-printf -fno-builtin-fprintf -fno-builtin-vprintf -I. -fno-stack-protector -fno-pie -no-pie   -c -o user/init.o user/init.c
+riscv64-linux-gnu-ld -z max-page-size=4096 -T user/user.ld -o user/_init user/init.o user/ulib.o user/usys.o user/printf.o user/umalloc.o
+riscv64-linux-gnu-objdump -S user/_init > user/init.asm
+riscv64-linux-gnu-objdump -t user/_init | sed '1,/SYMBOL TABLE/d; s/ .* / /; /^$/d' > user/init.sym
+riscv64-linux-gnu-gcc -Wall -Werror -Wno-unknown-attributes -O -fno-omit-frame-pointer -ggdb -gdwarf-2 -MD -mcmodel=medany -ffreestanding -fno-common -nostdlib -fno-builtin-strncpy -fno-builtin-strncmp -fno-builtin-strlen -fno-builtin-memset -fno-builtin-memmove -fno-builtin-memcmp -fno-builtin-log -fno-builtin-bzero -fno-builtin-strchr -fno-builtin-exit -fno-builtin-malloc -fno-builtin-putc -fno-builtin-free -fno-builtin-memcpy -Wno-main -fno-builtin-printf -fno-builtin-fprintf -fno-builtin-vprintf -I. -fno-stack-protector -fno-pie -no-pie   -c -o user/kill.o user/kill.c
+riscv64-linux-gnu-ld -z max-page-size=4096 -T user/user.ld -o user/_kill user/kill.o user/ulib.o user/usys.o user/printf.o user/umalloc.o
+riscv64-linux-gnu-objdump -S user/_kill > user/kill.asm
+riscv64-linux-gnu-objdump -t user/_kill | sed '1,/SYMBOL TABLE/d; s/ .* / /; /^$/d' > user/kill.sym
+riscv64-linux-gnu-gcc -Wall -Werror -Wno-unknown-attributes -O -fno-omit-frame-pointer -ggdb -gdwarf-2 -MD -mcmodel=medany -ffreestanding -fno-common -nostdlib -fno-builtin-strncpy -fno-builtin-strncmp -fno-builtin-strlen -fno-builtin-memset -fno-builtin-memmove -fno-builtin-memcmp -fno-builtin-log -fno-builtin-bzero -fno-builtin-strchr -fno-builtin-exit -fno-builtin-malloc -fno-builtin-putc -fno-builtin-free -fno-builtin-memcpy -Wno-main -fno-builtin-printf -fno-builtin-fprintf -fno-builtin-vprintf -I. -fno-stack-protector -fno-pie -no-pie   -c -o user/ln.o user/ln.c
+riscv64-linux-gnu-ld -z max-page-size=4096 -T user/user.ld -o user/_ln user/ln.o user/ulib.o user/usys.o user/printf.o user/umalloc.o
+riscv64-linux-gnu-objdump -S user/_ln > user/ln.asm
+riscv64-linux-gnu-objdump -t user/_ln | sed '1,/SYMBOL TABLE/d; s/ .* / /; /^$/d' > user/ln.sym
+riscv64-linux-gnu-gcc -Wall -Werror -Wno-unknown-attributes -O -fno-omit-frame-pointer -ggdb -gdwarf-2 -MD -mcmodel=medany -ffreestanding -fno-common -nostdlib -fno-builtin-strncpy -fno-builtin-strncmp -fno-builtin-strlen -fno-builtin-memset -fno-builtin-memmove -fno-builtin-memcmp -fno-builtin-log -fno-builtin-bzero -fno-builtin-strchr -fno-builtin-exit -fno-builtin-malloc -fno-builtin-putc -fno-builtin-free -fno-builtin-memcpy -Wno-main -fno-builtin-printf -fno-builtin-fprintf -fno-builtin-vprintf -I. -fno-stack-protector -fno-pie -no-pie   -c -o user/ls.o user/ls.c
+riscv64-linux-gnu-ld -z max-page-size=4096 -T user/user.ld -o user/_ls user/ls.o user/ulib.o user/usys.o user/printf.o user/umalloc.o
+riscv64-linux-gnu-objdump -S user/_ls > user/ls.asm
+riscv64-linux-gnu-objdump -t user/_ls | sed '1,/SYMBOL TABLE/d; s/ .* / /; /^$/d' > user/ls.sym
+riscv64-linux-gnu-gcc -Wall -Werror -Wno-unknown-attributes -O -fno-omit-frame-pointer -ggdb -gdwarf-2 -MD -mcmodel=medany -ffreestanding -fno-common -nostdlib -fno-builtin-strncpy -fno-builtin-strncmp -fno-builtin-strlen -fno-builtin-memset -fno-builtin-memmove -fno-builtin-memcmp -fno-builtin-log -fno-builtin-bzero -fno-builtin-strchr -fno-builtin-exit -fno-builtin-malloc -fno-builtin-putc -fno-builtin-free -fno-builtin-memcpy -Wno-main -fno-builtin-printf -fno-builtin-fprintf -fno-builtin-vprintf -I. -fno-stack-protector -fno-pie -no-pie   -c -o user/mkdir.o user/mkdir.c
+riscv64-linux-gnu-ld -z max-page-size=4096 -T user/user.ld -o user/_mkdir user/mkdir.o user/ulib.o user/usys.o user/printf.o user/umalloc.o
+riscv64-linux-gnu-objdump -S user/_mkdir > user/mkdir.asm
+riscv64-linux-gnu-objdump -t user/_mkdir | sed '1,/SYMBOL TABLE/d; s/ .* / /; /^$/d' > user/mkdir.sym
+riscv64-linux-gnu-gcc -Wall -Werror -Wno-unknown-attributes -O -fno-omit-frame-pointer -ggdb -gdwarf-2 -MD -mcmodel=medany -ffreestanding -fno-common -nostdlib -fno-builtin-strncpy -fno-builtin-strncmp -fno-builtin-strlen -fno-builtin-memset -fno-builtin-memmove -fno-builtin-memcmp -fno-builtin-log -fno-builtin-bzero -fno-builtin-strchr -fno-builtin-exit -fno-builtin-malloc -fno-builtin-putc -fno-builtin-free -fno-builtin-memcpy -Wno-main -fno-builtin-printf -fno-builtin-fprintf -fno-builtin-vprintf -I. -fno-stack-protector -fno-pie -no-pie   -c -o user/rm.o user/rm.c
+riscv64-linux-gnu-ld -z max-page-size=4096 -T user/user.ld -o user/_rm user/rm.o user/ulib.o user/usys.o user/printf.o user/umalloc.o
+riscv64-linux-gnu-objdump -S user/_rm > user/rm.asm
+riscv64-linux-gnu-objdump -t user/_rm | sed '1,/SYMBOL TABLE/d; s/ .* / /; /^$/d' > user/rm.sym
+riscv64-linux-gnu-gcc -Wall -Werror -Wno-unknown-attributes -O -fno-omit-frame-pointer -ggdb -gdwarf-2 -MD -mcmodel=medany -ffreestanding -fno-common -nostdlib -fno-builtin-strncpy -fno-builtin-strncmp -fno-builtin-strlen -fno-builtin-memset -fno-builtin-memmove -fno-builtin-memcmp -fno-builtin-log -fno-builtin-bzero -fno-builtin-strchr -fno-builtin-exit -fno-builtin-malloc -fno-builtin-putc -fno-builtin-free -fno-builtin-memcpy -Wno-main -fno-builtin-printf -fno-builtin-fprintf -fno-builtin-vprintf -I. -fno-stack-protector -fno-pie -no-pie   -c -o user/sh.o user/sh.c
+riscv64-linux-gnu-ld -z max-page-size=4096 -T user/user.ld -o user/_sh user/sh.o user/ulib.o user/usys.o user/printf.o user/umalloc.o
+riscv64-linux-gnu-objdump -S user/_sh > user/sh.asm
+riscv64-linux-gnu-objdump -t user/_sh | sed '1,/SYMBOL TABLE/d; s/ .* / /; /^$/d' > user/sh.sym
+riscv64-linux-gnu-gcc -Wall -Werror -Wno-unknown-attributes -O -fno-omit-frame-pointer -ggdb -gdwarf-2 -MD -mcmodel=medany -ffreestanding -fno-common -nostdlib -fno-builtin-strncpy -fno-builtin-strncmp -fno-builtin-strlen -fno-builtin-memset -fno-builtin-memmove -fno-builtin-memcmp -fno-builtin-log -fno-builtin-bzero -fno-builtin-strchr -fno-builtin-exit -fno-builtin-malloc -fno-builtin-putc -fno-builtin-free -fno-builtin-memcpy -Wno-main -fno-builtin-printf -fno-builtin-fprintf -fno-builtin-vprintf -I. -fno-stack-protector -fno-pie -no-pie   -c -o user/stressfs.o user/stressfs.c
+riscv64-linux-gnu-ld -z max-page-size=4096 -T user/user.ld -o user/_stressfs user/stressfs.o user/ulib.o user/usys.o user/printf.o user/umalloc.o
+riscv64-linux-gnu-objdump -S user/_stressfs > user/stressfs.asm
+riscv64-linux-gnu-objdump -t user/_stressfs | sed '1,/SYMBOL TABLE/d; s/ .* / /; /^$/d' > user/stressfs.sym
+riscv64-linux-gnu-gcc -Wall -Werror -Wno-unknown-attributes -O -fno-omit-frame-pointer -ggdb -gdwarf-2 -MD -mcmodel=medany -ffreestanding -fno-common -nostdlib -fno-builtin-strncpy -fno-builtin-strncmp -fno-builtin-strlen -fno-builtin-memset -fno-builtin-memmove -fno-builtin-memcmp -fno-builtin-log -fno-builtin-bzero -fno-builtin-strchr -fno-builtin-exit -fno-builtin-malloc -fno-builtin-putc -fno-builtin-free -fno-builtin-memcpy -Wno-main -fno-builtin-printf -fno-builtin-fprintf -fno-builtin-vprintf -I. -fno-stack-protector -fno-pie -no-pie   -c -o user/usertests.o user/usertests.c
+riscv64-linux-gnu-ld -z max-page-size=4096 -T user/user.ld -o user/_usertests user/usertests.o user/ulib.o user/usys.o user/printf.o user/umalloc.o
+riscv64-linux-gnu-objdump -S user/_usertests > user/usertests.asm
+riscv64-linux-gnu-objdump -t user/_usertests | sed '1,/SYMBOL TABLE/d; s/ .* / /; /^$/d' > user/usertests.sym
+riscv64-linux-gnu-gcc -Wall -Werror -Wno-unknown-attributes -O -fno-omit-frame-pointer -ggdb -gdwarf-2 -MD -mcmodel=medany -ffreestanding -fno-common -nostdlib -fno-builtin-strncpy -fno-builtin-strncmp -fno-builtin-strlen -fno-builtin-memset -fno-builtin-memmove -fno-builtin-memcmp -fno-builtin-log -fno-builtin-bzero -fno-builtin-strchr -fno-builtin-exit -fno-builtin-malloc -fno-builtin-putc -fno-builtin-free -fno-builtin-memcpy -Wno-main -fno-builtin-printf -fno-builtin-fprintf -fno-builtin-vprintf -I. -fno-stack-protector -fno-pie -no-pie   -c -o user/grind.o user/grind.c
+riscv64-linux-gnu-ld -z max-page-size=4096 -T user/user.ld -o user/_grind user/grind.o user/ulib.o user/usys.o user/printf.o user/umalloc.o
+riscv64-linux-gnu-objdump -S user/_grind > user/grind.asm
+riscv64-linux-gnu-objdump -t user/_grind | sed '1,/SYMBOL TABLE/d; s/ .* / /; /^$/d' > user/grind.sym
+riscv64-linux-gnu-gcc -Wall -Werror -Wno-unknown-attributes -O -fno-omit-frame-pointer -ggdb -gdwarf-2 -MD -mcmodel=medany -ffreestanding -fno-common -nostdlib -fno-builtin-strncpy -fno-builtin-strncmp -fno-builtin-strlen -fno-builtin-memset -fno-builtin-memmove -fno-builtin-memcmp -fno-builtin-log -fno-builtin-bzero -fno-builtin-strchr -fno-builtin-exit -fno-builtin-malloc -fno-builtin-putc -fno-builtin-free -fno-builtin-memcpy -Wno-main -fno-builtin-printf -fno-builtin-fprintf -fno-builtin-vprintf -I. -fno-stack-protector -fno-pie -no-pie   -c -o user/wc.o user/wc.c
+riscv64-linux-gnu-ld -z max-page-size=4096 -T user/user.ld -o user/_wc user/wc.o user/ulib.o user/usys.o user/printf.o user/umalloc.o
+riscv64-linux-gnu-objdump -S user/_wc > user/wc.asm
+riscv64-linux-gnu-objdump -t user/_wc | sed '1,/SYMBOL TABLE/d; s/ .* / /; /^$/d' > user/wc.sym
+riscv64-linux-gnu-gcc -Wall -Werror -Wno-unknown-attributes -O -fno-omit-frame-pointer -ggdb -gdwarf-2 -MD -mcmodel=medany -ffreestanding -fno-common -nostdlib -fno-builtin-strncpy -fno-builtin-strncmp -fno-builtin-strlen -fno-builtin-memset -fno-builtin-memmove -fno-builtin-memcmp -fno-builtin-log -fno-builtin-bzero -fno-builtin-strchr -fno-builtin-exit -fno-builtin-malloc -fno-builtin-putc -fno-builtin-free -fno-builtin-memcpy -Wno-main -fno-builtin-printf -fno-builtin-fprintf -fno-builtin-vprintf -I. -fno-stack-protector -fno-pie -no-pie   -c -o user/zombie.o user/zombie.c
+riscv64-linux-gnu-ld -z max-page-size=4096 -T user/user.ld -o user/_zombie user/zombie.o user/ulib.o user/usys.o user/printf.o user/umalloc.o
+riscv64-linux-gnu-objdump -S user/_zombie > user/zombie.asm
+riscv64-linux-gnu-objdump -t user/_zombie | sed '1,/SYMBOL TABLE/d; s/ .* / /; /^$/d' > user/zombie.sym
+riscv64-linux-gnu-gcc -Wall -Werror -Wno-unknown-attributes -O -fno-omit-frame-pointer -ggdb -gdwarf-2 -MD -mcmodel=medany -ffreestanding -fno-common -nostdlib -fno-builtin-strncpy -fno-builtin-strncmp -fno-builtin-strlen -fno-builtin-memset -fno-builtin-memmove -fno-builtin-memcmp -fno-builtin-log -fno-builtin-bzero -fno-builtin-strchr -fno-builtin-exit -fno-builtin-malloc -fno-builtin-putc -fno-builtin-free -fno-builtin-memcpy -Wno-main -fno-builtin-printf -fno-builtin-fprintf -fno-builtin-vprintf -I. -fno-stack-protector -fno-pie -no-pie   -c -o user/logstress.o user/logstress.c
+riscv64-linux-gnu-ld -z max-page-size=4096 -T user/user.ld -o user/_logstress user/logstress.o user/ulib.o user/usys.o user/printf.o user/umalloc.o
+riscv64-linux-gnu-objdump -S user/_logstress > user/logstress.asm
+riscv64-linux-gnu-objdump -t user/_logstress | sed '1,/SYMBOL TABLE/d; s/ .* / /; /^$/d' > user/logstress.sym
+riscv64-linux-gnu-gcc -Wall -Werror -Wno-unknown-attributes -O -fno-omit-frame-pointer -ggdb -gdwarf-2 -MD -mcmodel=medany -ffreestanding -fno-common -nostdlib -fno-builtin-strncpy -fno-builtin-strncmp -fno-builtin-strlen -fno-builtin-memset -fno-builtin-memmove -fno-builtin-memcmp -fno-builtin-log -fno-builtin-bzero -fno-builtin-strchr -fno-builtin-exit -fno-builtin-malloc -fno-builtin-putc -fno-builtin-free -fno-builtin-memcpy -Wno-main -fno-builtin-printf -fno-builtin-fprintf -fno-builtin-vprintf -I. -fno-stack-protector -fno-pie -no-pie   -c -o user/forphan.o user/forphan.c
+riscv64-linux-gnu-ld -z max-page-size=4096 -T user/user.ld -o user/_forphan user/forphan.o user/ulib.o user/usys.o user/printf.o user/umalloc.o
+riscv64-linux-gnu-objdump -S user/_forphan > user/forphan.asm
+riscv64-linux-gnu-objdump -t user/_forphan | sed '1,/SYMBOL TABLE/d; s/ .* / /; /^$/d' > user/forphan.sym
+riscv64-linux-gnu-gcc -Wall -Werror -Wno-unknown-attributes -O -fno-omit-frame-pointer -ggdb -gdwarf-2 -MD -mcmodel=medany -ffreestanding -fno-common -nostdlib -fno-builtin-strncpy -fno-builtin-strncmp -fno-builtin-strlen -fno-builtin-memset -fno-builtin-memmove -fno-builtin-memcmp -fno-builtin-log -fno-builtin-bzero -fno-builtin-strchr -fno-builtin-exit -fno-builtin-malloc -fno-builtin-putc -fno-builtin-free -fno-builtin-memcpy -Wno-main -fno-builtin-printf -fno-builtin-fprintf -fno-builtin-vprintf -I. -fno-stack-protector -fno-pie -no-pie   -c -o user/dorphan.o user/dorphan.c
+riscv64-linux-gnu-ld -z max-page-size=4096 -T user/user.ld -o user/_dorphan user/dorphan.o user/ulib.o user/usys.o user/printf.o user/umalloc.o
+riscv64-linux-gnu-objdump -S user/_dorphan > user/dorphan.asm
+riscv64-linux-gnu-objdump -t user/_dorphan | sed '1,/SYMBOL TABLE/d; s/ .* / /; /^$/d' > user/dorphan.sym
+mkfs/mkfs fs.img README user/_cat user/_echo user/_forktest user/_grep user/_init user/_kill user/_ln user/_ls user/_mkdir user/_rm user/_sh user/_stressfs user/_usertests user/_grind user/_wc user/_zombie user/_logstress user/_forphan user/_dorphan 
+nmeta 47 (boot, super, log blocks 31, inode blocks 13, bitmap blocks 1) blocks 1953 total 2000
+balloc: first 909 blocks have been allocated
+balloc: write bitmap block at sector 46
+qemu-system-riscv64 -machine virt -bios none -kernel kernel/kernel -m 128M -smp 3 -nographic -global virtio-mmio.force-legacy=false -drive file=fs.img,if=none,format=raw,id=x0 -device virtio-blk-device,drive=x0,bus=virtio-mmio-bus.0
+
+xv6 kernel is booting
+
+kinit: freerange from 0x0000000080024e28 to 0x0000000088000000
+freerange: pa_start=0x0000000080024e28 pa_end=0x0000000088000000
+kfree: freeing page at 0x0000000080025000
+kfree: freeing page at 0x0000000080026000
+kfree: freeing page at 0x0000000080027000
+kfree: freeing page at 0x0000000080028000
+kfree: freeing page at 0x0000000080029000
+kfree: freeing page at 0x000000008002a000
+kfree: freeing page at 0x000000008002b000
+kfree: freeing page at 0x000000008002c000
+kfree: freeing page at 0x0000000080cee000
+kfree: freeing page at 0x00000000819b7000
+kfree: freeing page at 0x0000000082680000
+kfree: freeing page at 0x0000000083349000
+kfree: freeing page at 0x0000000084012000
+kfree: freeing page at 0x0000000084cdb000
+kfree: freeing page at 0x00000000859a4000
+kfree: freeing page at 0x000000008666d000
+kfree: freeing page at 0x0000000087336000
+kfree: freeing page at 0x0000000087ff8000
+kfree: freeing page at 0x0000000087ff9000
+kfree: freeing page at 0x0000000087ffa000
+kfree: freeing page at 0x0000000087ffb000
+kfree: freeing page at 0x0000000087ffc000
+kfree: freeing page at 0x0000000087ffd000
+kfree: freeing page at 0x0000000087ffe000
+kfree: freeing page at 0x0000000087fff000
+kinit: finished freerange; freed pages=32731
+kernel_pagetable address: 0x0000000087fff000
+proc table address: 0x0000000080014048
+proc[0] addr=0x0000000080014048 pid=0 state=UNUSED kstack=0x3fffffd000 pagetable=0x0000000000000000 trapframe=0x0000000000000000 parent=0x0000000000000000 name="" ctx_sp=0x0
+proc[1] addr=0x00000000800141b0 pid=0 state=UNUSED kstack=0x3fffffb000 pagetable=0x0000000000000000 trapframe=0x0000000000000000 parent=0x0000000000000000 name="" ctx_sp=0x0
+proc[2] addr=0x0000000080014318 pid=0 state=UNUSED kstack=0x3fffff9000 pagetable=0x0000000000000000 trapframe=0x0000000000000000 parent=0x0000000000000000 name="" ctx_sp=0x0
+proc[3] addr=0x0000000080014480 pid=0 state=UNUSED kstack=0x3fffff7000 pagetable=0x0000000000000000 trapframe=0x0000000000000000 parent=0x0000000000000000 name="" ctx_sp=0x0
+proc[4] addr=0x00000000800145e8 pid=0 state=UNUSED kstack=0x3fffff5000 pagetable=0x0000000000000000 trapframe=0x0000000000000000 parent=0x0000000000000000 name="" ctx_sp=0x0
+proc[5] addr=0x0000000080014750 pid=0 state=UNUSED kstack=0x3fffff3000 pagetable=0x0000000000000000 trapframe=0x0000000000000000 parent=0x0000000000000000 name="" ctx_sp=0x0
+proc[6] addr=0x00000000800148b8 pid=0 state=UNUSED kstack=0x3fffff1000 pagetable=0x0000000000000000 trapframe=0x0000000000000000 parent=0x0000000000000000 name="" ctx_sp=0x0
+proc[7] addr=0x0000000080014a20 pid=0 state=UNUSED kstack=0x3ffffef000 pagetable=0x0000000000000000 trapframe=0x0000000000000000 parent=0x0000000000000000 name="" ctx_sp=0x0
+proc[8] addr=0x0000000080014b88 pid=0 state=UNUSED kstack=0x3ffffed000 pagetable=0x0000000000000000 trapframe=0x0000000000000000 parent=0x0000000000000000 name="" ctx_sp=0x0
+proc[9] addr=0x0000000080014cf0 pid=0 state=UNUSED kstack=0x3ffffeb000 pagetable=0x0000000000000000 trapframe=0x0000000000000000 parent=0x0000000000000000 name="" ctx_sp=0x0
+proc[10] addr=0x0000000080014e58 pid=0 state=UNUSED kstack=0x3ffffe9000 pagetable=0x0000000000000000 trapframe=0x0000000000000000 parent=0x0000000000000000 name="" ctx_sp=0x0
+proc[11] addr=0x0000000080014fc0 pid=0 state=UNUSED kstack=0x3ffffe7000 pagetable=0x0000000000000000 trapframe=0x0000000000000000 parent=0x0000000000000000 name="" ctx_sp=0x0
+proc[12] addr=0x0000000080015128 pid=0 state=UNUSED kstack=0x3ffffe5000 pagetable=0x0000000000000000 trapframe=0x0000000000000000 parent=0x0000000000000000 name="" ctx_sp=0x0
+proc[13] addr=0x0000000080015290 pid=0 state=UNUSED kstack=0x3ffffe3000 pagetable=0x0000000000000000 trapframe=0x0000000000000000 parent=0x0000000000000000 name="" ctx_sp=0x0
+proc[14] addr=0x00000000800153f8 pid=0 state=UNUSED kstack=0x3ffffe1000 pagetable=0x0000000000000000 trapframe=0x0000000000000000 parent=0x0000000000000000 name="" ctx_sp=0x0
+proc[15] addr=0x0000000080015560 pid=0 state=UNUSED kstack=0x3ffffdf000 pagetable=0x0000000000000000 trapframe=0x0000000000000000 parent=0x0000000000000000 name="" ctx_sp=0x0
+proc[16] addr=0x00000000800156c8 pid=0 state=UNUSED kstack=0x3ffffdd000 pagetable=0x0000000000000000 trapframe=0x0000000000000000 parent=0x0000000000000000 name="" ctx_sp=0x0
+proc[17] addr=0x0000000080015830 pid=0 state=UNUSED kstack=0x3ffffdb000 pagetable=0x0000000000000000 trapframe=0x0000000000000000 parent=0x0000000000000000 name="" ctx_sp=0x0
+proc[18] addr=0x0000000080015998 pid=0 state=UNUSED kstack=0x3ffffd9000 pagetable=0x0000000000000000 trapframe=0x0000000000000000 parent=0x0000000000000000 name="" ctx_sp=0x0
+proc[19] addr=0x0000000080015b00 pid=0 state=UNUSED kstack=0x3ffffd7000 pagetable=0x0000000000000000 trapframe=0x0000000000000000 parent=0x0000000000000000 name="" ctx_sp=0x0
+proc[20] addr=0x0000000080015c68 pid=0 state=UNUSED kstack=0x3ffffd5000 pagetable=0x0000000000000000 trapframe=0x0000000000000000 parent=0x0000000000000000 name="" ctx_sp=0x0
+proc[21] addr=0x0000000080015dd0 pid=0 state=UNUSED kstack=0x3ffffd3000 pagetable=0x0000000000000000 trapframe=0x0000000000000000 parent=0x0000000000000000 name="" ctx_sp=0x0
+proc[22] addr=0x0000000080015f38 pid=0 state=UNUSED kstack=0x3ffffd1000 pagetable=0x0000000000000000 trapframe=0x0000000000000000 parent=0x0000000000000000 name="" ctx_sp=0x0
+proc[23] addr=0x00000000800160a0 pid=0 state=UNUSED kstack=0x3ffffcf000 pagetable=0x0000000000000000 trapframe=0x0000000000000000 parent=0x0000000000000000 name="" ctx_sp=0x0
+proc[24] addr=0x0000000080016208 pid=0 state=UNUSED kstack=0x3ffffcd000 pagetable=0x0000000000000000 trapframe=0x0000000000000000 parent=0x0000000000000000 name="" ctx_sp=0x0
+proc[25] addr=0x0000000080016370 pid=0 state=UNUSED kstack=0x3ffffcb000 pagetable=0x0000000000000000 trapframe=0x0000000000000000 parent=0x0000000000000000 name="" ctx_sp=0x0
+proc[26] addr=0x00000000800164d8 pid=0 state=UNUSED kstack=0x3ffffc9000 pagetable=0x0000000000000000 trapframe=0x0000000000000000 parent=0x0000000000000000 name="" ctx_sp=0x0
+proc[27] addr=0x0000000080016640 pid=0 state=UNUSED kstack=0x3ffffc7000 pagetable=0x0000000000000000 trapframe=0x0000000000000000 parent=0x0000000000000000 name="" ctx_sp=0x0
+proc[28] addr=0x00000000800167a8 pid=0 state=UNUSED kstack=0x3ffffc5000 pagetable=0x0000000000000000 trapframe=0x0000000000000000 parent=0x0000000000000000 name="" ctx_sp=0x0
+proc[29] addr=0x0000000080016910 pid=0 state=UNUSED kstack=0x3ffffc3000 pagetable=0x0000000000000000 trapframe=0x0000000000000000 parent=0x0000000000000000 name="" ctx_sp=0x0
+proc[30] addr=0x0000000080016a78 pid=0 state=UNUSED kstack=0x3ffffc1000 pagetable=0x0000000000000000 trapframe=0x0000000000000000 parent=0x0000000000000000 name="" ctx_sp=0x0
+proc[31] addr=0x0000000080016be0 pid=0 state=UNUSED kstack=0x3ffffbf000 pagetable=0x0000000000000000 trapframe=0x0000000000000000 parent=0x0000000000000000 name="" ctx_sp=0x0
+proc[32] addr=0x0000000080016d48 pid=0 state=UNUSED kstack=0x3ffffbd000 pagetable=0x0000000000000000 trapframe=0x0000000000000000 parent=0x0000000000000000 name="" ctx_sp=0x0
+proc[33] addr=0x0000000080016eb0 pid=0 state=UNUSED kstack=0x3ffffbb000 pagetable=0x0000000000000000 trapframe=0x0000000000000000 parent=0x0000000000000000 name="" ctx_sp=0x0
+proc[34] addr=0x0000000080017018 pid=0 state=UNUSED kstack=0x3ffffb9000 pagetable=0x0000000000000000 trapframe=0x0000000000000000 parent=0x0000000000000000 name="" ctx_sp=0x0
+proc[35] addr=0x0000000080017180 pid=0 state=UNUSED kstack=0x3ffffb7000 pagetable=0x0000000000000000 trapframe=0x0000000000000000 parent=0x0000000000000000 name="" ctx_sp=0x0
+proc[36] addr=0x00000000800172e8 pid=0 state=UNUSED kstack=0x3ffffb5000 pagetable=0x0000000000000000 trapframe=0x0000000000000000 parent=0x0000000000000000 name="" ctx_sp=0x0
+proc[37] addr=0x0000000080017450 pid=0 state=UNUSED kstack=0x3ffffb3000 pagetable=0x0000000000000000 trapframe=0x0000000000000000 parent=0x0000000000000000 name="" ctx_sp=0x0
+proc[38] addr=0x00000000800175b8 pid=0 state=UNUSED kstack=0x3ffffb1000 pagetable=0x0000000000000000 trapframe=0x0000000000000000 parent=0x0000000000000000 name="" ctx_sp=0x0
+proc[39] addr=0x0000000080017720 pid=0 state=UNUSED kstack=0x3ffffaf000 pagetable=0x0000000000000000 trapframe=0x0000000000000000 parent=0x0000000000000000 name="" ctx_sp=0x0
+proc[40] addr=0x0000000080017888 pid=0 state=UNUSED kstack=0x3ffffad000 pagetable=0x0000000000000000 trapframe=0x0000000000000000 parent=0x0000000000000000 name="" ctx_sp=0x0
+proc[41] addr=0x00000000800179f0 pid=0 state=UNUSED kstack=0x3ffffab000 pagetable=0x0000000000000000 trapframe=0x0000000000000000 parent=0x0000000000000000 name="" ctx_sp=0x0
+proc[42] addr=0x0000000080017b58 pid=0 state=UNUSED kstack=0x3ffffa9000 pagetable=0x0000000000000000 trapframe=0x0000000000000000 parent=0x0000000000000000 name="" ctx_sp=0x0
+proc[43] addr=0x0000000080017cc0 pid=0 state=UNUSED kstack=0x3ffffa7000 pagetable=0x0000000000000000 trapframe=0x0000000000000000 parent=0x0000000000000000 name="" ctx_sp=0x0
+proc[44] addr=0x0000000080017e28 pid=0 state=UNUSED kstack=0x3ffffa5000 pagetable=0x0000000000000000 trapframe=0x0000000000000000 parent=0x0000000000000000 name="" ctx_sp=0x0
+proc[45] addr=0x0000000080017f90 pid=0 state=UNUSED kstack=0x3ffffa3000 pagetable=0x0000000000000000 trapframe=0x0000000000000000 parent=0x0000000000000000 name="" ctx_sp=0x0
+proc[46] addr=0x00000000800180f8 pid=0 state=UNUSED kstack=0x3ffffa1000 pagetable=0x0000000000000000 trapframe=0x0000000000000000 parent=0x0000000000000000 name="" ctx_sp=0x0
+proc[47] addr=0x0000000080018260 pid=0 state=UNUSED kstack=0x3ffff9f000 pagetable=0x0000000000000000 trapframe=0x0000000000000000 parent=0x0000000000000000 name="" ctx_sp=0x0
+proc[48] addr=0x00000000800183c8 pid=0 state=UNUSED kstack=0x3ffff9d000 pagetable=0x0000000000000000 trapframe=0x0000000000000000 parent=0x0000000000000000 name="" ctx_sp=0x0
+proc[49] addr=0x0000000080018530 pid=0 state=UNUSED kstack=0x3ffff9b000 pagetable=0x0000000000000000 trapframe=0x0000000000000000 parent=0x0000000000000000 name="" ctx_sp=0x0
+proc[50] addr=0x0000000080018698 pid=0 state=UNUSED kstack=0x3ffff99000 pagetable=0x0000000000000000 trapframe=0x0000000000000000 parent=0x0000000000000000 name="" ctx_sp=0x0
+proc[51] addr=0x0000000080018800 pid=0 state=UNUSED kstack=0x3ffff97000 pagetable=0x0000000000000000 trapframe=0x0000000000000000 parent=0x0000000000000000 name="" ctx_sp=0x0
+proc[52] addr=0x0000000080018968 pid=0 state=UNUSED kstack=0x3ffff95000 pagetable=0x0000000000000000 trapframe=0x0000000000000000 parent=0x0000000000000000 name="" ctx_sp=0x0
+proc[53] addr=0x0000000080018ad0 pid=0 state=UNUSED kstack=0x3ffff93000 pagetable=0x0000000000000000 trapframe=0x0000000000000000 parent=0x0000000000000000 name="" ctx_sp=0x0
+proc[54] addr=0x0000000080018c38 pid=0 state=UNUSED kstack=0x3ffff91000 pagetable=0x0000000000000000 trapframe=0x0000000000000000 parent=0x0000000000000000 name="" ctx_sp=0x0
+proc[55] addr=0x0000000080018da0 pid=0 state=UNUSED kstack=0x3ffff8f000 pagetable=0x0000000000000000 trapframe=0x0000000000000000 parent=0x0000000000000000 name="" ctx_sp=0x0
+proc[56] addr=0x0000000080018f08 pid=0 state=UNUSED kstack=0x3ffff8d000 pagetable=0x0000000000000000 trapframe=0x0000000000000000 parent=0x0000000000000000 name="" ctx_sp=0x0
+proc[57] addr=0x0000000080019070 pid=0 state=UNUSED kstack=0x3ffff8b000 pagetable=0x0000000000000000 trapframe=0x0000000000000000 parent=0x0000000000000000 name="" ctx_sp=0x0
+proc[58] addr=0x00000000800191d8 pid=0 state=UNUSED kstack=0x3ffff89000 pagetable=0x0000000000000000 trapframe=0x0000000000000000 parent=0x0000000000000000 name="" ctx_sp=0x0
+proc[59] addr=0x0000000080019340 pid=0 state=UNUSED kstack=0x3ffff87000 pagetable=0x0000000000000000 trapframe=0x0000000000000000 parent=0x0000000000000000 name="" ctx_sp=0x0
+proc[60] addr=0x00000000800194a8 pid=0 state=UNUSED kstack=0x3ffff85000 pagetable=0x0000000000000000 trapframe=0x0000000000000000 parent=0x0000000000000000 name="" ctx_sp=0x0
+proc[61] addr=0x0000000080019610 pid=0 state=UNUSED kstack=0x3ffff83000 pagetable=0x0000000000000000 trapframe=0x0000000000000000 parent=0x0000000000000000 name="" ctx_sp=0x0
+proc[62] addr=0x0000000080019778 pid=0 state=UNUSED kstack=0x3ffff81000 pagetable=0x0000000000000000 trapframe=0x0000000000000000 parent=0x0000000000000000 name="" ctx_sp=0x0
+proc[63] addr=0x00000000800198e0 pid=0 state=UNUSED kstack=0x3ffff7f000 pagetable=0x0000000000000000 trapframe=0x0000000000000000 parent=0x0000000000000000 name="" ctx_sp=0x0
+--- raw hexdump proc[1] at 0x00000000800141b0 size=360 ---
+0x00000000800141b0: 01 00 00 00 00 00 00 00 e8 82 00 80 00 00 00 00  ................
+0x00000000800141c0: 48 3c 01 80 00 00 00 00 00 00 00 00 00 00 00 00  H<..............
+0x00000000800141d0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+0x00000000800141e0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+0x00000000800141f0: 00 b0 ff ff 3f 00 00 00 00 00 00 00 00 00 00 00  ....?...........
+0x0000000080014200: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+0x0000000080014210: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+0x0000000080014220: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+0x0000000080014230: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+0x0000000080014240: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+0x0000000080014250: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+0x0000000080014260: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+0x0000000080014270: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+0x0000000080014280: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+0x0000000080014290: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+0x00000000800142a0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+0x00000000800142b0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+0x00000000800142c0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+0x00000000800142d0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+0x00000000800142e0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+0x00000000800142f0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+0x0000000080014300: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+0x0000000080014310: 00 00 00 00 00 00 00 00                          ........
+--- end hexdump proc[1] ---
+--- verbose dump proc[0] at 0x0000000080014048 ---
+verbose dump proc at 0x0000000080014048:
+ lock.locked=1 name=0x00000000800082e8 cpu=0x0000000080013c48
+ state=0 pid=0 killed=0 xstate=0 chan=0x0000000000000000
+ parent=0x0000000000000000 kstack=0x3fffffd000 sz=0x0 pagetable=0x0000000000000000 trapframe=0x0000000000000000
+ context: ra=0x0 sp=0x0 s0=0x0 s1=0x0 s2=0x0 s3=0x0
+ context cont: s4=0x0 s5=0x0 s6=0x0 s7=0x0 s8=0x0 s9=0x0
+ context cont2: s10=0x0 s11=0x0
+ ofile ptrs:
+  ofile[0]=0x0000000000000000
+  ofile[1]=0x0000000000000000
+  ofile[2]=0x0000000000000000
+  ofile[3]=0x0000000000000000
+  ofile[4]=0x0000000000000000
+  ofile[5]=0x0000000000000000
+  ofile[6]=0x0000000000000000
+  ofile[7]=0x0000000000000000
+  ofile[8]=0x0000000000000000
+  ofile[9]=0x0000000000000000
+  ofile[10]=0x0000000000000000
+  ofile[11]=0x0000000000000000
+  ofile[12]=0x0000000000000000
+  ofile[13]=0x0000000000000000
+  ofile[14]=0x0000000000000000
+  ofile[15]=0x0000000000000000
+ cwd=0x0000000000000000 name=""
+--- verbose dump proc[1] at 0x00000000800141b0 ---
+verbose dump proc at 0x00000000800141b0:
+ lock.locked=1 name=0x00000000800082e8 cpu=0x0000000080013c48
+ state=0 pid=0 killed=0 xstate=0 chan=0x0000000000000000
+ parent=0x0000000000000000 kstack=0x3fffffb000 sz=0x0 pagetable=0x0000000000000000 trapframe=0x0000000000000000
+ context: ra=0x0 sp=0x0 s0=0x0 s1=0x0 s2=0x0 s3=0x0
+ context cont: s4=0x0 s5=0x0 s6=0x0 s7=0x0 s8=0x0 s9=0x0
+ context cont2: s10=0x0 s11=0x0
+ ofile ptrs:
+  ofile[0]=0x0000000000000000
+  ofile[1]=0x0000000000000000
+  ofile[2]=0x0000000000000000
+  ofile[3]=0x0000000000000000
+  ofile[4]=0x0000000000000000
+  ofile[5]=0x0000000000000000
+  ofile[6]=0x0000000000000000
+  ofile[7]=0x0000000000000000
+  ofile[8]=0x0000000000000000
+  ofile[9]=0x0000000000000000
+  ofile[10]=0x0000000000000000
+  ofile[11]=0x0000000000000000
+  ofile[12]=0x0000000000000000
+  ofile[13]=0x0000000000000000
+  ofile[14]=0x0000000000000000
+  ofile[15]=0x0000000000000000
+ cwd=0x0000000000000000 name=""
+--- verbose dump proc[2] at 0x0000000080014318 ---
+verbose dump proc at 0x0000000080014318:
+ lock.locked=1 name=0x00000000800082e8 cpu=0x0000000080013c48
+ state=0 pid=0 killed=0 xstate=0 chan=0x0000000000000000
+ parent=0x0000000000000000 kstack=0x3fffff9000 sz=0x0 pagetable=0x0000000000000000 trapframe=0x0000000000000000
+ context: ra=0x0 sp=0x0 s0=0x0 s1=0x0 s2=0x0 s3=0x0
+ context cont: s4=0x0 s5=0x0 s6=0x0 s7=0x0 s8=0x0 s9=0x0
+ context cont2: s10=0x0 s11=0x0
+ ofile ptrs:
+  ofile[0]=0x0000000000000000
+  ofile[1]=0x0000000000000000
+  ofile[2]=0x0000000000000000
+  ofile[3]=0x0000000000000000
+  ofile[4]=0x0000000000000000
+  ofile[5]=0x0000000000000000
+  ofile[6]=0x0000000000000000
+  ofile[7]=0x0000000000000000
+  ofile[8]=0x0000000000000000
+  ofile[9]=0x0000000000000000
+  ofile[10]=0x0000000000000000
+  ofile[11]=0x0000000000000000
+  ofile[12]=0x0000000000000000
+  ofile[13]=0x0000000000000000
+  ofile[14]=0x0000000000000000
+  ofile[15]=0x0000000000000000
+ cwd=0x0000000000000000 name=""
+--- verbose dump proc[3] at 0x0000000080014480 ---
+verbose dump proc at 0x0000000080014480:
+ lock.locked=1 name=0x00000000800082e8 cpu=0x0000000080013c48
+ state=0 pid=0 killed=0 xstate=0 chan=0x0000000000000000
+ parent=0x0000000000000000 kstack=0x3fffff7000 sz=0x0 pagetable=0x0000000000000000 trapframe=0x0000000000000000
+ context: ra=0x0 sp=0x0 s0=0x0 s1=0x0 s2=0x0 s3=0x0
+ context cont: s4=0x0 s5=0x0 s6=0x0 s7=0x0 s8=0x0 s9=0x0
+ context cont2: s10=0x0 s11=0x0
+ ofile ptrs:
+  ofile[0]=0x0000000000000000
+  ofile[1]=0x0000000000000000
+  ofile[2]=0x0000000000000000
+  ofile[3]=0x0000000000000000
+  ofile[4]=0x0000000000000000
+  ofile[5]=0x0000000000000000
+  ofile[6]=0x0000000000000000
+  ofile[7]=0x0000000000000000
+  ofile[8]=0x0000000000000000
+  ofile[9]=0x0000000000000000
+  ofile[10]=0x0000000000000000
+  ofile[11]=0x0000000000000000
+  ofile[12]=0x0000000000000000
+  ofile[13]=0x0000000000000000
+  ofile[14]=0x0000000000000000
+  ofile[15]=0x0000000000000000
+ cwd=0x0000000000000000 name=""
+--- verbose dump proc[4] at 0x00000000800145e8 ---
+verbose dump proc at 0x00000000800145e8:
+ lock.locked=1 name=0x00000000800082e8 cpu=0x0000000080013c48
+ state=0 pid=0 killed=0 xstate=0 chan=0x0000000000000000
+ parent=0x0000000000000000 kstack=0x3fffff5000 sz=0x0 pagetable=0x0000000000000000 trapframe=0x0000000000000000
+ context: ra=0x0 sp=0x0 s0=0x0 s1=0x0 s2=0x0 s3=0x0
+ context cont: s4=0x0 s5=0x0 s6=0x0 s7=0x0 s8=0x0 s9=0x0
+ context cont2: s10=0x0 s11=0x0
+ ofile ptrs:
+  ofile[0]=0x0000000000000000
+  ofile[1]=0x0000000000000000
+  ofile[2]=0x0000000000000000
+  ofile[3]=0x0000000000000000
+  ofile[4]=0x0000000000000000
+  ofile[5]=0x0000000000000000
+  ofile[6]=0x0000000000000000
+  ofile[7]=0x0000000000000000
+  ofile[8]=0x0000000000000000
+  ofile[9]=0x0000000000000000
+  ofile[10]=0x0000000000000000
+  ofile[11]=0x0000000000000000
+  ofile[12]=0x0000000000000000
+  ofile[13]=0x0000000000000000
+  ofile[14]=0x0000000000000000
+  ofile[15]=0x0000000000000000
+ cwd=0x0000000000000000 name=""
+--- verbose dump proc[5] at 0x0000000080014750 ---
+verbose dump proc at 0x0000000080014750:
+ lock.locked=1 name=0x00000000800082e8 cpu=0x0000000080013c48
+ state=0 pid=0 killed=0 xstate=0 chan=0x0000000000000000
+ parent=0x0000000000000000 kstack=0x3fffff3000 sz=0x0 pagetable=0x0000000000000000 trapframe=0x0000000000000000
+ context: ra=0x0 sp=0x0 s0=0x0 s1=0x0 s2=0x0 s3=0x0
+ context cont: s4=0x0 s5=0x0 s6=0x0 s7=0x0 s8=0x0 s9=0x0
+ context cont2: s10=0x0 s11=0x0
+ ofile ptrs:
+  ofile[0]=0x0000000000000000
+  ofile[1]=0x0000000000000000
+  ofile[2]=0x0000000000000000
+  ofile[3]=0x0000000000000000
+  ofile[4]=0x0000000000000000
+  ofile[5]=0x0000000000000000
+  ofile[6]=0x0000000000000000
+  ofile[7]=0x0000000000000000
+  ofile[8]=0x0000000000000000
+  ofile[9]=0x0000000000000000
+  ofile[10]=0x0000000000000000
+  ofile[11]=0x0000000000000000
+  ofile[12]=0x0000000000000000
+  ofile[13]=0x0000000000000000
+  ofile[14]=0x0000000000000000
+  ofile[15]=0x0000000000000000
+ cwd=0x0000000000000000 name=""
+--- verbose dump proc[6] at 0x00000000800148b8 ---
+verbose dump proc at 0x00000000800148b8:
+ lock.locked=1 name=0x00000000800082e8 cpu=0x0000000080013c48
+ state=0 pid=0 killed=0 xstate=0 chan=0x0000000000000000
+ parent=0x0000000000000000 kstack=0x3fffff1000 sz=0x0 pagetable=0x0000000000000000 trapframe=0x0000000000000000
+ context: ra=0x0 sp=0x0 s0=0x0 s1=0x0 s2=0x0 s3=0x0
+ context cont: s4=0x0 s5=0x0 s6=0x0 s7=0x0 s8=0x0 s9=0x0
+ context cont2: s10=0x0 s11=0x0
+ ofile ptrs:
+  ofile[0]=0x0000000000000000
+  ofile[1]=0x0000000000000000
+  ofile[2]=0x0000000000000000
+  ofile[3]=0x0000000000000000
+  ofile[4]=0x0000000000000000
+  ofile[5]=0x0000000000000000
+  ofile[6]=0x0000000000000000
+  ofile[7]=0x0000000000000000
+  ofile[8]=0x0000000000000000
+  ofile[9]=0x0000000000000000
+  ofile[10]=0x0000000000000000
+  ofile[11]=0x0000000000000000
+  ofile[12]=0x0000000000000000
+  ofile[13]=0x0000000000000000
+  ofile[14]=0x0000000000000000
+  ofile[15]=0x0000000000000000
+ cwd=0x0000000000000000 name=""
+--- verbose dump proc[7] at 0x0000000080014a20 ---
+verbose dump proc at 0x0000000080014a20:
+ lock.locked=1 name=0x00000000800082e8 cpu=0x0000000080013c48
+ state=0 pid=0 killed=0 xstate=0 chan=0x0000000000000000
+ parent=0x0000000000000000 kstack=0x3ffffef000 sz=0x0 pagetable=0x0000000000000000 trapframe=0x0000000000000000
+ context: ra=0x0 sp=0x0 s0=0x0 s1=0x0 s2=0x0 s3=0x0
+ context cont: s4=0x0 s5=0x0 s6=0x0 s7=0x0 s8=0x0 s9=0x0
+ context cont2: s10=0x0 s11=0x0
+ ofile ptrs:
+  ofile[0]=0x0000000000000000
+  ofile[1]=0x0000000000000000
+  ofile[2]=0x0000000000000000
+  ofile[3]=0x0000000000000000
+  ofile[4]=0x0000000000000000
+  ofile[5]=0x0000000000000000
+  ofile[6]=0x0000000000000000
+  ofile[7]=0x0000000000000000
+  ofile[8]=0x0000000000000000
+  ofile[9]=0x0000000000000000
+  ofile[10]=0x0000000000000000
+  ofile[11]=0x0000000000000000
+  ofile[12]=0x0000000000000000
+  ofile[13]=0x0000000000000000
+  ofile[14]=0x0000000000000000
+  ofile[15]=0x0000000000000000
+ cwd=0x0000000000000000 name=""
+--- verbose dump proc[8] at 0x0000000080014b88 ---
+verbose dump proc at 0x0000000080014b88:
+ lock.locked=1 name=0x00000000800082e8 cpu=0x0000000080013c48
+ state=0 pid=0 killed=0 xstate=0 chan=0x0000000000000000
+ parent=0x0000000000000000 kstack=0x3ffffed000 sz=0x0 pagetable=0x0000000000000000 trapframe=0x0000000000000000
+ context: ra=0x0 sp=0x0 s0=0x0 s1=0x0 s2=0x0 s3=0x0
+ context cont: s4=0x0 s5=0x0 s6=0x0 s7=0x0 s8=0x0 s9=0x0
+ context cont2: s10=0x0 s11=0x0
+ ofile ptrs:
+  ofile[0]=0x0000000000000000
+  ofile[1]=0x0000000000000000
+  ofile[2]=0x0000000000000000
+  ofile[3]=0x0000000000000000
+  ofile[4]=0x0000000000000000
+  ofile[5]=0x0000000000000000
+  ofile[6]=0x0000000000000000
+  ofile[7]=0x0000000000000000
+  ofile[8]=0x0000000000000000
+  ofile[9]=0x0000000000000000
+  ofile[10]=0x0000000000000000
+  ofile[11]=0x0000000000000000
+  ofile[12]=0x0000000000000000
+  ofile[13]=0x0000000000000000
+  ofile[14]=0x0000000000000000
+  ofile[15]=0x0000000000000000
+ cwd=0x0000000000000000 name=""
+--- verbose dump proc[9] at 0x0000000080014cf0 ---
+verbose dump proc at 0x0000000080014cf0:
+ lock.locked=1 name=0x00000000800082e8 cpu=0x0000000080013c48
+ state=0 pid=0 killed=0 xstate=0 chan=0x0000000000000000
+ parent=0x0000000000000000 kstack=0x3ffffeb000 sz=0x0 pagetable=0x0000000000000000 trapframe=0x0000000000000000
+ context: ra=0x0 sp=0x0 s0=0x0 s1=0x0 s2=0x0 s3=0x0
+ context cont: s4=0x0 s5=0x0 s6=0x0 s7=0x0 s8=0x0 s9=0x0
+ context cont2: s10=0x0 s11=0x0
+ ofile ptrs:
+  ofile[0]=0x0000000000000000
+  ofile[1]=0x0000000000000000
+  ofile[2]=0x0000000000000000
+  ofile[3]=0x0000000000000000
+  ofile[4]=0x0000000000000000
+  ofile[5]=0x0000000000000000
+  ofile[6]=0x0000000000000000
+  ofile[7]=0x0000000000000000
+  ofile[8]=0x0000000000000000
+  ofile[9]=0x0000000000000000
+  ofile[10]=0x0000000000000000
+  ofile[11]=0x0000000000000000
+  ofile[12]=0x0000000000000000
+  ofile[13]=0x0000000000000000
+  ofile[14]=0x0000000000000000
+  ofile[15]=0x0000000000000000
+ cwd=0x0000000000000000 name=""
+--- verbose dump proc[10] at 0x0000000080014e58 ---
+verbose dump proc at 0x0000000080014e58:
+ lock.locked=1 name=0x00000000800082e8 cpu=0x0000000080013c48
+ state=0 pid=0 killed=0 xstate=0 chan=0x0000000000000000
+ parent=0x0000000000000000 kstack=0x3ffffe9000 sz=0x0 pagetable=0x0000000000000000 trapframe=0x0000000000000000
+ context: ra=0x0 sp=0x0 s0=0x0 s1=0x0 s2=0x0 s3=0x0
+ context cont: s4=0x0 s5=0x0 s6=0x0 s7=0x0 s8=0x0 s9=0x0
+ context cont2: s10=0x0 s11=0x0
+ ofile ptrs:
+  ofile[0]=0x0000000000000000
+  ofile[1]=0x0000000000000000
+  ofile[2]=0x0000000000000000
+  ofile[3]=0x0000000000000000
+  ofile[4]=0x0000000000000000
+  ofile[5]=0x0000000000000000
+  ofile[6]=0x0000000000000000
+  ofile[7]=0x0000000000000000
+  ofile[8]=0x0000000000000000
+  ofile[9]=0x0000000000000000
+  ofile[10]=0x0000000000000000
+  ofile[11]=0x0000000000000000
+  ofile[12]=0x0000000000000000
+  ofile[13]=0x0000000000000000
+  ofile[14]=0x0000000000000000
+  ofile[15]=0x0000000000000000
+ cwd=0x0000000000000000 name=""
+--- verbose dump proc[11] at 0x0000000080014fc0 ---
+verbose dump proc at 0x0000000080014fc0:
+ lock.locked=1 name=0x00000000800082e8 cpu=0x0000000080013c48
+ state=0 pid=0 killed=0 xstate=0 chan=0x0000000000000000
+ parent=0x0000000000000000 kstack=0x3ffffe7000 sz=0x0 pagetable=0x0000000000000000 trapframe=0x0000000000000000
+ context: ra=0x0 sp=0x0 s0=0x0 s1=0x0 s2=0x0 s3=0x0
+ context cont: s4=0x0 s5=0x0 s6=0x0 s7=0x0 s8=0x0 s9=0x0
+ context cont2: s10=0x0 s11=0x0
+ ofile ptrs:
+  ofile[0]=0x0000000000000000
+  ofile[1]=0x0000000000000000
+  ofile[2]=0x0000000000000000
+  ofile[3]=0x0000000000000000
+  ofile[4]=0x0000000000000000
+  ofile[5]=0x0000000000000000
+  ofile[6]=0x0000000000000000
+  ofile[7]=0x0000000000000000
+  ofile[8]=0x0000000000000000
+  ofile[9]=0x0000000000000000
+  ofile[10]=0x0000000000000000
+  ofile[11]=0x0000000000000000
+  ofile[12]=0x0000000000000000
+  ofile[13]=0x0000000000000000
+  ofile[14]=0x0000000000000000
+  ofile[15]=0x0000000000000000
+ cwd=0x0000000000000000 name=""
+--- verbose dump proc[12] at 0x0000000080015128 ---
+verbose dump proc at 0x0000000080015128:
+ lock.locked=1 name=0x00000000800082e8 cpu=0x0000000080013c48
+ state=0 pid=0 killed=0 xstate=0 chan=0x0000000000000000
+ parent=0x0000000000000000 kstack=0x3ffffe5000 sz=0x0 pagetable=0x0000000000000000 trapframe=0x0000000000000000
+ context: ra=0x0 sp=0x0 s0=0x0 s1=0x0 s2=0x0 s3=0x0
+ context cont: s4=0x0 s5=0x0 s6=0x0 s7=0x0 s8=0x0 s9=0x0
+ context cont2: s10=0x0 s11=0x0
+ ofile ptrs:
+  ofile[0]=0x0000000000000000
+  ofile[1]=0x0000000000000000
+  ofile[2]=0x0000000000000000
+  ofile[3]=0x0000000000000000
+  ofile[4]=0x0000000000000000
+  ofile[5]=0x0000000000000000
+  ofile[6]=0x0000000000000000
+  ofile[7]=0x0000000000000000
+  ofile[8]=0x0000000000000000
+  ofile[9]=0x0000000000000000
+  ofile[10]=0x0000000000000000
+  ofile[11]=0x0000000000000000
+  ofile[12]=0x0000000000000000
+  ofile[13]=0x0000000000000000
+  ofile[14]=0x0000000000000000
+  ofile[15]=0x0000000000000000
+ cwd=0x0000000000000000 name=""
+--- verbose dump proc[13] at 0x0000000080015290 ---
+verbose dump proc at 0x0000000080015290:
+ lock.locked=1 name=0x00000000800082e8 cpu=0x0000000080013c48
+ state=0 pid=0 killed=0 xstate=0 chan=0x0000000000000000
+ parent=0x0000000000000000 kstack=0x3ffffe3000 sz=0x0 pagetable=0x0000000000000000 trapframe=0x0000000000000000
+ context: ra=0x0 sp=0x0 s0=0x0 s1=0x0 s2=0x0 s3=0x0
+ context cont: s4=0x0 s5=0x0 s6=0x0 s7=0x0 s8=0x0 s9=0x0
+ context cont2: s10=0x0 s11=0x0
+ ofile ptrs:
+  ofile[0]=0x0000000000000000
+  ofile[1]=0x0000000000000000
+  ofile[2]=0x0000000000000000
+  ofile[3]=0x0000000000000000
+  ofile[4]=0x0000000000000000
+  ofile[5]=0x0000000000000000
+  ofile[6]=0x0000000000000000
+  ofile[7]=0x0000000000000000
+  ofile[8]=0x0000000000000000
+  ofile[9]=0x0000000000000000
+  ofile[10]=0x0000000000000000
+  ofile[11]=0x0000000000000000
+  ofile[12]=0x0000000000000000
+  ofile[13]=0x0000000000000000
+  ofile[14]=0x0000000000000000
+  ofile[15]=0x0000000000000000
+ cwd=0x0000000000000000 name=""
+--- verbose dump proc[14] at 0x00000000800153f8 ---
+verbose dump proc at 0x00000000800153f8:
+ lock.locked=1 name=0x00000000800082e8 cpu=0x0000000080013c48
+ state=0 pid=0 killed=0 xstate=0 chan=0x0000000000000000
+ parent=0x0000000000000000 kstack=0x3ffffe1000 sz=0x0 pagetable=0x0000000000000000 trapframe=0x0000000000000000
+ context: ra=0x0 sp=0x0 s0=0x0 s1=0x0 s2=0x0 s3=0x0
+ context cont: s4=0x0 s5=0x0 s6=0x0 s7=0x0 s8=0x0 s9=0x0
+ context cont2: s10=0x0 s11=0x0
+ ofile ptrs:
+  ofile[0]=0x0000000000000000
+  ofile[1]=0x0000000000000000
+  ofile[2]=0x0000000000000000
+  ofile[3]=0x0000000000000000
+  ofile[4]=0x0000000000000000
+  ofile[5]=0x0000000000000000
+  ofile[6]=0x0000000000000000
+  ofile[7]=0x0000000000000000
+  ofile[8]=0x0000000000000000
+  ofile[9]=0x0000000000000000
+  ofile[10]=0x0000000000000000
+  ofile[11]=0x0000000000000000
+  ofile[12]=0x0000000000000000
+  ofile[13]=0x0000000000000000
+  ofile[14]=0x0000000000000000
+  ofile[15]=0x0000000000000000
+ cwd=0x0000000000000000 name=""
+--- verbose dump proc[15] at 0x0000000080015560 ---
+verbose dump proc at 0x0000000080015560:
+ lock.locked=1 name=0x00000000800082e8 cpu=0x0000000080013c48
+ state=0 pid=0 killed=0 xstate=0 chan=0x0000000000000000
+ parent=0x0000000000000000 kstack=0x3ffffdf000 sz=0x0 pagetable=0x0000000000000000 trapframe=0x0000000000000000
+ context: ra=0x0 sp=0x0 s0=0x0 s1=0x0 s2=0x0 s3=0x0
+ context cont: s4=0x0 s5=0x0 s6=0x0 s7=0x0 s8=0x0 s9=0x0
+ context cont2: s10=0x0 s11=0x0
+ ofile ptrs:
+  ofile[0]=0x0000000000000000
+  ofile[1]=0x0000000000000000
+  ofile[2]=0x0000000000000000
+  ofile[3]=0x0000000000000000
+  ofile[4]=0x0000000000000000
+  ofile[5]=0x0000000000000000
+  ofile[6]=0x0000000000000000
+  ofile[7]=0x0000000000000000
+  ofile[8]=0x0000000000000000
+  ofile[9]=0x0000000000000000
+  ofile[10]=0x0000000000000000
+  ofile[11]=0x0000000000000000
+  ofile[12]=0x0000000000000000
+  ofile[13]=0x0000000000000000
+  ofile[14]=0x0000000000000000
+  ofile[15]=0x0000000000000000
+ cwd=0x0000000000000000 name=""
+--- verbose dump proc[16] at 0x00000000800156c8 ---
+verbose dump proc at 0x00000000800156c8:
+ lock.locked=1 name=0x00000000800082e8 cpu=0x0000000080013c48
+ state=0 pid=0 killed=0 xstate=0 chan=0x0000000000000000
+ parent=0x0000000000000000 kstack=0x3ffffdd000 sz=0x0 pagetable=0x0000000000000000 trapframe=0x0000000000000000
+ context: ra=0x0 sp=0x0 s0=0x0 s1=0x0 s2=0x0 s3=0x0
+ context cont: s4=0x0 s5=0x0 s6=0x0 s7=0x0 s8=0x0 s9=0x0
+ context cont2: s10=0x0 s11=0x0
+ ofile ptrs:
+  ofile[0]=0x0000000000000000
+  ofile[1]=0x0000000000000000
+  ofile[2]=0x0000000000000000
+  ofile[3]=0x0000000000000000
+  ofile[4]=0x0000000000000000
+  ofile[5]=0x0000000000000000
+  ofile[6]=0x0000000000000000
+  ofile[7]=0x0000000000000000
+  ofile[8]=0x0000000000000000
+  ofile[9]=0x0000000000000000
+  ofile[10]=0x0000000000000000
+  ofile[11]=0x0000000000000000
+  ofile[12]=0x0000000000000000
+  ofile[13]=0x0000000000000000
+  ofile[14]=0x0000000000000000
+  ofile[15]=0x0000000000000000
+ cwd=0x0000000000000000 name=""
+--- verbose dump proc[17] at 0x0000000080015830 ---
+verbose dump proc at 0x0000000080015830:
+ lock.locked=1 name=0x00000000800082e8 cpu=0x0000000080013c48
+ state=0 pid=0 killed=0 xstate=0 chan=0x0000000000000000
+ parent=0x0000000000000000 kstack=0x3ffffdb000 sz=0x0 pagetable=0x0000000000000000 trapframe=0x0000000000000000
+ context: ra=0x0 sp=0x0 s0=0x0 s1=0x0 s2=0x0 s3=0x0
+ context cont: s4=0x0 s5=0x0 s6=0x0 s7=0x0 s8=0x0 s9=0x0
+ context cont2: s10=0x0 s11=0x0
+ ofile ptrs:
+  ofile[0]=0x0000000000000000
+  ofile[1]=0x0000000000000000
+  ofile[2]=0x0000000000000000
+  ofile[3]=0x0000000000000000
+  ofile[4]=0x0000000000000000
+  ofile[5]=0x0000000000000000
+  ofile[6]=0x0000000000000000
+  ofile[7]=0x0000000000000000
+  ofile[8]=0x0000000000000000
+  ofile[9]=0x0000000000000000
+  ofile[10]=0x0000000000000000
+  ofile[11]=0x0000000000000000
+  ofile[12]=0x0000000000000000
+  ofile[13]=0x0000000000000000
+  ofile[14]=0x0000000000000000
+  ofile[15]=0x0000000000000000
+ cwd=0x0000000000000000 name=""
+--- verbose dump proc[18] at 0x0000000080015998 ---
+verbose dump proc at 0x0000000080015998:
+ lock.locked=1 name=0x00000000800082e8 cpu=0x0000000080013c48
+ state=0 pid=0 killed=0 xstate=0 chan=0x0000000000000000
+ parent=0x0000000000000000 kstack=0x3ffffd9000 sz=0x0 pagetable=0x0000000000000000 trapframe=0x0000000000000000
+ context: ra=0x0 sp=0x0 s0=0x0 s1=0x0 s2=0x0 s3=0x0
+ context cont: s4=0x0 s5=0x0 s6=0x0 s7=0x0 s8=0x0 s9=0x0
+ context cont2: s10=0x0 s11=0x0
+ ofile ptrs:
+  ofile[0]=0x0000000000000000
+  ofile[1]=0x0000000000000000
+  ofile[2]=0x0000000000000000
+  ofile[3]=0x0000000000000000
+  ofile[4]=0x0000000000000000
+  ofile[5]=0x0000000000000000
+  ofile[6]=0x0000000000000000
+  ofile[7]=0x0000000000000000
+  ofile[8]=0x0000000000000000
+  ofile[9]=0x0000000000000000
+  ofile[10]=0x0000000000000000
+  ofile[11]=0x0000000000000000
+  ofile[12]=0x0000000000000000
+  ofile[13]=0x0000000000000000
+  ofile[14]=0x0000000000000000
+  ofile[15]=0x0000000000000000
+ cwd=0x0000000000000000 name=""
+--- verbose dump proc[19] at 0x0000000080015b00 ---
+verbose dump proc at 0x0000000080015b00:
+ lock.locked=1 name=0x00000000800082e8 cpu=0x0000000080013c48
+ state=0 pid=0 killed=0 xstate=0 chan=0x0000000000000000
+ parent=0x0000000000000000 kstack=0x3ffffd7000 sz=0x0 pagetable=0x0000000000000000 trapframe=0x0000000000000000
+ context: ra=0x0 sp=0x0 s0=0x0 s1=0x0 s2=0x0 s3=0x0
+ context cont: s4=0x0 s5=0x0 s6=0x0 s7=0x0 s8=0x0 s9=0x0
+ context cont2: s10=0x0 s11=0x0
+ ofile ptrs:
+  ofile[0]=0x0000000000000000
+  ofile[1]=0x0000000000000000
+  ofile[2]=0x0000000000000000
+  ofile[3]=0x0000000000000000
+  ofile[4]=0x0000000000000000
+  ofile[5]=0x0000000000000000
+  ofile[6]=0x0000000000000000
+  ofile[7]=0x0000000000000000
+  ofile[8]=0x0000000000000000
+  ofile[9]=0x0000000000000000
+  ofile[10]=0x0000000000000000
+  ofile[11]=0x0000000000000000
+  ofile[12]=0x0000000000000000
+  ofile[13]=0x0000000000000000
+  ofile[14]=0x0000000000000000
+  ofile[15]=0x0000000000000000
+ cwd=0x0000000000000000 name=""
+--- verbose dump proc[20] at 0x0000000080015c68 ---
+verbose dump proc at 0x0000000080015c68:
+ lock.locked=1 name=0x00000000800082e8 cpu=0x0000000080013c48
+ state=0 pid=0 killed=0 xstate=0 chan=0x0000000000000000
+ parent=0x0000000000000000 kstack=0x3ffffd5000 sz=0x0 pagetable=0x0000000000000000 trapframe=0x0000000000000000
+ context: ra=0x0 sp=0x0 s0=0x0 s1=0x0 s2=0x0 s3=0x0
+ context cont: s4=0x0 s5=0x0 s6=0x0 s7=0x0 s8=0x0 s9=0x0
+ context cont2: s10=0x0 s11=0x0
+ ofile ptrs:
+  ofile[0]=0x0000000000000000
+  ofile[1]=0x0000000000000000
+  ofile[2]=0x0000000000000000
+  ofile[3]=0x0000000000000000
+  ofile[4]=0x0000000000000000
+  ofile[5]=0x0000000000000000
+  ofile[6]=0x0000000000000000
+  ofile[7]=0x0000000000000000
+  ofile[8]=0x0000000000000000
+  ofile[9]=0x0000000000000000
+  ofile[10]=0x0000000000000000
+  ofile[11]=0x0000000000000000
+  ofile[12]=0x0000000000000000
+  ofile[13]=0x0000000000000000
+  ofile[14]=0x0000000000000000
+  ofile[15]=0x0000000000000000
+ cwd=0x0000000000000000 name=""
+--- verbose dump proc[21] at 0x0000000080015dd0 ---
+verbose dump proc at 0x0000000080015dd0:
+ lock.locked=1 name=0x00000000800082e8 cpu=0x0000000080013c48
+ state=0 pid=0 killed=0 xstate=0 chan=0x0000000000000000
+ parent=0x0000000000000000 kstack=0x3ffffd3000 sz=0x0 pagetable=0x0000000000000000 trapframe=0x0000000000000000
+ context: ra=0x0 sp=0x0 s0=0x0 s1=0x0 s2=0x0 s3=0x0
+ context cont: s4=0x0 s5=0x0 s6=0x0 s7=0x0 s8=0x0 s9=0x0
+ context cont2: s10=0x0 s11=0x0
+ ofile ptrs:
+  ofile[0]=0x0000000000000000
+  ofile[1]=0x0000000000000000
+  ofile[2]=0x0000000000000000
+  ofile[3]=0x0000000000000000
+  ofile[4]=0x0000000000000000
+  ofile[5]=0x0000000000000000
+  ofile[6]=0x0000000000000000
+  ofile[7]=0x0000000000000000
+  ofile[8]=0x0000000000000000
+  ofile[9]=0x0000000000000000
+  ofile[10]=0x0000000000000000
+  ofile[11]=0x0000000000000000
+  ofile[12]=0x0000000000000000
+  ofile[13]=0x0000000000000000
+  ofile[14]=0x0000000000000000
+  ofile[15]=0x0000000000000000
+ cwd=0x0000000000000000 name=""
+--- verbose dump proc[22] at 0x0000000080015f38 ---
+verbose dump proc at 0x0000000080015f38:
+ lock.locked=1 name=0x00000000800082e8 cpu=0x0000000080013c48
+ state=0 pid=0 killed=0 xstate=0 chan=0x0000000000000000
+ parent=0x0000000000000000 kstack=0x3ffffd1000 sz=0x0 pagetable=0x0000000000000000 trapframe=0x0000000000000000
+ context: ra=0x0 sp=0x0 s0=0x0 s1=0x0 s2=0x0 s3=0x0
+ context cont: s4=0x0 s5=0x0 s6=0x0 s7=0x0 s8=0x0 s9=0x0
+ context cont2: s10=0x0 s11=0x0
+ ofile ptrs:
+  ofile[0]=0x0000000000000000
+  ofile[1]=0x0000000000000000
+  ofile[2]=0x0000000000000000
+  ofile[3]=0x0000000000000000
+  ofile[4]=0x0000000000000000
+  ofile[5]=0x0000000000000000
+  ofile[6]=0x0000000000000000
+  ofile[7]=0x0000000000000000
+  ofile[8]=0x0000000000000000
+  ofile[9]=0x0000000000000000
+  ofile[10]=0x0000000000000000
+  ofile[11]=0x0000000000000000
+  ofile[12]=0x0000000000000000
+  ofile[13]=0x0000000000000000
+  ofile[14]=0x0000000000000000
+  ofile[15]=0x0000000000000000
+ cwd=0x0000000000000000 name=""
+--- verbose dump proc[23] at 0x00000000800160a0 ---
+verbose dump proc at 0x00000000800160a0:
+ lock.locked=1 name=0x00000000800082e8 cpu=0x0000000080013c48
+ state=0 pid=0 killed=0 xstate=0 chan=0x0000000000000000
+ parent=0x0000000000000000 kstack=0x3ffffcf000 sz=0x0 pagetable=0x0000000000000000 trapframe=0x0000000000000000
+ context: ra=0x0 sp=0x0 s0=0x0 s1=0x0 s2=0x0 s3=0x0
+ context cont: s4=0x0 s5=0x0 s6=0x0 s7=0x0 s8=0x0 s9=0x0
+ context cont2: s10=0x0 s11=0x0
+ ofile ptrs:
+  ofile[0]=0x0000000000000000
+  ofile[1]=0x0000000000000000
+  ofile[2]=0x0000000000000000
+  ofile[3]=0x0000000000000000
+  ofile[4]=0x0000000000000000
+  ofile[5]=0x0000000000000000
+  ofile[6]=0x0000000000000000
+  ofile[7]=0x0000000000000000
+  ofile[8]=0x0000000000000000
+  ofile[9]=0x0000000000000000
+  ofile[10]=0x0000000000000000
+  ofile[11]=0x0000000000000000
+  ofile[12]=0x0000000000000000
+  ofile[13]=0x0000000000000000
+  ofile[14]=0x0000000000000000
+  ofile[15]=0x0000000000000000
+ cwd=0x0000000000000000 name=""
+--- verbose dump proc[24] at 0x0000000080016208 ---
+verbose dump proc at 0x0000000080016208:
+ lock.locked=1 name=0x00000000800082e8 cpu=0x0000000080013c48
+ state=0 pid=0 killed=0 xstate=0 chan=0x0000000000000000
+ parent=0x0000000000000000 kstack=0x3ffffcd000 sz=0x0 pagetable=0x0000000000000000 trapframe=0x0000000000000000
+ context: ra=0x0 sp=0x0 s0=0x0 s1=0x0 s2=0x0 s3=0x0
+ context cont: s4=0x0 s5=0x0 s6=0x0 s7=0x0 s8=0x0 s9=0x0
+ context cont2: s10=0x0 s11=0x0
+ ofile ptrs:
+  ofile[0]=0x0000000000000000
+  ofile[1]=0x0000000000000000
+  ofile[2]=0x0000000000000000
+  ofile[3]=0x0000000000000000
+  ofile[4]=0x0000000000000000
+  ofile[5]=0x0000000000000000
+  ofile[6]=0x0000000000000000
+  ofile[7]=0x0000000000000000
+  ofile[8]=0x0000000000000000
+  ofile[9]=0x0000000000000000
+  ofile[10]=0x0000000000000000
+  ofile[11]=0x0000000000000000
+  ofile[12]=0x0000000000000000
+  ofile[13]=0x0000000000000000
+  ofile[14]=0x0000000000000000
+  ofile[15]=0x0000000000000000
+ cwd=0x0000000000000000 name=""
+--- verbose dump proc[25] at 0x0000000080016370 ---
+verbose dump proc at 0x0000000080016370:
+ lock.locked=1 name=0x00000000800082e8 cpu=0x0000000080013c48
+ state=0 pid=0 killed=0 xstate=0 chan=0x0000000000000000
+ parent=0x0000000000000000 kstack=0x3ffffcb000 sz=0x0 pagetable=0x0000000000000000 trapframe=0x0000000000000000
+ context: ra=0x0 sp=0x0 s0=0x0 s1=0x0 s2=0x0 s3=0x0
+ context cont: s4=0x0 s5=0x0 s6=0x0 s7=0x0 s8=0x0 s9=0x0
+ context cont2: s10=0x0 s11=0x0
+ ofile ptrs:
+  ofile[0]=0x0000000000000000
+  ofile[1]=0x0000000000000000
+  ofile[2]=0x0000000000000000
+  ofile[3]=0x0000000000000000
+  ofile[4]=0x0000000000000000
+  ofile[5]=0x0000000000000000
+  ofile[6]=0x0000000000000000
+  ofile[7]=0x0000000000000000
+  ofile[8]=0x0000000000000000
+  ofile[9]=0x0000000000000000
+  ofile[10]=0x0000000000000000
+  ofile[11]=0x0000000000000000
+  ofile[12]=0x0000000000000000
+  ofile[13]=0x0000000000000000
+  ofile[14]=0x0000000000000000
+  ofile[15]=0x0000000000000000
+ cwd=0x0000000000000000 name=""
+--- verbose dump proc[26] at 0x00000000800164d8 ---
+verbose dump proc at 0x00000000800164d8:
+ lock.locked=1 name=0x00000000800082e8 cpu=0x0000000080013c48
+ state=0 pid=0 killed=0 xstate=0 chan=0x0000000000000000
+ parent=0x0000000000000000 kstack=0x3ffffc9000 sz=0x0 pagetable=0x0000000000000000 trapframe=0x0000000000000000
+ context: ra=0x0 sp=0x0 s0=0x0 s1=0x0 s2=0x0 s3=0x0
+ context cont: s4=0x0 s5=0x0 s6=0x0 s7=0x0 s8=0x0 s9=0x0
+ context cont2: s10=0x0 s11=0x0
+ ofile ptrs:
+  ofile[0]=0x0000000000000000
+  ofile[1]=0x0000000000000000
+  ofile[2]=0x0000000000000000
+  ofile[3]=0x0000000000000000
+  ofile[4]=0x0000000000000000
+  ofile[5]=0x0000000000000000
+  ofile[6]=0x0000000000000000
+  ofile[7]=0x0000000000000000
+  ofile[8]=0x0000000000000000
+  ofile[9]=0x0000000000000000
+  ofile[10]=0x0000000000000000
+  ofile[11]=0x0000000000000000
+  ofile[12]=0x0000000000000000
+  ofile[13]=0x0000000000000000
+  ofile[14]=0x0000000000000000
+  ofile[15]=0x0000000000000000
+ cwd=0x0000000000000000 name=""
+--- verbose dump proc[27] at 0x0000000080016640 ---
+verbose dump proc at 0x0000000080016640:
+ lock.locked=1 name=0x00000000800082e8 cpu=0x0000000080013c48
+ state=0 pid=0 killed=0 xstate=0 chan=0x0000000000000000
+ parent=0x0000000000000000 kstack=0x3ffffc7000 sz=0x0 pagetable=0x0000000000000000 trapframe=0x0000000000000000
+ context: ra=0x0 sp=0x0 s0=0x0 s1=0x0 s2=0x0 s3=0x0
+ context cont: s4=0x0 s5=0x0 s6=0x0 s7=0x0 s8=0x0 s9=0x0
+ context cont2: s10=0x0 s11=0x0
+ ofile ptrs:
+  ofile[0]=0x0000000000000000
+  ofile[1]=0x0000000000000000
+  ofile[2]=0x0000000000000000
+  ofile[3]=0x0000000000000000
+  ofile[4]=0x0000000000000000
+  ofile[5]=0x0000000000000000
+  ofile[6]=0x0000000000000000
+  ofile[7]=0x0000000000000000
+  ofile[8]=0x0000000000000000
+  ofile[9]=0x0000000000000000
+  ofile[10]=0x0000000000000000
+  ofile[11]=0x0000000000000000
+  ofile[12]=0x0000000000000000
+  ofile[13]=0x0000000000000000
+  ofile[14]=0x0000000000000000
+  ofile[15]=0x0000000000000000
+ cwd=0x0000000000000000 name=""
+--- verbose dump proc[28] at 0x00000000800167a8 ---
+verbose dump proc at 0x00000000800167a8:
+ lock.locked=1 name=0x00000000800082e8 cpu=0x0000000080013c48
+ state=0 pid=0 killed=0 xstate=0 chan=0x0000000000000000
+ parent=0x0000000000000000 kstack=0x3ffffc5000 sz=0x0 pagetable=0x0000000000000000 trapframe=0x0000000000000000
+ context: ra=0x0 sp=0x0 s0=0x0 s1=0x0 s2=0x0 s3=0x0
+ context cont: s4=0x0 s5=0x0 s6=0x0 s7=0x0 s8=0x0 s9=0x0
+ context cont2: s10=0x0 s11=0x0
+ ofile ptrs:
+  ofile[0]=0x0000000000000000
+  ofile[1]=0x0000000000000000
+  ofile[2]=0x0000000000000000
+  ofile[3]=0x0000000000000000
+  ofile[4]=0x0000000000000000
+  ofile[5]=0x0000000000000000
+  ofile[6]=0x0000000000000000
+  ofile[7]=0x0000000000000000
+  ofile[8]=0x0000000000000000
+  ofile[9]=0x0000000000000000
+  ofile[10]=0x0000000000000000
+  ofile[11]=0x0000000000000000
+  ofile[12]=0x0000000000000000
+  ofile[13]=0x0000000000000000
+  ofile[14]=0x0000000000000000
+  ofile[15]=0x0000000000000000
+ cwd=0x0000000000000000 name=""
+--- verbose dump proc[29] at 0x0000000080016910 ---
+verbose dump proc at 0x0000000080016910:
+ lock.locked=1 name=0x00000000800082e8 cpu=0x0000000080013c48
+ state=0 pid=0 killed=0 xstate=0 chan=0x0000000000000000
+ parent=0x0000000000000000 kstack=0x3ffffc3000 sz=0x0 pagetable=0x0000000000000000 trapframe=0x0000000000000000
+ context: ra=0x0 sp=0x0 s0=0x0 s1=0x0 s2=0x0 s3=0x0
+ context cont: s4=0x0 s5=0x0 s6=0x0 s7=0x0 s8=0x0 s9=0x0
+ context cont2: s10=0x0 s11=0x0
+ ofile ptrs:
+  ofile[0]=0x0000000000000000
+  ofile[1]=0x0000000000000000
+  ofile[2]=0x0000000000000000
+  ofile[3]=0x0000000000000000
+  ofile[4]=0x0000000000000000
+  ofile[5]=0x0000000000000000
+  ofile[6]=0x0000000000000000
+  ofile[7]=0x0000000000000000
+  ofile[8]=0x0000000000000000
+  ofile[9]=0x0000000000000000
+  ofile[10]=0x0000000000000000
+  ofile[11]=0x0000000000000000
+  ofile[12]=0x0000000000000000
+  ofile[13]=0x0000000000000000
+  ofile[14]=0x0000000000000000
+  ofile[15]=0x0000000000000000
+ cwd=0x0000000000000000 name=""
+--- verbose dump proc[30] at 0x0000000080016a78 ---
+verbose dump proc at 0x0000000080016a78:
+ lock.locked=1 name=0x00000000800082e8 cpu=0x0000000080013c48
+ state=0 pid=0 killed=0 xstate=0 chan=0x0000000000000000
+ parent=0x0000000000000000 kstack=0x3ffffc1000 sz=0x0 pagetable=0x0000000000000000 trapframe=0x0000000000000000
+ context: ra=0x0 sp=0x0 s0=0x0 s1=0x0 s2=0x0 s3=0x0
+ context cont: s4=0x0 s5=0x0 s6=0x0 s7=0x0 s8=0x0 s9=0x0
+ context cont2: s10=0x0 s11=0x0
+ ofile ptrs:
+  ofile[0]=0x0000000000000000
+  ofile[1]=0x0000000000000000
+  ofile[2]=0x0000000000000000
+  ofile[3]=0x0000000000000000
+  ofile[4]=0x0000000000000000
+  ofile[5]=0x0000000000000000
+  ofile[6]=0x0000000000000000
+  ofile[7]=0x0000000000000000
+  ofile[8]=0x0000000000000000
+  ofile[9]=0x0000000000000000
+  ofile[10]=0x0000000000000000
+  ofile[11]=0x0000000000000000
+  ofile[12]=0x0000000000000000
+  ofile[13]=0x0000000000000000
+  ofile[14]=0x0000000000000000
+  ofile[15]=0x0000000000000000
+ cwd=0x0000000000000000 name=""
+--- verbose dump proc[31] at 0x0000000080016be0 ---
+verbose dump proc at 0x0000000080016be0:
+ lock.locked=1 name=0x00000000800082e8 cpu=0x0000000080013c48
+ state=0 pid=0 killed=0 xstate=0 chan=0x0000000000000000
+ parent=0x0000000000000000 kstack=0x3ffffbf000 sz=0x0 pagetable=0x0000000000000000 trapframe=0x0000000000000000
+ context: ra=0x0 sp=0x0 s0=0x0 s1=0x0 s2=0x0 s3=0x0
+ context cont: s4=0x0 s5=0x0 s6=0x0 s7=0x0 s8=0x0 s9=0x0
+ context cont2: s10=0x0 s11=0x0
+ ofile ptrs:
+  ofile[0]=0x0000000000000000
+  ofile[1]=0x0000000000000000
+  ofile[2]=0x0000000000000000
+  ofile[3]=0x0000000000000000
+  ofile[4]=0x0000000000000000
+  ofile[5]=0x0000000000000000
+  ofile[6]=0x0000000000000000
+  ofile[7]=0x0000000000000000
+  ofile[8]=0x0000000000000000
+  ofile[9]=0x0000000000000000
+  ofile[10]=0x0000000000000000
+  ofile[11]=0x0000000000000000
+  ofile[12]=0x0000000000000000
+  ofile[13]=0x0000000000000000
+  ofile[14]=0x0000000000000000
+  ofile[15]=0x0000000000000000
+ cwd=0x0000000000000000 name=""
+--- verbose dump proc[32] at 0x0000000080016d48 ---
+verbose dump proc at 0x0000000080016d48:
+ lock.locked=1 name=0x00000000800082e8 cpu=0x0000000080013c48
+ state=0 pid=0 killed=0 xstate=0 chan=0x0000000000000000
+ parent=0x0000000000000000 kstack=0x3ffffbd000 sz=0x0 pagetable=0x0000000000000000 trapframe=0x0000000000000000
+ context: ra=0x0 sp=0x0 s0=0x0 s1=0x0 s2=0x0 s3=0x0
+ context cont: s4=0x0 s5=0x0 s6=0x0 s7=0x0 s8=0x0 s9=0x0
+ context cont2: s10=0x0 s11=0x0
+ ofile ptrs:
+  ofile[0]=0x0000000000000000
+  ofile[1]=0x0000000000000000
+  ofile[2]=0x0000000000000000
+  ofile[3]=0x0000000000000000
+  ofile[4]=0x0000000000000000
+  ofile[5]=0x0000000000000000
+  ofile[6]=0x0000000000000000
+  ofile[7]=0x0000000000000000
+  ofile[8]=0x0000000000000000
+  ofile[9]=0x0000000000000000
+  ofile[10]=0x0000000000000000
+  ofile[11]=0x0000000000000000
+  ofile[12]=0x0000000000000000
+  ofile[13]=0x0000000000000000
+  ofile[14]=0x0000000000000000
+  ofile[15]=0x0000000000000000
+ cwd=0x0000000000000000 name=""
+--- verbose dump proc[33] at 0x0000000080016eb0 ---
+verbose dump proc at 0x0000000080016eb0:
+ lock.locked=1 name=0x00000000800082e8 cpu=0x0000000080013c48
+ state=0 pid=0 killed=0 xstate=0 chan=0x0000000000000000
+ parent=0x0000000000000000 kstack=0x3ffffbb000 sz=0x0 pagetable=0x0000000000000000 trapframe=0x0000000000000000
+ context: ra=0x0 sp=0x0 s0=0x0 s1=0x0 s2=0x0 s3=0x0
+ context cont: s4=0x0 s5=0x0 s6=0x0 s7=0x0 s8=0x0 s9=0x0
+ context cont2: s10=0x0 s11=0x0
+ ofile ptrs:
+  ofile[0]=0x0000000000000000
+  ofile[1]=0x0000000000000000
+  ofile[2]=0x0000000000000000
+  ofile[3]=0x0000000000000000
+  ofile[4]=0x0000000000000000
+  ofile[5]=0x0000000000000000
+  ofile[6]=0x0000000000000000
+  ofile[7]=0x0000000000000000
+  ofile[8]=0x0000000000000000
+  ofile[9]=0x0000000000000000
+  ofile[10]=0x0000000000000000
+  ofile[11]=0x0000000000000000
+  ofile[12]=0x0000000000000000
+  ofile[13]=0x0000000000000000
+  ofile[14]=0x0000000000000000
+  ofile[15]=0x0000000000000000
+ cwd=0x0000000000000000 name=""
+--- verbose dump proc[34] at 0x0000000080017018 ---
+verbose dump proc at 0x0000000080017018:
+ lock.locked=1 name=0x00000000800082e8 cpu=0x0000000080013c48
+ state=0 pid=0 killed=0 xstate=0 chan=0x0000000000000000
+ parent=0x0000000000000000 kstack=0x3ffffb9000 sz=0x0 pagetable=0x0000000000000000 trapframe=0x0000000000000000
+ context: ra=0x0 sp=0x0 s0=0x0 s1=0x0 s2=0x0 s3=0x0
+ context cont: s4=0x0 s5=0x0 s6=0x0 s7=0x0 s8=0x0 s9=0x0
+ context cont2: s10=0x0 s11=0x0
+ ofile ptrs:
+  ofile[0]=0x0000000000000000
+  ofile[1]=0x0000000000000000
+  ofile[2]=0x0000000000000000
+  ofile[3]=0x0000000000000000
+  ofile[4]=0x0000000000000000
+  ofile[5]=0x0000000000000000
+  ofile[6]=0x0000000000000000
+  ofile[7]=0x0000000000000000
+  ofile[8]=0x0000000000000000
+  ofile[9]=0x0000000000000000
+  ofile[10]=0x0000000000000000
+  ofile[11]=0x0000000000000000
+  ofile[12]=0x0000000000000000
+  ofile[13]=0x0000000000000000
+  ofile[14]=0x0000000000000000
+  ofile[15]=0x0000000000000000
+ cwd=0x0000000000000000 name=""
+--- verbose dump proc[35] at 0x0000000080017180 ---
+verbose dump proc at 0x0000000080017180:
+ lock.locked=1 name=0x00000000800082e8 cpu=0x0000000080013c48
+ state=0 pid=0 killed=0 xstate=0 chan=0x0000000000000000
+ parent=0x0000000000000000 kstack=0x3ffffb7000 sz=0x0 pagetable=0x0000000000000000 trapframe=0x0000000000000000
+ context: ra=0x0 sp=0x0 s0=0x0 s1=0x0 s2=0x0 s3=0x0
+ context cont: s4=0x0 s5=0x0 s6=0x0 s7=0x0 s8=0x0 s9=0x0
+ context cont2: s10=0x0 s11=0x0
+ ofile ptrs:
+  ofile[0]=0x0000000000000000
+  ofile[1]=0x0000000000000000
+  ofile[2]=0x0000000000000000
+  ofile[3]=0x0000000000000000
+  ofile[4]=0x0000000000000000
+  ofile[5]=0x0000000000000000
+  ofile[6]=0x0000000000000000
+  ofile[7]=0x0000000000000000
+  ofile[8]=0x0000000000000000
+  ofile[9]=0x0000000000000000
+  ofile[10]=0x0000000000000000
+  ofile[11]=0x0000000000000000
+  ofile[12]=0x0000000000000000
+  ofile[13]=0x0000000000000000
+  ofile[14]=0x0000000000000000
+  ofile[15]=0x0000000000000000
+ cwd=0x0000000000000000 name=""
+--- verbose dump proc[36] at 0x00000000800172e8 ---
+verbose dump proc at 0x00000000800172e8:
+ lock.locked=1 name=0x00000000800082e8 cpu=0x0000000080013c48
+ state=0 pid=0 killed=0 xstate=0 chan=0x0000000000000000
+ parent=0x0000000000000000 kstack=0x3ffffb5000 sz=0x0 pagetable=0x0000000000000000 trapframe=0x0000000000000000
+ context: ra=0x0 sp=0x0 s0=0x0 s1=0x0 s2=0x0 s3=0x0
+ context cont: s4=0x0 s5=0x0 s6=0x0 s7=0x0 s8=0x0 s9=0x0
+ context cont2: s10=0x0 s11=0x0
+ ofile ptrs:
+  ofile[0]=0x0000000000000000
+  ofile[1]=0x0000000000000000
+  ofile[2]=0x0000000000000000
+  ofile[3]=0x0000000000000000
+  ofile[4]=0x0000000000000000
+  ofile[5]=0x0000000000000000
+  ofile[6]=0x0000000000000000
+  ofile[7]=0x0000000000000000
+  ofile[8]=0x0000000000000000
+  ofile[9]=0x0000000000000000
+  ofile[10]=0x0000000000000000
+  ofile[11]=0x0000000000000000
+  ofile[12]=0x0000000000000000
+  ofile[13]=0x0000000000000000
+  ofile[14]=0x0000000000000000
+  ofile[15]=0x0000000000000000
+ cwd=0x0000000000000000 name=""
+--- verbose dump proc[37] at 0x0000000080017450 ---
+verbose dump proc at 0x0000000080017450:
+ lock.locked=1 name=0x00000000800082e8 cpu=0x0000000080013c48
+ state=0 pid=0 killed=0 xstate=0 chan=0x0000000000000000
+ parent=0x0000000000000000 kstack=0x3ffffb3000 sz=0x0 pagetable=0x0000000000000000 trapframe=0x0000000000000000
+ context: ra=0x0 sp=0x0 s0=0x0 s1=0x0 s2=0x0 s3=0x0
+ context cont: s4=0x0 s5=0x0 s6=0x0 s7=0x0 s8=0x0 s9=0x0
+ context cont2: s10=0x0 s11=0x0
+ ofile ptrs:
+  ofile[0]=0x0000000000000000
+  ofile[1]=0x0000000000000000
+  ofile[2]=0x0000000000000000
+  ofile[3]=0x0000000000000000
+  ofile[4]=0x0000000000000000
+  ofile[5]=0x0000000000000000
+  ofile[6]=0x0000000000000000
+  ofile[7]=0x0000000000000000
+  ofile[8]=0x0000000000000000
+  ofile[9]=0x0000000000000000
+  ofile[10]=0x0000000000000000
+  ofile[11]=0x0000000000000000
+  ofile[12]=0x0000000000000000
+  ofile[13]=0x0000000000000000
+  ofile[14]=0x0000000000000000
+  ofile[15]=0x0000000000000000
+ cwd=0x0000000000000000 name=""
+--- verbose dump proc[38] at 0x00000000800175b8 ---
+verbose dump proc at 0x00000000800175b8:
+ lock.locked=1 name=0x00000000800082e8 cpu=0x0000000080013c48
+ state=0 pid=0 killed=0 xstate=0 chan=0x0000000000000000
+ parent=0x0000000000000000 kstack=0x3ffffb1000 sz=0x0 pagetable=0x0000000000000000 trapframe=0x0000000000000000
+ context: ra=0x0 sp=0x0 s0=0x0 s1=0x0 s2=0x0 s3=0x0
+ context cont: s4=0x0 s5=0x0 s6=0x0 s7=0x0 s8=0x0 s9=0x0
+ context cont2: s10=0x0 s11=0x0
+ ofile ptrs:
+  ofile[0]=0x0000000000000000
+  ofile[1]=0x0000000000000000
+  ofile[2]=0x0000000000000000
+  ofile[3]=0x0000000000000000
+  ofile[4]=0x0000000000000000
+  ofile[5]=0x0000000000000000
+  ofile[6]=0x0000000000000000
+  ofile[7]=0x0000000000000000
+  ofile[8]=0x0000000000000000
+  ofile[9]=0x0000000000000000
+  ofile[10]=0x0000000000000000
+  ofile[11]=0x0000000000000000
+  ofile[12]=0x0000000000000000
+  ofile[13]=0x0000000000000000
+  ofile[14]=0x0000000000000000
+  ofile[15]=0x0000000000000000
+ cwd=0x0000000000000000 name=""
+--- verbose dump proc[39] at 0x0000000080017720 ---
+verbose dump proc at 0x0000000080017720:
+ lock.locked=1 name=0x00000000800082e8 cpu=0x0000000080013c48
+ state=0 pid=0 killed=0 xstate=0 chan=0x0000000000000000
+ parent=0x0000000000000000 kstack=0x3ffffaf000 sz=0x0 pagetable=0x0000000000000000 trapframe=0x0000000000000000
+ context: ra=0x0 sp=0x0 s0=0x0 s1=0x0 s2=0x0 s3=0x0
+ context cont: s4=0x0 s5=0x0 s6=0x0 s7=0x0 s8=0x0 s9=0x0
+ context cont2: s10=0x0 s11=0x0
+ ofile ptrs:
+  ofile[0]=0x0000000000000000
+  ofile[1]=0x0000000000000000
+  ofile[2]=0x0000000000000000
+  ofile[3]=0x0000000000000000
+  ofile[4]=0x0000000000000000
+  ofile[5]=0x0000000000000000
+  ofile[6]=0x0000000000000000
+  ofile[7]=0x0000000000000000
+  ofile[8]=0x0000000000000000
+  ofile[9]=0x0000000000000000
+  ofile[10]=0x0000000000000000
+  ofile[11]=0x0000000000000000
+  ofile[12]=0x0000000000000000
+  ofile[13]=0x0000000000000000
+  ofile[14]=0x0000000000000000
+  ofile[15]=0x0000000000000000
+ cwd=0x0000000000000000 name=""
+--- verbose dump proc[40] at 0x0000000080017888 ---
+verbose dump proc at 0x0000000080017888:
+ lock.locked=1 name=0x00000000800082e8 cpu=0x0000000080013c48
+ state=0 pid=0 killed=0 xstate=0 chan=0x0000000000000000
+ parent=0x0000000000000000 kstack=0x3ffffad000 sz=0x0 pagetable=0x0000000000000000 trapframe=0x0000000000000000
+ context: ra=0x0 sp=0x0 s0=0x0 s1=0x0 s2=0x0 s3=0x0
+ context cont: s4=0x0 s5=0x0 s6=0x0 s7=0x0 s8=0x0 s9=0x0
+ context cont2: s10=0x0 s11=0x0
+ ofile ptrs:
+  ofile[0]=0x0000000000000000
+  ofile[1]=0x0000000000000000
+  ofile[2]=0x0000000000000000
+  ofile[3]=0x0000000000000000
+  ofile[4]=0x0000000000000000
+  ofile[5]=0x0000000000000000
+  ofile[6]=0x0000000000000000
+  ofile[7]=0x0000000000000000
+  ofile[8]=0x0000000000000000
+  ofile[9]=0x0000000000000000
+  ofile[10]=0x0000000000000000
+  ofile[11]=0x0000000000000000
+  ofile[12]=0x0000000000000000
+  ofile[13]=0x0000000000000000
+  ofile[14]=0x0000000000000000
+  ofile[15]=0x0000000000000000
+ cwd=0x0000000000000000 name=""
+--- verbose dump proc[41] at 0x00000000800179f0 ---
+verbose dump proc at 0x00000000800179f0:
+ lock.locked=1 name=0x00000000800082e8 cpu=0x0000000080013c48
+ state=0 pid=0 killed=0 xstate=0 chan=0x0000000000000000
+ parent=0x0000000000000000 kstack=0x3ffffab000 sz=0x0 pagetable=0x0000000000000000 trapframe=0x0000000000000000
+ context: ra=0x0 sp=0x0 s0=0x0 s1=0x0 s2=0x0 s3=0x0
+ context cont: s4=0x0 s5=0x0 s6=0x0 s7=0x0 s8=0x0 s9=0x0
+ context cont2: s10=0x0 s11=0x0
+ ofile ptrs:
+  ofile[0]=0x0000000000000000
+  ofile[1]=0x0000000000000000
+  ofile[2]=0x0000000000000000
+  ofile[3]=0x0000000000000000
+  ofile[4]=0x0000000000000000
+  ofile[5]=0x0000000000000000
+  ofile[6]=0x0000000000000000
+  ofile[7]=0x0000000000000000
+  ofile[8]=0x0000000000000000
+  ofile[9]=0x0000000000000000
+  ofile[10]=0x0000000000000000
+  ofile[11]=0x0000000000000000
+  ofile[12]=0x0000000000000000
+  ofile[13]=0x0000000000000000
+  ofile[14]=0x0000000000000000
+  ofile[15]=0x0000000000000000
+ cwd=0x0000000000000000 name=""
+--- verbose dump proc[42] at 0x0000000080017b58 ---
+verbose dump proc at 0x0000000080017b58:
+ lock.locked=1 name=0x00000000800082e8 cpu=0x0000000080013c48
+ state=0 pid=0 killed=0 xstate=0 chan=0x0000000000000000
+ parent=0x0000000000000000 kstack=0x3ffffa9000 sz=0x0 pagetable=0x0000000000000000 trapframe=0x0000000000000000
+ context: ra=0x0 sp=0x0 s0=0x0 s1=0x0 s2=0x0 s3=0x0
+ context cont: s4=0x0 s5=0x0 s6=0x0 s7=0x0 s8=0x0 s9=0x0
+ context cont2: s10=0x0 s11=0x0
+ ofile ptrs:
+  ofile[0]=0x0000000000000000
+  ofile[1]=0x0000000000000000
+  ofile[2]=0x0000000000000000
+  ofile[3]=0x0000000000000000
+  ofile[4]=0x0000000000000000
+  ofile[5]=0x0000000000000000
+  ofile[6]=0x0000000000000000
+  ofile[7]=0x0000000000000000
+  ofile[8]=0x0000000000000000
+  ofile[9]=0x0000000000000000
+  ofile[10]=0x0000000000000000
+  ofile[11]=0x0000000000000000
+  ofile[12]=0x0000000000000000
+  ofile[13]=0x0000000000000000
+  ofile[14]=0x0000000000000000
+  ofile[15]=0x0000000000000000
+ cwd=0x0000000000000000 name=""
+--- verbose dump proc[43] at 0x0000000080017cc0 ---
+verbose dump proc at 0x0000000080017cc0:
+ lock.locked=1 name=0x00000000800082e8 cpu=0x0000000080013c48
+ state=0 pid=0 killed=0 xstate=0 chan=0x0000000000000000
+ parent=0x0000000000000000 kstack=0x3ffffa7000 sz=0x0 pagetable=0x0000000000000000 trapframe=0x0000000000000000
+ context: ra=0x0 sp=0x0 s0=0x0 s1=0x0 s2=0x0 s3=0x0
+ context cont: s4=0x0 s5=0x0 s6=0x0 s7=0x0 s8=0x0 s9=0x0
+ context cont2: s10=0x0 s11=0x0
+ ofile ptrs:
+  ofile[0]=0x0000000000000000
+  ofile[1]=0x0000000000000000
+  ofile[2]=0x0000000000000000
+  ofile[3]=0x0000000000000000
+  ofile[4]=0x0000000000000000
+  ofile[5]=0x0000000000000000
+  ofile[6]=0x0000000000000000
+  ofile[7]=0x0000000000000000
+  ofile[8]=0x0000000000000000
+  ofile[9]=0x0000000000000000
+  ofile[10]=0x0000000000000000
+  ofile[11]=0x0000000000000000
+  ofile[12]=0x0000000000000000
+  ofile[13]=0x0000000000000000
+  ofile[14]=0x0000000000000000
+  ofile[15]=0x0000000000000000
+ cwd=0x0000000000000000 name=""
+--- verbose dump proc[44] at 0x0000000080017e28 ---
+verbose dump proc at 0x0000000080017e28:
+ lock.locked=1 name=0x00000000800082e8 cpu=0x0000000080013c48
+ state=0 pid=0 killed=0 xstate=0 chan=0x0000000000000000
+ parent=0x0000000000000000 kstack=0x3ffffa5000 sz=0x0 pagetable=0x0000000000000000 trapframe=0x0000000000000000
+ context: ra=0x0 sp=0x0 s0=0x0 s1=0x0 s2=0x0 s3=0x0
+ context cont: s4=0x0 s5=0x0 s6=0x0 s7=0x0 s8=0x0 s9=0x0
+ context cont2: s10=0x0 s11=0x0
+ ofile ptrs:
+  ofile[0]=0x0000000000000000
+  ofile[1]=0x0000000000000000
+  ofile[2]=0x0000000000000000
+  ofile[3]=0x0000000000000000
+  ofile[4]=0x0000000000000000
+  ofile[5]=0x0000000000000000
+  ofile[6]=0x0000000000000000
+  ofile[7]=0x0000000000000000
+  ofile[8]=0x0000000000000000
+  ofile[9]=0x0000000000000000
+  ofile[10]=0x0000000000000000
+  ofile[11]=0x0000000000000000
+  ofile[12]=0x0000000000000000
+  ofile[13]=0x0000000000000000
+  ofile[14]=0x0000000000000000
+  ofile[15]=0x0000000000000000
+ cwd=0x0000000000000000 name=""
+--- verbose dump proc[45] at 0x0000000080017f90 ---
+verbose dump proc at 0x0000000080017f90:
+ lock.locked=1 name=0x00000000800082e8 cpu=0x0000000080013c48
+ state=0 pid=0 killed=0 xstate=0 chan=0x0000000000000000
+ parent=0x0000000000000000 kstack=0x3ffffa3000 sz=0x0 pagetable=0x0000000000000000 trapframe=0x0000000000000000
+ context: ra=0x0 sp=0x0 s0=0x0 s1=0x0 s2=0x0 s3=0x0
+ context cont: s4=0x0 s5=0x0 s6=0x0 s7=0x0 s8=0x0 s9=0x0
+ context cont2: s10=0x0 s11=0x0
+ ofile ptrs:
+  ofile[0]=0x0000000000000000
+  ofile[1]=0x0000000000000000
+  ofile[2]=0x0000000000000000
+  ofile[3]=0x0000000000000000
+  ofile[4]=0x0000000000000000
+  ofile[5]=0x0000000000000000
+  ofile[6]=0x0000000000000000
+  ofile[7]=0x0000000000000000
+  ofile[8]=0x0000000000000000
+  ofile[9]=0x0000000000000000
+  ofile[10]=0x0000000000000000
+  ofile[11]=0x0000000000000000
+  ofile[12]=0x0000000000000000
+  ofile[13]=0x0000000000000000
+  ofile[14]=0x0000000000000000
+  ofile[15]=0x0000000000000000
+ cwd=0x0000000000000000 name=""
+--- verbose dump proc[46] at 0x00000000800180f8 ---
+verbose dump proc at 0x00000000800180f8:
+ lock.locked=1 name=0x00000000800082e8 cpu=0x0000000080013c48
+ state=0 pid=0 killed=0 xstate=0 chan=0x0000000000000000
+ parent=0x0000000000000000 kstack=0x3ffffa1000 sz=0x0 pagetable=0x0000000000000000 trapframe=0x0000000000000000
+ context: ra=0x0 sp=0x0 s0=0x0 s1=0x0 s2=0x0 s3=0x0
+ context cont: s4=0x0 s5=0x0 s6=0x0 s7=0x0 s8=0x0 s9=0x0
+ context cont2: s10=0x0 s11=0x0
+ ofile ptrs:
+  ofile[0]=0x0000000000000000
+  ofile[1]=0x0000000000000000
+  ofile[2]=0x0000000000000000
+  ofile[3]=0x0000000000000000
+  ofile[4]=0x0000000000000000
+  ofile[5]=0x0000000000000000
+  ofile[6]=0x0000000000000000
+  ofile[7]=0x0000000000000000
+  ofile[8]=0x0000000000000000
+  ofile[9]=0x0000000000000000
+  ofile[10]=0x0000000000000000
+  ofile[11]=0x0000000000000000
+  ofile[12]=0x0000000000000000
+  ofile[13]=0x0000000000000000
+  ofile[14]=0x0000000000000000
+  ofile[15]=0x0000000000000000
+ cwd=0x0000000000000000 name=""
+--- verbose dump proc[47] at 0x0000000080018260 ---
+verbose dump proc at 0x0000000080018260:
+ lock.locked=1 name=0x00000000800082e8 cpu=0x0000000080013c48
+ state=0 pid=0 killed=0 xstate=0 chan=0x0000000000000000
+ parent=0x0000000000000000 kstack=0x3ffff9f000 sz=0x0 pagetable=0x0000000000000000 trapframe=0x0000000000000000
+ context: ra=0x0 sp=0x0 s0=0x0 s1=0x0 s2=0x0 s3=0x0
+ context cont: s4=0x0 s5=0x0 s6=0x0 s7=0x0 s8=0x0 s9=0x0
+ context cont2: s10=0x0 s11=0x0
+ ofile ptrs:
+  ofile[0]=0x0000000000000000
+  ofile[1]=0x0000000000000000
+  ofile[2]=0x0000000000000000
+  ofile[3]=0x0000000000000000
+  ofile[4]=0x0000000000000000
+  ofile[5]=0x0000000000000000
+  ofile[6]=0x0000000000000000
+  ofile[7]=0x0000000000000000
+  ofile[8]=0x0000000000000000
+  ofile[9]=0x0000000000000000
+  ofile[10]=0x0000000000000000
+  ofile[11]=0x0000000000000000
+  ofile[12]=0x0000000000000000
+  ofile[13]=0x0000000000000000
+  ofile[14]=0x0000000000000000
+  ofile[15]=0x0000000000000000
+ cwd=0x0000000000000000 name=""
+--- verbose dump proc[48] at 0x00000000800183c8 ---
+verbose dump proc at 0x00000000800183c8:
+ lock.locked=1 name=0x00000000800082e8 cpu=0x0000000080013c48
+ state=0 pid=0 killed=0 xstate=0 chan=0x0000000000000000
+ parent=0x0000000000000000 kstack=0x3ffff9d000 sz=0x0 pagetable=0x0000000000000000 trapframe=0x0000000000000000
+ context: ra=0x0 sp=0x0 s0=0x0 s1=0x0 s2=0x0 s3=0x0
+ context cont: s4=0x0 s5=0x0 s6=0x0 s7=0x0 s8=0x0 s9=0x0
+ context cont2: s10=0x0 s11=0x0
+ ofile ptrs:
+  ofile[0]=0x0000000000000000
+  ofile[1]=0x0000000000000000
+  ofile[2]=0x0000000000000000
+  ofile[3]=0x0000000000000000
+  ofile[4]=0x0000000000000000
+  ofile[5]=0x0000000000000000
+  ofile[6]=0x0000000000000000
+  ofile[7]=0x0000000000000000
+  ofile[8]=0x0000000000000000
+  ofile[9]=0x0000000000000000
+  ofile[10]=0x0000000000000000
+  ofile[11]=0x0000000000000000
+  ofile[12]=0x0000000000000000
+  ofile[13]=0x0000000000000000
+  ofile[14]=0x0000000000000000
+  ofile[15]=0x0000000000000000
+ cwd=0x0000000000000000 name=""
+--- verbose dump proc[49] at 0x0000000080018530 ---
+verbose dump proc at 0x0000000080018530:
+ lock.locked=1 name=0x00000000800082e8 cpu=0x0000000080013c48
+ state=0 pid=0 killed=0 xstate=0 chan=0x0000000000000000
+ parent=0x0000000000000000 kstack=0x3ffff9b000 sz=0x0 pagetable=0x0000000000000000 trapframe=0x0000000000000000
+ context: ra=0x0 sp=0x0 s0=0x0 s1=0x0 s2=0x0 s3=0x0
+ context cont: s4=0x0 s5=0x0 s6=0x0 s7=0x0 s8=0x0 s9=0x0
+ context cont2: s10=0x0 s11=0x0
+ ofile ptrs:
+  ofile[0]=0x0000000000000000
+  ofile[1]=0x0000000000000000
+  ofile[2]=0x0000000000000000
+  ofile[3]=0x0000000000000000
+  ofile[4]=0x0000000000000000
+  ofile[5]=0x0000000000000000
+  ofile[6]=0x0000000000000000
+  ofile[7]=0x0000000000000000
+  ofile[8]=0x0000000000000000
+  ofile[9]=0x0000000000000000
+  ofile[10]=0x0000000000000000
+  ofile[11]=0x0000000000000000
+  ofile[12]=0x0000000000000000
+  ofile[13]=0x0000000000000000
+  ofile[14]=0x0000000000000000
+  ofile[15]=0x0000000000000000
+ cwd=0x0000000000000000 name=""
+--- verbose dump proc[50] at 0x0000000080018698 ---
+verbose dump proc at 0x0000000080018698:
+ lock.locked=1 name=0x00000000800082e8 cpu=0x0000000080013c48
+ state=0 pid=0 killed=0 xstate=0 chan=0x0000000000000000
+ parent=0x0000000000000000 kstack=0x3ffff99000 sz=0x0 pagetable=0x0000000000000000 trapframe=0x0000000000000000
+ context: ra=0x0 sp=0x0 s0=0x0 s1=0x0 s2=0x0 s3=0x0
+ context cont: s4=0x0 s5=0x0 s6=0x0 s7=0x0 s8=0x0 s9=0x0
+ context cont2: s10=0x0 s11=0x0
+ ofile ptrs:
+  ofile[0]=0x0000000000000000
+  ofile[1]=0x0000000000000000
+  ofile[2]=0x0000000000000000
+  ofile[3]=0x0000000000000000
+  ofile[4]=0x0000000000000000
+  ofile[5]=0x0000000000000000
+  ofile[6]=0x0000000000000000
+  ofile[7]=0x0000000000000000
+  ofile[8]=0x0000000000000000
+  ofile[9]=0x0000000000000000
+  ofile[10]=0x0000000000000000
+  ofile[11]=0x0000000000000000
+  ofile[12]=0x0000000000000000
+  ofile[13]=0x0000000000000000
+  ofile[14]=0x0000000000000000
+  ofile[15]=0x0000000000000000
+ cwd=0x0000000000000000 name=""
+--- verbose dump proc[51] at 0x0000000080018800 ---
+verbose dump proc at 0x0000000080018800:
+ lock.locked=1 name=0x00000000800082e8 cpu=0x0000000080013c48
+ state=0 pid=0 killed=0 xstate=0 chan=0x0000000000000000
+ parent=0x0000000000000000 kstack=0x3ffff97000 sz=0x0 pagetable=0x0000000000000000 trapframe=0x0000000000000000
+ context: ra=0x0 sp=0x0 s0=0x0 s1=0x0 s2=0x0 s3=0x0
+ context cont: s4=0x0 s5=0x0 s6=0x0 s7=0x0 s8=0x0 s9=0x0
+ context cont2: s10=0x0 s11=0x0
+ ofile ptrs:
+  ofile[0]=0x0000000000000000
+  ofile[1]=0x0000000000000000
+  ofile[2]=0x0000000000000000
+  ofile[3]=0x0000000000000000
+  ofile[4]=0x0000000000000000
+  ofile[5]=0x0000000000000000
+  ofile[6]=0x0000000000000000
+  ofile[7]=0x0000000000000000
+  ofile[8]=0x0000000000000000
+  ofile[9]=0x0000000000000000
+  ofile[10]=0x0000000000000000
+  ofile[11]=0x0000000000000000
+  ofile[12]=0x0000000000000000
+  ofile[13]=0x0000000000000000
+  ofile[14]=0x0000000000000000
+  ofile[15]=0x0000000000000000
+ cwd=0x0000000000000000 name=""
+--- verbose dump proc[52] at 0x0000000080018968 ---
+verbose dump proc at 0x0000000080018968:
+ lock.locked=1 name=0x00000000800082e8 cpu=0x0000000080013c48
+ state=0 pid=0 killed=0 xstate=0 chan=0x0000000000000000
+ parent=0x0000000000000000 kstack=0x3ffff95000 sz=0x0 pagetable=0x0000000000000000 trapframe=0x0000000000000000
+ context: ra=0x0 sp=0x0 s0=0x0 s1=0x0 s2=0x0 s3=0x0
+ context cont: s4=0x0 s5=0x0 s6=0x0 s7=0x0 s8=0x0 s9=0x0
+ context cont2: s10=0x0 s11=0x0
+ ofile ptrs:
+  ofile[0]=0x0000000000000000
+  ofile[1]=0x0000000000000000
+  ofile[2]=0x0000000000000000
+  ofile[3]=0x0000000000000000
+  ofile[4]=0x0000000000000000
+  ofile[5]=0x0000000000000000
+  ofile[6]=0x0000000000000000
+  ofile[7]=0x0000000000000000
+  ofile[8]=0x0000000000000000
+  ofile[9]=0x0000000000000000
+  ofile[10]=0x0000000000000000
+  ofile[11]=0x0000000000000000
+  ofile[12]=0x0000000000000000
+  ofile[13]=0x0000000000000000
+  ofile[14]=0x0000000000000000
+  ofile[15]=0x0000000000000000
+ cwd=0x0000000000000000 name=""
+--- verbose dump proc[53] at 0x0000000080018ad0 ---
+verbose dump proc at 0x0000000080018ad0:
+ lock.locked=1 name=0x00000000800082e8 cpu=0x0000000080013c48
+ state=0 pid=0 killed=0 xstate=0 chan=0x0000000000000000
+ parent=0x0000000000000000 kstack=0x3ffff93000 sz=0x0 pagetable=0x0000000000000000 trapframe=0x0000000000000000
+ context: ra=0x0 sp=0x0 s0=0x0 s1=0x0 s2=0x0 s3=0x0
+ context cont: s4=0x0 s5=0x0 s6=0x0 s7=0x0 s8=0x0 s9=0x0
+ context cont2: s10=0x0 s11=0x0
+ ofile ptrs:
+  ofile[0]=0x0000000000000000
+  ofile[1]=0x0000000000000000
+  ofile[2]=0x0000000000000000
+  ofile[3]=0x0000000000000000
+  ofile[4]=0x0000000000000000
+  ofile[5]=0x0000000000000000
+  ofile[6]=0x0000000000000000
+  ofile[7]=0x0000000000000000
+  ofile[8]=0x0000000000000000
+  ofile[9]=0x0000000000000000
+  ofile[10]=0x0000000000000000
+  ofile[11]=0x0000000000000000
+  ofile[12]=0x0000000000000000
+  ofile[13]=0x0000000000000000
+  ofile[14]=0x0000000000000000
+  ofile[15]=0x0000000000000000
+ cwd=0x0000000000000000 name=""
+--- verbose dump proc[54] at 0x0000000080018c38 ---
+verbose dump proc at 0x0000000080018c38:
+ lock.locked=1 name=0x00000000800082e8 cpu=0x0000000080013c48
+ state=0 pid=0 killed=0 xstate=0 chan=0x0000000000000000
+ parent=0x0000000000000000 kstack=0x3ffff91000 sz=0x0 pagetable=0x0000000000000000 trapframe=0x0000000000000000
+ context: ra=0x0 sp=0x0 s0=0x0 s1=0x0 s2=0x0 s3=0x0
+ context cont: s4=0x0 s5=0x0 s6=0x0 s7=0x0 s8=0x0 s9=0x0
+ context cont2: s10=0x0 s11=0x0
+ ofile ptrs:
+  ofile[0]=0x0000000000000000
+  ofile[1]=0x0000000000000000
+  ofile[2]=0x0000000000000000
+  ofile[3]=0x0000000000000000
+  ofile[4]=0x0000000000000000
+  ofile[5]=0x0000000000000000
+  ofile[6]=0x0000000000000000
+  ofile[7]=0x0000000000000000
+  ofile[8]=0x0000000000000000
+  ofile[9]=0x0000000000000000
+  ofile[10]=0x0000000000000000
+  ofile[11]=0x0000000000000000
+  ofile[12]=0x0000000000000000
+  ofile[13]=0x0000000000000000
+  ofile[14]=0x0000000000000000
+  ofile[15]=0x0000000000000000
+ cwd=0x0000000000000000 name=""
+--- verbose dump proc[55] at 0x0000000080018da0 ---
+verbose dump proc at 0x0000000080018da0:
+ lock.locked=1 name=0x00000000800082e8 cpu=0x0000000080013c48
+ state=0 pid=0 killed=0 xstate=0 chan=0x0000000000000000
+ parent=0x0000000000000000 kstack=0x3ffff8f000 sz=0x0 pagetable=0x0000000000000000 trapframe=0x0000000000000000
+ context: ra=0x0 sp=0x0 s0=0x0 s1=0x0 s2=0x0 s3=0x0
+ context cont: s4=0x0 s5=0x0 s6=0x0 s7=0x0 s8=0x0 s9=0x0
+ context cont2: s10=0x0 s11=0x0
+ ofile ptrs:
+  ofile[0]=0x0000000000000000
+  ofile[1]=0x0000000000000000
+  ofile[2]=0x0000000000000000
+  ofile[3]=0x0000000000000000
+  ofile[4]=0x0000000000000000
+  ofile[5]=0x0000000000000000
+  ofile[6]=0x0000000000000000
+  ofile[7]=0x0000000000000000
+  ofile[8]=0x0000000000000000
+  ofile[9]=0x0000000000000000
+  ofile[10]=0x0000000000000000
+  ofile[11]=0x0000000000000000
+  ofile[12]=0x0000000000000000
+  ofile[13]=0x0000000000000000
+  ofile[14]=0x0000000000000000
+  ofile[15]=0x0000000000000000
+ cwd=0x0000000000000000 name=""
+--- verbose dump proc[56] at 0x0000000080018f08 ---
+verbose dump proc at 0x0000000080018f08:
+ lock.locked=1 name=0x00000000800082e8 cpu=0x0000000080013c48
+ state=0 pid=0 killed=0 xstate=0 chan=0x0000000000000000
+ parent=0x0000000000000000 kstack=0x3ffff8d000 sz=0x0 pagetable=0x0000000000000000 trapframe=0x0000000000000000
+ context: ra=0x0 sp=0x0 s0=0x0 s1=0x0 s2=0x0 s3=0x0
+ context cont: s4=0x0 s5=0x0 s6=0x0 s7=0x0 s8=0x0 s9=0x0
+ context cont2: s10=0x0 s11=0x0
+ ofile ptrs:
+  ofile[0]=0x0000000000000000
+  ofile[1]=0x0000000000000000
+  ofile[2]=0x0000000000000000
+  ofile[3]=0x0000000000000000
+  ofile[4]=0x0000000000000000
+  ofile[5]=0x0000000000000000
+  ofile[6]=0x0000000000000000
+  ofile[7]=0x0000000000000000
+  ofile[8]=0x0000000000000000
+  ofile[9]=0x0000000000000000
+  ofile[10]=0x0000000000000000
+  ofile[11]=0x0000000000000000
+  ofile[12]=0x0000000000000000
+  ofile[13]=0x0000000000000000
+  ofile[14]=0x0000000000000000
+  ofile[15]=0x0000000000000000
+ cwd=0x0000000000000000 name=""
+--- verbose dump proc[57] at 0x0000000080019070 ---
+verbose dump proc at 0x0000000080019070:
+ lock.locked=1 name=0x00000000800082e8 cpu=0x0000000080013c48
+ state=0 pid=0 killed=0 xstate=0 chan=0x0000000000000000
+ parent=0x0000000000000000 kstack=0x3ffff8b000 sz=0x0 pagetable=0x0000000000000000 trapframe=0x0000000000000000
+ context: ra=0x0 sp=0x0 s0=0x0 s1=0x0 s2=0x0 s3=0x0
+ context cont: s4=0x0 s5=0x0 s6=0x0 s7=0x0 s8=0x0 s9=0x0
+ context cont2: s10=0x0 s11=0x0
+ ofile ptrs:
+  ofile[0]=0x0000000000000000
+  ofile[1]=0x0000000000000000
+  ofile[2]=0x0000000000000000
+  ofile[3]=0x0000000000000000
+  ofile[4]=0x0000000000000000
+  ofile[5]=0x0000000000000000
+  ofile[6]=0x0000000000000000
+  ofile[7]=0x0000000000000000
+  ofile[8]=0x0000000000000000
+  ofile[9]=0x0000000000000000
+  ofile[10]=0x0000000000000000
+  ofile[11]=0x0000000000000000
+  ofile[12]=0x0000000000000000
+  ofile[13]=0x0000000000000000
+  ofile[14]=0x0000000000000000
+  ofile[15]=0x0000000000000000
+ cwd=0x0000000000000000 name=""
+--- verbose dump proc[58] at 0x00000000800191d8 ---
+verbose dump proc at 0x00000000800191d8:
+ lock.locked=1 name=0x00000000800082e8 cpu=0x0000000080013c48
+ state=0 pid=0 killed=0 xstate=0 chan=0x0000000000000000
+ parent=0x0000000000000000 kstack=0x3ffff89000 sz=0x0 pagetable=0x0000000000000000 trapframe=0x0000000000000000
+ context: ra=0x0 sp=0x0 s0=0x0 s1=0x0 s2=0x0 s3=0x0
+ context cont: s4=0x0 s5=0x0 s6=0x0 s7=0x0 s8=0x0 s9=0x0
+ context cont2: s10=0x0 s11=0x0
+ ofile ptrs:
+  ofile[0]=0x0000000000000000
+  ofile[1]=0x0000000000000000
+  ofile[2]=0x0000000000000000
+  ofile[3]=0x0000000000000000
+  ofile[4]=0x0000000000000000
+  ofile[5]=0x0000000000000000
+  ofile[6]=0x0000000000000000
+  ofile[7]=0x0000000000000000
+  ofile[8]=0x0000000000000000
+  ofile[9]=0x0000000000000000
+  ofile[10]=0x0000000000000000
+  ofile[11]=0x0000000000000000
+  ofile[12]=0x0000000000000000
+  ofile[13]=0x0000000000000000
+  ofile[14]=0x0000000000000000
+  ofile[15]=0x0000000000000000
+ cwd=0x0000000000000000 name=""
+--- verbose dump proc[59] at 0x0000000080019340 ---
+verbose dump proc at 0x0000000080019340:
+ lock.locked=1 name=0x00000000800082e8 cpu=0x0000000080013c48
+ state=0 pid=0 killed=0 xstate=0 chan=0x0000000000000000
+ parent=0x0000000000000000 kstack=0x3ffff87000 sz=0x0 pagetable=0x0000000000000000 trapframe=0x0000000000000000
+ context: ra=0x0 sp=0x0 s0=0x0 s1=0x0 s2=0x0 s3=0x0
+ context cont: s4=0x0 s5=0x0 s6=0x0 s7=0x0 s8=0x0 s9=0x0
+ context cont2: s10=0x0 s11=0x0
+ ofile ptrs:
+  ofile[0]=0x0000000000000000
+  ofile[1]=0x0000000000000000
+  ofile[2]=0x0000000000000000
+  ofile[3]=0x0000000000000000
+  ofile[4]=0x0000000000000000
+  ofile[5]=0x0000000000000000
+  ofile[6]=0x0000000000000000
+  ofile[7]=0x0000000000000000
+  ofile[8]=0x0000000000000000
+  ofile[9]=0x0000000000000000
+  ofile[10]=0x0000000000000000
+  ofile[11]=0x0000000000000000
+  ofile[12]=0x0000000000000000
+  ofile[13]=0x0000000000000000
+  ofile[14]=0x0000000000000000
+  ofile[15]=0x0000000000000000
+ cwd=0x0000000000000000 name=""
+--- verbose dump proc[60] at 0x00000000800194a8 ---
+verbose dump proc at 0x00000000800194a8:
+ lock.locked=1 name=0x00000000800082e8 cpu=0x0000000080013c48
+ state=0 pid=0 killed=0 xstate=0 chan=0x0000000000000000
+ parent=0x0000000000000000 kstack=0x3ffff85000 sz=0x0 pagetable=0x0000000000000000 trapframe=0x0000000000000000
+ context: ra=0x0 sp=0x0 s0=0x0 s1=0x0 s2=0x0 s3=0x0
+ context cont: s4=0x0 s5=0x0 s6=0x0 s7=0x0 s8=0x0 s9=0x0
+ context cont2: s10=0x0 s11=0x0
+ ofile ptrs:
+  ofile[0]=0x0000000000000000
+  ofile[1]=0x0000000000000000
+  ofile[2]=0x0000000000000000
+  ofile[3]=0x0000000000000000
+  ofile[4]=0x0000000000000000
+  ofile[5]=0x0000000000000000
+  ofile[6]=0x0000000000000000
+  ofile[7]=0x0000000000000000
+  ofile[8]=0x0000000000000000
+  ofile[9]=0x0000000000000000
+  ofile[10]=0x0000000000000000
+  ofile[11]=0x0000000000000000
+  ofile[12]=0x0000000000000000
+  ofile[13]=0x0000000000000000
+  ofile[14]=0x0000000000000000
+  ofile[15]=0x0000000000000000
+ cwd=0x0000000000000000 name=""
+--- verbose dump proc[61] at 0x0000000080019610 ---
+verbose dump proc at 0x0000000080019610:
+ lock.locked=1 name=0x00000000800082e8 cpu=0x0000000080013c48
+ state=0 pid=0 killed=0 xstate=0 chan=0x0000000000000000
+ parent=0x0000000000000000 kstack=0x3ffff83000 sz=0x0 pagetable=0x0000000000000000 trapframe=0x0000000000000000
+ context: ra=0x0 sp=0x0 s0=0x0 s1=0x0 s2=0x0 s3=0x0
+ context cont: s4=0x0 s5=0x0 s6=0x0 s7=0x0 s8=0x0 s9=0x0
+ context cont2: s10=0x0 s11=0x0
+ ofile ptrs:
+  ofile[0]=0x0000000000000000
+  ofile[1]=0x0000000000000000
+  ofile[2]=0x0000000000000000
+  ofile[3]=0x0000000000000000
+  ofile[4]=0x0000000000000000
+  ofile[5]=0x0000000000000000
+  ofile[6]=0x0000000000000000
+  ofile[7]=0x0000000000000000
+  ofile[8]=0x0000000000000000
+  ofile[9]=0x0000000000000000
+  ofile[10]=0x0000000000000000
+  ofile[11]=0x0000000000000000
+  ofile[12]=0x0000000000000000
+  ofile[13]=0x0000000000000000
+  ofile[14]=0x0000000000000000
+  ofile[15]=0x0000000000000000
+ cwd=0x0000000000000000 name=""
+--- verbose dump proc[62] at 0x0000000080019778 ---
+verbose dump proc at 0x0000000080019778:
+ lock.locked=1 name=0x00000000800082e8 cpu=0x0000000080013c48
+ state=0 pid=0 killed=0 xstate=0 chan=0x0000000000000000
+ parent=0x0000000000000000 kstack=0x3ffff81000 sz=0x0 pagetable=0x0000000000000000 trapframe=0x0000000000000000
+ context: ra=0x0 sp=0x0 s0=0x0 s1=0x0 s2=0x0 s3=0x0
+ context cont: s4=0x0 s5=0x0 s6=0x0 s7=0x0 s8=0x0 s9=0x0
+ context cont2: s10=0x0 s11=0x0
+ ofile ptrs:
+  ofile[0]=0x0000000000000000
+  ofile[1]=0x0000000000000000
+  ofile[2]=0x0000000000000000
+  ofile[3]=0x0000000000000000
+  ofile[4]=0x0000000000000000
+  ofile[5]=0x0000000000000000
+  ofile[6]=0x0000000000000000
+  ofile[7]=0x0000000000000000
+  ofile[8]=0x0000000000000000
+  ofile[9]=0x0000000000000000
+  ofile[10]=0x0000000000000000
+  ofile[11]=0x0000000000000000
+  ofile[12]=0x0000000000000000
+  ofile[13]=0x0000000000000000
+  ofile[14]=0x0000000000000000
+  ofile[15]=0x0000000000000000
+ cwd=0x0000000000000000 name=""
+--- verbose dump proc[63] at 0x00000000800198e0 ---
+verbose dump proc at 0x00000000800198e0:
+ lock.locked=1 name=0x00000000800082e8 cpu=0x0000000080013c48
+ state=0 pid=0 killed=0 xstate=0 chan=0x0000000000000000
+ parent=0x0000000000000000 kstack=0x3ffff7f000 sz=0x0 pagetable=0x0000000000000000 trapframe=0x0000000000000000
+ context: ra=0x0 sp=0x0 s0=0x0 s1=0x0 s2=0x0 s3=0x0
+ context cont: s4=0x0 s5=0x0 s6=0x0 s7=0x0 s8=0x0 s9=0x0
+ context cont2: s10=0x0 s11=0x0
+ ofile ptrs:
+  ofile[0]=0x0000000000000000
+  ofile[1]=0x0000000000000000
+  ofile[2]=0x0000000000000000
+  ofile[3]=0x0000000000000000
+  ofile[4]=0x0000000000000000
+  ofile[5]=0x0000000000000000
+  ofile[6]=0x0000000000000000
+  ofile[7]=0x0000000000000000
+  ofile[8]=0x0000000000000000
+  ofile[9]=0x0000000000000000
+  ofile[10]=0x0000000000000000
+  ofile[11]=0x0000000000000000
+  ofile[12]=0x0000000000000000
+  ofile[13]=0x0000000000000000
+  ofile[14]=0x0000000000000000
+  ofile[15]=0x0000000000000000
+ cwd=0x0000000000000000 name=""
+
+[31m--- Process Inspector Dump ---[0m
+
+[31m=== Process 1 () ===[0m
+State: [31m3[0m, Parent: [31m-1[0m
+Memory: 0x[31m0[0m-0x[31m0[0m, Stack: 0x[31m0[0m
+Open files: 
+[31m--- End Process Dump ---[0m
+Hello, World!
+hart 2 starting
+Hello, World!
+hart 1 starting
+Hello, World!
+PID 1: SYSCALL 15 (open) - Heap end(sz)=0x4000 User SP=0x3fb0
+PID 1: RETURN -1 (0xffffffffffffffff)
+PID 1: SYSCALL 17 (mknod) - Heap end(sz)=0x4000 User SP=0x3fb0
+PID 1: RETURN 0 (0x0)
+PID 1: SYSCALL 15 (open) - Heap end(sz)=0x4000 User SP=0x3fb0
+PID 1: RETURN 0 (0x0)
+PID 1: SYSCALL 10 (dup) - Heap end(sz)=0x4000 User SP=0x3fb0
+PID 1: RETURN 1 (0x1)
+PID 1: SYSCALL 10 (dup) - Heap end(sz)=0x4000 User SP=0x3fb0
+PID 1: RETURN 2 (0x2)
+PID 1: SYSCALL 16 (write) - Heap end(sz)=0x4000 User SP=0x3ed0
+iPID 1: RETURN 1 (0x1)
+PID 1: SYSCALL 16 (write) - Heap end(sz)=0x4000 User SP=0x3ed0
+nPID 1: RETURN 1 (0x1)
+PID 1: SYSCALL 16 (write) - Heap end(sz)=0x4000 User SP=0x3ed0
+iPID 1: RETURN 1 (0x1)
+PID 1: SYSCALL 16 (write) - Heap end(sz)=0x4000 User SP=0x3ed0
+tPID 1: RETURN 1 (0x1)
+PID 1: SYSCALL 16 (write) - Heap end(sz)=0x4000 User SP=0x3ed0
+:PID 1: RETURN 1 (0x1)
+PID 1: SYSCALL 16 (write) - Heap end(sz)=0x4000 User SP=0x3ed0
+ PID 1: RETURN 1 (0x1)
+PID 1: SYSCALL 16 (write) - Heap end(sz)=0x4000 User SP=0x3ed0
+sPID 1: RETURN 1 (0x1)
+PID 1: SYSCALL 16 (write) - Heap end(sz)=0x4000 User SP=0x3ed0
+tPID 1: RETURN 1 (0x1)
+PID 1: SYSCALL 16 (write) - Heap end(sz)=0x4000 User SP=0x3ed0
+aPID 1: RETURN 1 (0x1)
+PID 1: SYSCALL 16 (write) - Heap end(sz)=0x4000 User SP=0x3ed0
+rPID 1: RETURN 1 (0x1)
+PID 1: SYSCALL 16 (write) - Heap end(sz)=0x4000 User SP=0x3ed0
+tPID 1: RETURN 1 (0x1)
+PID 1: SYSCALL 16 (write) - Heap end(sz)=0x4000 User SP=0x3ed0
+iPID 1: RETURN 1 (0x1)
+PID 1: SYSCALL 16 (write) - Heap end(sz)=0x4000 User SP=0x3ed0
+nPID 1: RETURN 1 (0x1)
+PID 1: SYSCALL 16 (write) - Heap end(sz)=0x4000 User SP=0x3ed0
+gPID 1: RETURN 1 (0x1)
+PID 1: SYSCALL 16 (write) - Heap end(sz)=0x4000 User SP=0x3ed0
+ PID 1: RETURN 1 (0x1)
+PID 1: SYSCALL 16 (write) - Heap end(sz)=0x4000 User SP=0x3ed0
+sPID 1: RETURN 1 (0x1)
+PID 1: SYSCALL 16 (write) - Heap end(sz)=0x4000 User SP=0x3ed0
+hPID 1: RETURN 1 (0x1)
+PID 1: SYSCALL 16 (write) - Heap end(sz)=0x4000 User SP=0x3ed0
+
+PID 1: RETURN 1 (0x1)
+PID 1: SYSCALL 1 (fork) - Heap end(sz)=0x4000 User SP=0x3fb0
+PID 1: RETURN 2 (0x2)
+PID 1: SYSCALL 3 (wait) - Heap end(sz)=0x4000 User SP=0x3fb0
+PID 2: SYSCALL 7 (exec) - Heap end(sz)=0x4000 User SP=0x3fb0
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 15 (open) - Heap end(sz)=0x5000 User SP=0x4f90
+PID 2: RETURN 3 (0x3)
+PID 2: SYSCALL 21 (close) - Heap end(sz)=0x5000 User SP=0x4f90
+PID 2: RETURN 0 (0x0)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4f70
+$ PID 2: RETURN 2 (0x2)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4f70
+$ PID 2: RETURN 2 (0x2)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4f70
+$ PID 2: RETURN 2 (0x2)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4f70
+$ PID 2: RETURN 2 (0x2)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+jj
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 1 (fork) - Heap end(sz)=0x5000 User SP=0x4f80
+PID 2: RETURN 3 (0x3)
+PID 2: SYSCALL 3 (wait) - Heap end(sz)=0x5000 User SP=0x4f90
+PID 3: SYSCALL 12 (sbrk) - Heap end(sz)=0x5000 User SP=0x4e00
+PID 3: RETURN 20480 (0x5000)
+PID 3: SYSCALL 7 (exec) - Heap end(sz)=0x15000 User SP=0x4f60
+PID 3: RETURN -1 (0xffffffffffffffff)
+PID 3: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e90
+ePID 3: RETURN 1 (0x1)
+PID 3: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e90
+xPID 3: RETURN 1 (0x1)
+PID 3: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e90
+ePID 3: RETURN 1 (0x1)
+PID 3: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e90
+cPID 3: RETURN 1 (0x1)
+PID 3: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e90
+ PID 3: RETURN 1 (0x1)
+PID 3: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e90
+jPID 3: RETURN 1 (0x1)
+PID 3: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e90
+jPID 3: RETURN 1 (0x1)
+PID 3: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e90
+ PID 3: RETURN 1 (0x1)
+PID 3: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e90
+fPID 3: RETURN 1 (0x1)
+PID 3: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e90
+aPID 3: RETURN 1 (0x1)
+PID 3: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e90
+iPID 3: RETURN 1 (0x1)
+PID 3: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e90
+lPID 3: RETURN 1 (0x1)
+PID 3: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e90
+ePID 3: RETURN 1 (0x1)
+PID 3: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e90
+dPID 3: RETURN 1 (0x1)
+PID 3: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e90
+
+PID 3: RETURN 1 (0x1)
+PID 3: SYSCALL 2 (exit) - Heap end(sz)=0x15000 User SP=0x4f60
+PID 2: RETURN 3 (0x3)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4f70
+$ PID 2: RETURN 2 (0x2)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4f70
+$ PID 2: RETURN 2 (0x2)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+cd /mnt/c/Users/giorgi/Downloads/xv6-riscv/tools && ls -la output-*T09* | tail -4
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 1 (fork) - Heap end(sz)=0x5000 User SP=0x4f80
+PID 2: RETURN 4 (0x4)
+PID 2: SYSCALL 3 (wait) - Heap end(sz)=0x5000 User SP=0x4f90
+PID 4: SYSCALL 12 (sbrk) - Heap end(sz)=0x5000 User SP=0x4e00
+PID 4: RETURN 20480 (0x5000)
+PID 4: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e80
+lPID 4: RETURN 1 (0x1)
+PID 4: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e80
+ePID 4: RETURN 1 (0x1)
+PID 4: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e80
+fPID 4: RETURN 1 (0x1)
+PID 4: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e80
+tPID 4: RETURN 1 (0x1)
+PID 4: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e80
+oPID 4: RETURN 1 (0x1)
+PID 4: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e80
+vPID 4: RETURN 1 (0x1)
+PID 4: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e80
+ePID 4: RETURN 1 (0x1)
+PID 4: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e80
+rPID 4: RETURN 1 (0x1)
+PID 4: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e80
+sPID 4: RETURN 1 (0x1)
+PID 4: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e80
+:PID 4: RETURN 1 (0x1)
+PID 4: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e80
+ PID 4: RETURN 1 (0x1)
+PID 4: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e80
+lPID 4: RETURN 1 (0x1)
+PID 4: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e80
+sPID 4: RETURN 1 (0x1)
+PID 4: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e80
+ PID 4: RETURN 1 (0x1)
+PID 4: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e80
+-PID 4: RETURN 1 (0x1)
+PID 4: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e80
+lPID 4: RETURN 1 (0x1)
+PID 4: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e80
+aPID 4: RETURN 1 (0x1)
+PID 4: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e80
+ PID 4: RETURN 1 (0x1)
+PID 4: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e80
+oPID 4: RETURN 1 (0x1)
+PID 4: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e80
+uPID 4: RETURN 1 (0x1)
+PID 4: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e80
+tPID 4: RETURN 1 (0x1)
+PID 4: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e80
+pPID 4: RETURN 1 (0x1)
+PID 4: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e80
+uPID 4: RETURN 1 (0x1)
+PID 4: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e80
+tPID 4: RETURN 1 (0x1)
+PID 4: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e80
+-PID 4: RETURN 1 (0x1)
+PID 4: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e80
+*PID 4: RETURN 1 (0x1)
+PID 4: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e80
+TPID 4: RETURN 1 (0x1)
+PID 4: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e80
+0PID 4: RETURN 1 (0x1)
+PID 4: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e80
+9PID 4: RETURN 1 (0x1)
+PID 4: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e80
+*PID 4: RETURN 1 (0x1)
+PID 4: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e80
+ PID 4: RETURN 1 (0x1)
+PID 4: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e80
+|PID 4: RETURN 1 (0x1)
+PID 4: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e80
+ PID 4: RETURN 1 (0x1)
+PID 4: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e80
+tPID 4: RETURN 1 (0x1)
+PID 4: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e80
+aPID 4: RETURN 1 (0x1)
+PID 4: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e80
+iPID 4: RETURN 1 (0x1)
+PID 4: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e80
+lPID 4: RETURN 1 (0x1)
+PID 4: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e80
+ PID 4: RETURN 1 (0x1)
+PID 4: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e80
+-PID 4: RETURN 1 (0x1)
+PID 4: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e80
+4PID 4: RETURN 1 (0x1)
+PID 4: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e80
+
+PID 4: RETURN 1 (0x1)
+PID 4: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e80
+
+PID 4: RETURN 1 (0x1)
+PID 4: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e70
+sPID 4: RETURN 1 (0x1)
+PID 4: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e70
+yPID 4: RETURN 1 (0x1)
+PID 4: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e70
+nPID 4: RETURN 1 (0x1)
+PID 4: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e70
+tPID 4: RETURN 1 (0x1)
+PID 4: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e70
+aPID 4: RETURN 1 (0x1)
+PID 4: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e70
+xPID 4: RETURN 1 (0x1)
+PID 4: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e70
+
+PID 4: RETURN 1 (0x1)
+PID 4: SYSCALL 2 (exit) - Heap end(sz)=0x15000 User SP=0x4f40
+PID 2: RETURN 4 (0x4)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4f70
+$ PID 2: RETURN 2 (0x2)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+printf "\001x"
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 1 (fork) - Heap end(sz)=0x5000 User SP=0x4f80
+PID 2: RETURN 5 (0x5)
+PID 2: SYSCALL 3 (wait) - Heap end(sz)=0x5000 User SP=0x4f90
+PID 5: SYSCALL 12 (sbrk) - Heap end(sz)=0x5000 User SP=0x4e00
+PID 5: RETURN 20480 (0x5000)
+PID 5: SYSCALL 7 (exec) - Heap end(sz)=0x15000 User SP=0x4f60
+PID 5: RETURN -1 (0xffffffffffffffff)
+PID 5: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e90
+ePID 5: RETURN 1 (0x1)
+PID 5: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e90
+xPID 5: RETURN 1 (0x1)
+PID 5: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e90
+ePID 5: RETURN 1 (0x1)
+PID 5: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e90
+cPID 5: RETURN 1 (0x1)
+PID 5: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e90
+ PID 5: RETURN 1 (0x1)
+PID 5: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e90
+pPID 5: RETURN 1 (0x1)
+PID 5: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e90
+rPID 5: RETURN 1 (0x1)
+PID 5: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e90
+iPID 5: RETURN 1 (0x1)
+PID 5: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e90
+nPID 5: RETURN 1 (0x1)
+PID 5: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e90
+tPID 5: RETURN 1 (0x1)
+PID 5: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e90
+fPID 5: RETURN 1 (0x1)
+PID 5: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e90
+ PID 5: RETURN 1 (0x1)
+PID 5: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e90
+fPID 5: RETURN 1 (0x1)
+PID 5: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e90
+aPID 5: RETURN 1 (0x1)
+PID 5: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e90
+iPID 5: RETURN 1 (0x1)
+PID 5: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e90
+lPID 5: RETURN 1 (0x1)
+PID 5: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e90
+ePID 5: RETURN 1 (0x1)
+PID 5: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e90
+dPID 5: RETURN 1 (0x1)
+PID 5: SYSCALL 16 (write) - Heap end(sz)=0x15000 User SP=0x4e90
+
+PID 5: RETURN 1 (0x1)
+PID 5: SYSCALL 2 (exit) - Heap end(sz)=0x15000 User SP=0x4f60
+PID 2: RETURN 5 (0x5)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4f70
+$ PID 2: RETURN 2 (0x2)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+cd /mnt/c/Users/giorgi/Downloads/xv6-riscv/tools && ls -lat | head -10
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 5 (read) - Heap end(sz)=0x5000 User SP=0x4f00
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 9 (chdir) - Heap end(sz)=0x5000 User SP=0x4f90
+PID 2: RETURN -1 (0xffffffffffffffff)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+cPID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+aPID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+nPID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+nPID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+oPID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+tPID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+ PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+cPID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+dPID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+ PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+/PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+mPID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+nPID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+tPID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+/PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+cPID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+/PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+UPID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+sPID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+ePID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+rPID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+sPID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+/PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+gPID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+iPID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+oPID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+rPID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+gPID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+iPID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+/PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+DPID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+oPID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+wPID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+nPID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+lPID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+oPID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+aPID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+dPID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+sPID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+/PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+xPID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+vPID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+6PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+-PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+rPID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+iPID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+sPID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+cPID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+vPID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+/PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+tPID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+oPID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+oPID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+lPID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+sPID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+ PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+&PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+&PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+ PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+lPID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+sPID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+ PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+-PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+lPID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+aPID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+tPID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+ PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+|PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+ PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+hPID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+ePID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+aPID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+dPID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+ PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+-PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+1PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+0PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4ec0
+
+PID 2: RETURN 1 (0x1)
+PID 2: SYSCALL 16 (write) - Heap end(sz)=0x5000 User SP=0x4f70
+$ 
