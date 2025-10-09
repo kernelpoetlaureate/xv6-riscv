@@ -144,6 +144,10 @@ consoleintr(int c)
   switch(c){
   case C('P'):  // Print process list.
     procdump();
+    // Also call the richer process memory inspector on Ctrl-P so users
+    // can trigger a one-off dump from the console without a background
+    // kernel thread.
+    dump_process_info();
     break;
   case C('U'):  // Kill line.
     while(cons.e != cons.w &&

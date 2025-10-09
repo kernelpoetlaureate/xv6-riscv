@@ -31,9 +31,11 @@ main()
     iinit();         // inode table
     fileinit();      // file table
     virtio_disk_init(); // emulated hard disk
-    userinit();      // first user process
-    // Create a simple test kernel thread (no locks, no printf)
-    // kthread_create(simple_test_thread, "test"); // DISABLED - even simple threads cause panic
+  userinit();      // first user process
+  // One-shot test: dump process info once at boot to verify the printer.
+  // This avoids creating a background kernel thread which can introduce
+  // lock ordering complexities. Remove this call once you've verified output.
+  dump_process_info();
     __sync_synchronize();
     started = 1;
   } else {

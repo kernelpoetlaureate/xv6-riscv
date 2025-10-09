@@ -229,6 +229,9 @@ found:
     release(&p->lock);
     return 0;
   }
+  // Ensure the trapframe is zeroed so debug prints (and other readers)
+  // don't observe leftover junk from kalloc's filler pattern.
+  memset(p->trapframe, 0, sizeof(*p->trapframe));
 
   // An empty user page table.
   p->pagetable = proc_pagetable(p);
