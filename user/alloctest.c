@@ -25,9 +25,11 @@ main(int argc, char *argv[])
   
   printf("Memory allocated at %p\n", mem);
   printf("Run 'dumppi' now to see allocated pages\n");
+  printf("Press Enter to continue and free memory...\n");
   
   // Keep the memory allocated while user runs dumppi
-  pause(5000);
+  char c;
+  read(0, &c, 1);  // Wait for user input
   
   free(mem);
   printf("Memory freed\n");
