@@ -130,6 +130,7 @@ static uint64 (*syscalls[])(void) = {
 
 // Optional human-readable syscall names aligned with syscall numbers.
 // syscall_names indexed by syscall number; index 0 is unused/placeholder.
+/*
 static const char *syscall_names[] = {
   "?",      // 0
   "fork",   // 1
@@ -154,6 +155,7 @@ static const char *syscall_names[] = {
   "mkdir",  // 20
   "close"   // 21
 };
+*/
 
 void
 syscall(void)
@@ -164,15 +166,15 @@ syscall(void)
   num = p->trapframe->a7;
   if(num > 0 && num < NELEM(syscalls) && syscalls[num]) {
     // Log BEFORE execution: pid, syscall num/name, and basic memory state
-    const char *name = (num < NELEM(syscall_names) && syscall_names[num]) ? syscall_names[num] : "?";
-  printf("PID %d: SYSCALL %d (%s) - ", p->pid, num, name);
-  printf("Heap end(sz)=0x%lx User SP=0x%lx\n", p->sz, p->trapframe->sp);
+    // const char *name = (num < NELEM(syscall_names) && syscall_names[num]) ? syscall_names[num] : "?";
+    // printf("PID %d: SYSCALL %d (%s) - ", p->pid, num, name);
+    // printf("Heap end(sz)=0x%lx User SP=0x%lx\n", p->sz, p->trapframe->sp);
 
     // Call the syscall and store its return value in a0
     p->trapframe->a0 = syscalls[num]();
 
     // Log AFTER execution: return value
-  printf("PID %d: RETURN %d (0x%lx)\n", p->pid, (int)p->trapframe->a0, p->trapframe->a0);
+    // printf("PID %d: RETURN %d (0x%lx)\n", p->pid, (int)p->trapframe->a0, p->trapframe->a0);
   } else {
     printf("%d %s: unknown sys call %d\n",
             p->pid, p->name, num);
