@@ -34,11 +34,31 @@ parse_addr(const char *s)
 void
 dump_memory_range(char *start, int length)
 {
-  printf("Memory at %p:\n", start);
+  // print header: Memory at 0x...
+  printf("Memory at ");
+  printf("%p", (void*)start);
+  printf(":\n");
+
+  // helper: convert nibble (0..15) to hex char
+  char hexchar[16];
+  for(int i = 0; i < 16; i++) hexchar[i] = "0123456789ABCDEF"[i];
+
   for(int i = 0; i < length && i < 64; i++) { // Limit output
-    if(i % 16 == 0) printf("\n%04x: ", i);
+    if(i % 16 == 0) {
+      // print newline then 4-digit hex offset (zero-padded).
+      printf("\n");
+      int off = i & 0xFFFF;
+      // four hex digits: print high nibble to low
+  printf("%c", hexchar[(off >> 12) & 0xF]);
+  printf("%c", hexchar[(off >> 8) & 0xF]);
+  printf("%c", hexchar[(off >> 4) & 0xF]);
+  printf("%c", hexchar[(off >> 0) & 0xF]);
+  printf(": ");
+    }
     unsigned char b = (unsigned char)start[i];
-    printf("%02x ", b & 0xFF);
+  printf("%c", hexchar[(b >> 4) & 0xF]);
+  printf("%c", hexchar[b & 0xF]);
+  printf(" ");
   }
   printf("\n");
 }
