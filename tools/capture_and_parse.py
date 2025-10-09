@@ -79,17 +79,43 @@ def cleanup_old_files(out_dir):
         print("✅ No old files to clean up\n")
 
 
-def run_and_capture(cmd, raw_path):
+def run_and_capture(cmd, raw_path, timeout=30):
     """Run the command, capture stdout+stderr, write to raw_path"""
-    print(f"Running: {' '.join(cmd) if isinstance(cmd, list) else cmd}")
+    print(f"Running: {' '.join(cmd) if isinstance(cmd, list) else cmd} (timeout: {timeout}s)")
+    import threading
+    import time
+    
+    def kill_proc_after_timeout(proc, timeout):
+        time.sleep(timeout)
+        if proc.poll() is None:
+            print(f"\nTimeout after {timeout}s, terminating process...")
+            proc.terminate()
+            time.sleep(2)
+            if proc.poll() is None:
+                proc.kill()
+    
     with raw_path.open('wb') as f:
         proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        for chunk in iter(lambda: proc.stdout.read(1024), b""):
-            f.write(chunk)
-            f.flush()
-            # also echo to console
-            sys.stdout.buffer.write(chunk)
-            sys.stdout.flush()
+        
+        # Start timeout thread
+        timeout_thread = threading.Thread(target=kill_proc_after_timeout, args=(proc, timeout))
+        timeout_thread.daemon = True
+        timeout_thread.start()
+        
+        try:
+            for chunk in iter(lambda: proc.stdout.read(1024), b""):
+                f.write(chunk)
+                f.flush()
+                # also echo to console
+                sys.stdout.buffer.write(chunk)
+                sys.stdout.flush()
+        except KeyboardInterrupt:
+            print("\nInterrupted by user, terminating process...")
+            proc.terminate()
+            time.sleep(2)
+            if proc.poll() is None:
+                proc.kill()
+        
         proc.wait()
     return proc.returncode
 
@@ -225,7 +251,9 @@ def main(argv):
     raw_dir.mkdir(parents=True, exist_ok=True)
 
     raw_path = raw_dir / f'{ts}.log'
-    rc = run_and_capture(cmd, raw_path)
+    # Use longer timeout for QEMU (60 seconds) vs regular commands (30 seconds)
+    timeout = 60 if args.run_xv6 else 30
+    rc = run_and_capture(cmd, raw_path, timeout)
     print(f'Raw output saved to {raw_path} (rc={rc})')
 
     # Now parse the captured log
