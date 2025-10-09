@@ -8,13 +8,14 @@
 #include "spinlock.h"
 #include "riscv.h"
 #include "defs.h"
-#include "pageinfo.h"
 #include "proc.h"
-
-void freerange(void *pa_start, void *pa_end);
+#include "pageinfo.h"
 
 extern char end[]; // first address after kernel.
                    // defined by kernel.ld.
+
+// forward declaration to avoid implicit-declaration when kinit calls freerange
+void freerange(void *pa_start, void *pa_end);
 
 struct run {
   struct run *next;
@@ -64,7 +65,7 @@ freerange(void *pa_start, void *pa_end)
     kfree(p);
 }
 
-// Free the page of physical memory pointed at by pa,
+// Free the page of physical memory pointed at by v,
 // which normally should have been returned by a
 // call to kalloc().  (The exception is when
 // initializing the allocator; see kinit above.)
@@ -75,51 +76,12 @@ kfree(void *pa)
 
   if(((uint64)pa % PGSIZE) != 0 || (char*)pa < end || (uint64)pa >= PHYSTOP)
     panic("kfree");
+    
+  // Register the page as free
+  register_page_free((uint64)pa);
 
   // Fill with junk to catch dangling refs.
   memset(pa, 1, PGSIZE);
-
-  if(kmem_initializing) {
-    /* Always count freed pages during initialization */
-    kmem_freed_pages++;
-
-    if(kmem_log_boot) {
-      /*
-       * Print only a concise selection: the first HEAD_PRINT pages,
-       * a few evenly spaced middle samples, and the last LAST_PRINT pages.
-       * This keeps boot logging to a few dozen lines instead of thousands.
-       */
-      const uint64 HEAD_PRINT = 8;
-      const uint64 LAST_PRINT = 8;
-      const uint64 MIDDLE_SAMPLES = 8; /* number of middle samples */
-
-      uint64 idx = kmem_freed_pages - 1; /* 0-based index of this freed page */
-      int do_print = 0;
-
-      if(kmem_initial_pages > 0) {
-        if(idx < HEAD_PRINT)
-          do_print = 1;
-        else if(idx >= kmem_initial_pages - LAST_PRINT)
-          do_print = 1;
-        else {
-          /* pick a few middle samples evenly spaced */
-          uint64 slots = MIDDLE_SAMPLES + 2; /* include head/tail in spacing calc */
-          if(kmem_initial_pages > slots) {
-            uint64 stride = kmem_initial_pages / slots;
-            if (stride > 0 && (idx % stride) == 0)
-              do_print = 1;
-          }
-        }
-      } else {
-        /* fallback: small amount of logging */
-        if(kmem_freed_pages <= HEAD_PRINT)
-          do_print = 1;
-      }
-
-      if(do_print)
-        printf("kfree: freeing page at %p\n", pa);
-    }
-  }
 
   r = (struct run*)pa;
 
@@ -143,41 +105,16 @@ kalloc(void)
     kmem.freelist = r->next;
   release(&kmem.lock);
 
-  if(r)
+  if(r) {
     memset((char*)r, 5, PGSIZE); // fill with junk
-  // record allocation in pageinfo (owner is current proc if any, else kernel pid 0)
-  int owner = 0;
-  struct proc *p = myproc();
-  if(p) owner = p->pid;
-
-  // Use more detailed tagging to identify kernel subsystem
-  const char* tag = "kalloc";
-  
-  // Check if we're in a specific kernel context to provide better tagging
-  if (p == 0) {
-    // No process context - early boot or pure kernel
-    tag = "kernel-core";
-  } else if (p->pid == 0) {
-    // Init process
-    tag = "kernel-init";
-  } else if (p->name[0] != 0) {
-    // Try to identify kernel subsystem based on the process name
-    if (strncmp(p->name, "sh", 2) == 0)
-      tag = "shell";
-    else if (strncmp(p->name, "init", 4) == 0)
-      tag = "init";
-    else if (strncmp(p->name, "cat", 3) == 0)
-      tag = "cat";
-    else if (strncmp(p->name, "ls", 2) == 0)
-      tag = "ls";
-    // Add more common process names if needed
+    
+    // Register this page allocation
+    int pid = 0;
+    struct proc *p = myproc();
+    if(p)
+      pid = p->pid;
+    register_page_allocation((uint64)r, pid);
   }
-  
-  // Set the page type more precisely
-  unsigned char type = PGTYPE_KERNEL;
-  if(p && p->pid > 0)
-    type = PGTYPE_USER;
-  
-  pageinfo_set_alloc((void*)r, type, owner, tag);
   return (void*)r;
 }
+

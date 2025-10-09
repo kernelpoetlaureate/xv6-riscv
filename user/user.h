@@ -48,9 +48,13 @@ void printf(const char*, ...) __attribute__ ((format (printf, 1, 2)));
 
 // kernel read: read kernel virtual memory into user buffer
 int kread(uint64 addr, int len, char *dst);
-int pageinfo(uint64 dst, int max);
-int pageinfo_va(uint64 dst, uint64 vaddr);
-int pageinfo_phys(uint64 dst, uint64 paddr);
+int pageinfo(uint64 addr, int isphys);
+// query pageinfo for a virtual address: pageinfo_va(dst_user_ptr, va)
+// dst is a user-space pointer (passed as uint64) where kernel will copy the pageinfo struct
+int pageinfo_va(uint64 dst, uint64 va);
+// copy pageinfo entry for physical address 'pa' into user buffer at dst
+// signature: pageinfo_phys(dst_user_ptr, phys_addr)
+int pageinfo_phys(uint64 dst, uint64 pa);
 
 // umalloc.c
 void* malloc(uint);

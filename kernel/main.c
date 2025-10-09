@@ -10,16 +10,16 @@ volatile static int started = 0;
 // on the RISC-V environment used by xv6. Use console `printf` instead.
 
 // start() jumps here in supervisor mode on all CPUs.
-int
+void
 main()
 {
   if(cpuid() == 0){
     consoleinit();
     printfinit();
     printf("\n");
-    printf("xv6 kernel is booting\n");
-    printf("\n");
+    printf("Hello, World!\n");
     kinit();         // physical page allocator
+    pageinfo_init(); // initialize page allocation tracking
     kvminit();       // create kernel page table
     kvminithart();   // turn on paging
     procinit();      // process table
@@ -48,8 +48,7 @@ main()
     plicinithart();   // ask PLIC for device interrupts
   }
 
-  printf("Hello, World!\n");
-
   scheduler();        
-  return 0;
+  scheduler();        
+  return;
 }

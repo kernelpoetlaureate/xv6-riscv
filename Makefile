@@ -92,12 +92,20 @@ $K/kernel: $(OBJS) $K/kernel.ld
 $K/%.o: $K/%.S
 	$(CC) -g -c -o $@ $<
 
+# Add rule to compile kernel C sources to object files
+$K/%.o: $K/%.c
+	$(CC) $(CFLAGS) -c -o $@ $<
+
 tags: $(OBJS)
 	etags kernel/*.S kernel/*.c
 
 ULIB = $U/ulib.o $U/usys.o $U/printf.o $U/umalloc.o $U/pageinfo_va.o $U/pageinfo_phys.o
 
 $U/%.o: $U/%.S
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+# Add rule to compile user C sources to object files
+$U/%.o: $U/%.c
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 _%: %.o $(ULIB) $U/user.ld
@@ -148,6 +156,9 @@ UPROGS=\
 	$U/_dorphan\
 	$U/_memdump\
 	$U/_memdump_phys\
+	$U/_dumppi\
+	$U/_alloctest\
+	$U/_dumpall\
 
 fs.img: mkfs/mkfs README $(UPROGS)
 	mkfs/mkfs fs.img README $(UPROGS)
@@ -196,3 +207,13 @@ check-qemu-version:
 		echo "ERROR: Need qemu version >= $(MIN_QEMU_VERSION)"; \
 		exit 1; \
 	fi
+
+# Helper: brief instructions for using dumppi
+dumppi-info:
+	@echo "Build fs.img and boot xv6 (make qemu). In the xv6 shell run 'dumppi' to list allocated/mapped pages."
+	@echo "If dumppi reports 'No allocated/mapped pages found.': create allocations first by running user programs (e.g. memdump, forktest, stressfs) or start several processes, then run dumppi again."
+
+# Helper: build and boot xv6 to use dumppi inside the guest
+run-dumppi: check-qemu-version $K/kernel fs.img
+	@echo "Booting xv6; when at the xv6 shell, run: dumppi"
+	$(QEMU) $(QEMUOPTS)

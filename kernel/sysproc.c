@@ -138,13 +138,19 @@ sys_uptime(void)
 uint64
 sys_pageinfo(void)
 {
-  uint64 dst;
-  int max;
-  argaddr(0, &dst);
-  argint(1, &max);
-  if(max <= 0) return -1;
-
-  return pageinfo_copy_to_user(dst, max);
+  uint64 addr;
+  int isphys;
+  
+  if(argaddr(0, &addr) < 0 || argint(1, &isphys) < 0)
+    return -1;
+  
+  // Mode 2 is special - dump all page info
+  if(isphys == 2) {
+    return dump_pageinfo();
+  }
+  
+  // Normal page info modes for virtual/physical addresses not implemented yet
+  return -1;
 }
 
 // syscall pageinfo_va(dst_user_ptr, vaddr)
