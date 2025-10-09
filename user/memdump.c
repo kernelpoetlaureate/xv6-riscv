@@ -72,13 +72,26 @@ main(int argc, char **argv)
   }
 
   unsigned long addr = parse_addr(argv[1]);
-  if(addr >= KERNBASE){
-    printf("memdump: address 0x%lx is in kernel space (>= 0x%lx); refusing\n", addr, (unsigned long)KERNBASE);
-    exit(1);
-  }
   int length = 64;
   if(argc >= 3) length = atoi(argv[2]);
 
+  if(addr >= KERNBASE){
+    /* Read kernel memory via syscall kread into a local buffer */
+    if(length > 4096) length = 4096; // match kernel limit
+    char *buf = malloc(length);
+    if(!buf){
+      printf("memdump: failed to allocate buffer\n");
+      exit(1);
+    }
+    if(kread(addr, length, buf) < 0){
+      printf("memdump: kread failed for 0x%lx\n", addr);
+      free(buf);
+      exit(1);
+    }
+    dump_memory_range(buf, length);
+    free(buf);
+    exit(0);
+  }
   dump_memory_range((char *)addr, length);
   exit(0);
 }

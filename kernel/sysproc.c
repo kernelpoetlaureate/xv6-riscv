@@ -95,6 +95,28 @@ sys_kill(void)
   return kkill(pid);
 }
 
+// Copy kernel virtual memory starting at addr to user-space buffer.
+// syscall kread(addr, len, dstuser)
+uint64
+sys_kread(void)
+{
+  uint64 addr;
+  int len;
+  uint64 dst;
+
+  argaddr(0, &addr);
+  argint(1, &len);
+  argaddr(2, &dst);
+
+  if(len < 0 || len > 4096) // limit readers to a page to avoid abuse
+    return -1;
+
+  // either_copyout with user_dst=1 will copy from kernel addr to user dst
+  if(either_copyout(1, dst, (char*)addr, (uint64)len) < 0)
+    return -1;
+  return 0;
+}
+
 // return how many clock tick interrupts have occurred
 // since start.
 uint64

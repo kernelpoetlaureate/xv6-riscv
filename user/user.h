@@ -44,6 +44,9 @@ char* sbrklazy(int);
 void fprintf(int, const char*, ...) __attribute__ ((format (printf, 2, 3)));
 void printf(const char*, ...) __attribute__ ((format (printf, 1, 2)));
 
+// kernel read: read kernel virtual memory into user buffer
+int kread(unsigned long addr, int len, char *dst);
+
 // umalloc.c
 void* malloc(uint);
 void free(void*);
