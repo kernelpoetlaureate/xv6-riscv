@@ -786,3 +786,83 @@ procdump(void)
     printf("\n");
   }
 }
+
+// Dump richer per-process information for debugging.
+// This is a lightweight inspector that prints state, parent pid,
+// user memory range (kernel-side view), trapframe stack pointer and
+// open file descriptors.
+// Uses lockless approach like procdump() to avoid deadlocks.
+void
+dump_process_info(void)
+{
+  struct proc *p;
+
+  printf("\n--- Process Inspector Dump ---\n");
+  for(p = proc; p < &proc[NPROC]; p++){
+    if(p->state == UNUSED)
+      continue;
+    
+    printf("\n=== Process %d (%s) ===\n", p->pid, p->name);
+    printf("State: %d, Parent: %d\n", p->state, p->parent ? p->parent->pid : -1);
+    printf("Memory: 0x%lx-0x%lx, Stack: 0x%lx\n", 0UL, p->sz, p->trapframe ? p->trapframe->sp : 0UL);
+    printf("Open files: ");
+    for(int i = 0; i < NOFILE; i++){
+      if(p->ofile[i]) printf("%d ", i);
+    }
+    printf("\n");
+  }
+  printf("--- End Process Dump ---\n");
+}
+
+// Simple kernel thread that just yields CPU without doing anything.
+// This is a test to see if kernel thread creation works without locks.
+void
+simple_test_thread(void)
+{
+  for(;;){
+    yield(); // Just give up CPU and reschedule
+  }
+}
+
+// Kernel thread: periodically call dump_process_info.
+// Sleeps on the global ticks to be woken every N ticks.
+// 
+// CONFIGURATION:
+// - Change 'interval' below to adjust dump frequency (100 ticks ≈ 1 second)
+// - Disable by removing kthread_create() call in main.c
+// - Or change interval to 0 to disable dumps while keeping thread alive
+void
+process_inspector(void)
+{
+  const int interval = 100; // ticks between dumps (approx)
+  
+  for(;;){
+    // Wait first to avoid immediate dump at startup
+    acquire(&tickslock);
+    uint start_ticks = ticks;
+    while(ticks - start_ticks < interval){
+      sleep(&ticks, &tickslock);
+    }
+    release(&tickslock);
+    
+    // Now dump process info (no locks held)
+    dump_process_info();
+  }
+}
+
+// Create a kernel thread that runs the given function. Returns pid or -1.
+int
+kthread_create(void (*fn)(void), char *name)
+{
+  struct proc *p = allocproc();
+  if(!p) return -1;
+
+  // p->lock is held from allocproc
+  safestrcpy(p->name, name, sizeof(p->name));
+  p->context.ra = (uint64)fn;
+  p->context.sp = p->kstack + PGSIZE;
+  p->state = RUNNABLE;
+  int pid = p->pid;
+  release(&p->lock);
+  return pid;
+}

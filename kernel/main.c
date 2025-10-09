@@ -6,8 +6,11 @@
 
 volatile static int started = 0;
 
+// Note: direct VGA memory at 0xB8000 is x86-specific and not present
+// on the RISC-V environment used by xv6. Use console `printf` instead.
+
 // start() jumps here in supervisor mode on all CPUs.
-void
+int
 main()
 {
   if(cpuid() == 0){
@@ -29,6 +32,8 @@ main()
     fileinit();      // file table
     virtio_disk_init(); // emulated hard disk
     userinit();      // first user process
+    // Create a simple test kernel thread (no locks, no printf)
+    // kthread_create(simple_test_thread, "test"); // DISABLED - even simple threads cause panic
     __sync_synchronize();
     started = 1;
   } else {
@@ -41,5 +46,8 @@ main()
     plicinithart();   // ask PLIC for device interrupts
   }
 
+  printf("Hello, World!\n");
+
   scheduler();        
+  return 0;
 }
