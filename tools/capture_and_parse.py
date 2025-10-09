@@ -25,11 +25,58 @@ Output:
 - tools/output-<timestamp>-kfree.csv (CSV data)
 """
 import argparse
+import glob
+import os
 import re
 import subprocess
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
+
+
+def cleanup_old_files(out_dir):
+    """Remove old output files and raw logs to keep workspace clean"""
+    out_base = Path(out_dir)
+    
+    # Patterns for files to clean up
+    patterns = [
+        'output-*T*Z.md',           # Timestamped markdown files
+        'output-*T*Z-kfree.csv',   # Timestamped CSV files
+        'test-unified*.md',         # Test files
+        'test-unified*.csv',        # Test CSV files
+        'unified-test*.md',         # More test files
+        'unified-test*.csv',        # More test CSV files
+    ]
+    
+    print("🧹 Cleaning up old output files...")
+    removed_count = 0
+    
+    for pattern in patterns:
+        for file_path in out_base.glob(pattern):
+            try:
+                file_path.unlink()
+                print(f"  Removed: {file_path.name}")
+                removed_count += 1
+            except OSError as e:
+                print(f"  Warning: Could not remove {file_path.name}: {e}")
+    
+    # Clean up old raw logs (keep only last 3 for safety)
+    raw_dir = out_base / 'raw'
+    if raw_dir.exists():
+        raw_logs = sorted(raw_dir.glob('*T*Z.log'), key=lambda p: p.stat().st_mtime, reverse=True)
+        if len(raw_logs) > 3:
+            for old_log in raw_logs[3:]:  # Keep newest 3, remove rest
+                try:
+                    old_log.unlink()
+                    print(f"  Removed old log: {old_log.name}")
+                    removed_count += 1
+                except OSError as e:
+                    print(f"  Warning: Could not remove {old_log.name}: {e}")
+    
+    if removed_count > 0:
+        print(f"✅ Cleaned up {removed_count} old files\n")
+    else:
+        print("✅ No old files to clean up\n")
 
 
 def run_and_capture(cmd, raw_path):
@@ -138,8 +185,13 @@ def main(argv):
     parser.add_argument('--out-dir', default='tools', help='output base dir')
     parser.add_argument('--run-xv6', action='store_true', help='run `make clean && make qemu` and capture its output')
     parser.add_argument('--parse-only', metavar='LOG_FILE', help='only parse an existing log file (no capture)')
+    parser.add_argument('--no-cleanup', action='store_true', help='skip cleanup of old files')
     parser.add_argument('cmd', nargs=argparse.REMAINDER, help='command to run (prefix with --)')
     args = parser.parse_args(argv[1:])
+
+    # Cleanup old files unless --no-cleanup is specified
+    if not args.no_cleanup:
+        cleanup_old_files(args.out_dir)
 
     # Parse-only mode
     if args.parse_only:

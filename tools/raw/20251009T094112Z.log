@@ -1919,8 +1919,8 @@ Memory: 0x[31m0[0m-0x[31m0[0m, Stack: 0x[31m0[0m
 Open files: 
 [31m--- End Process Dump ---[0m
 Hello, World!
-hart 2 starting
 hart 1 starting
+hart 2 starting
 Hello, World!
 Hello, World!
 PID 1: SYSCALL 15 (open) - Heap end(sz)=0x4000 User SP=0x3fb0
@@ -1972,8 +1972,8 @@ PID 1: SYSCALL 16 (write) - Heap end(sz)=0x4000 User SP=0x3ed0
 PID 1: RETURN 1 (0x1)
 PID 1: SYSCALL 1 (fork) - Heap end(sz)=0x4000 User SP=0x3fb0
 PID 1: RETURN 2 (0x2)
-PID 1: SYSCALL 3 (wait) - Heap end(sz)=0x4000 User SP=0x3fb0
-PID 2: SYSCALL 7 (exec) - Heap end(sz)=0x4000 User SP=0x3fb0
+PID 1: SYSCALL 3 (wait) - PID 2: SYSCALL 7 (exec) - Heap end(sz)=0x4000 User SP=0x3fb0
+Heap end(sz)=0x4000 User SP=0x3fb0
 PID 2: RETURN 1 (0x1)
 PID 2: SYSCALL 15 (open) - Heap end(sz)=0x5000 User SP=0x4f90
 PID 2: RETURN 3 (0x3)
