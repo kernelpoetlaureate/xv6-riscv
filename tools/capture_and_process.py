@@ -46,17 +46,25 @@ def run_and_capture(cmd, raw_path):
 def main(argv):
     parser = argparse.ArgumentParser()
     parser.add_argument('--out-dir', default='tools', help='output base dir')
+    parser.add_argument('--run-xv6', action='store_true', help='run `make clean && make qemu` and capture its output')
     parser.add_argument('cmd', nargs=argparse.REMAINDER, help='command to run (prefix with --)')
     args = parser.parse_args(argv[1:])
 
-    # argparse.REMAINDER may include a leading '--' when called using '-- cmd...'
-    cmd = args.cmd
-    if cmd and cmd[0] == '--':
-        cmd = cmd[1:]
+    # If --run-xv6 passed, run the typical build+qemu pipeline under a shell.
+    if args.run_xv6:
+        # Note: we run via the shell so '&&' works. This will use the system shell
+        # (on WSL that's bash). The subprocess invocation in run_and_capture expects a
+        # list of args; to allow shell features we pass ['bash', '-lc', '<cmd>'].
+        cmd = ['bash', '-lc', 'make clean && make qemu']
+    else:
+        # argparse.REMAINDER may include a leading '--' when called using '-- cmd...'
+        cmd = args.cmd
+        if cmd and cmd[0] == '--':
+            cmd = cmd[1:]
 
-    if not cmd:
-        print('Usage: capture_and_process.py -- <command>')
-        return 2
+        if not cmd:
+            print('Usage: capture_and_process.py [--run-xv6] -- <command>')
+            return 2
 
     # use timezone-aware UTC timestamp
     ts = datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')
