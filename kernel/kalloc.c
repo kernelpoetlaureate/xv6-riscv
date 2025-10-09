@@ -8,6 +8,8 @@
 #include "spinlock.h"
 #include "riscv.h"
 #include "defs.h"
+#include "pageinfo.h"
+#include "proc.h"
 
 void freerange(void *pa_start, void *pa_end);
 
@@ -44,6 +46,8 @@ kinit()
     kmem_initializing = 0;
     printf("kinit: finished freerange; freed pages=%lu\n", kmem_freed_pages);
   }
+  // initialize pageinfo subsystem after free list is built
+  pageinfo_init();
 }
 
 void
@@ -141,5 +145,10 @@ kalloc(void)
 
   if(r)
     memset((char*)r, 5, PGSIZE); // fill with junk
+  // record allocation in pageinfo (owner is current proc if any, else kernel pid 0)
+  int owner = 0;
+  struct proc *p = myproc();
+  if(p) owner = p->pid;
+  pageinfo_set_alloc((void*)r, PGTYPE_UNKNOWN, owner, "kalloc");
   return (void*)r;
 }

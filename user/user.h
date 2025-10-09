@@ -1,3 +1,5 @@
+#include "types.h"
+
 #define SBRK_ERROR ((char *)-1)
 
 struct stat;
@@ -45,7 +47,9 @@ void fprintf(int, const char*, ...) __attribute__ ((format (printf, 2, 3)));
 void printf(const char*, ...) __attribute__ ((format (printf, 1, 2)));
 
 // kernel read: read kernel virtual memory into user buffer
-int kread(unsigned long addr, int len, char *dst);
+int kread(uint64 addr, int len, char *dst);
+int pageinfo(uint64 dst, int max);
+int pageinfo_va(uint64 dst, uint64 vaddr);
 
 // umalloc.c
 void* malloc(uint);

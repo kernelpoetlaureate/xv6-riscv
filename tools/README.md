@@ -1,3 +1,49 @@
+Annotate memdump output with kernel symbols
+==========================================
+
+This small tool helps you map a raw `memdump` output (from the userland
+`memdump` program) to kernel symbols found in `kernel/kernel.sym`.
+
+Files
+- `tools/annotate_memdump.py` - reads memdump text from stdin and prints the
+  same rows annotated with owning kernel symbol(s).
+
+Quick usage
+
+1. Produce a memdump inside xv6 (example):
+
+   memdump 0x8000168a 64 > dump.txt
+
+   (If you run `memdump` against a kernel address it uses the `kread` syscall
+   to fetch kernel memory.)
+
+2. Annotate it locally (on your host) with the kernel symbol table:
+
+   cat dump.txt | python3 tools/annotate_memdump.py --sym kernel/kernel.sym
+
+Example (what you might see):
+
+  Memory at 0x000000008000168A:
+  168A: EF F0 9F DB ...
+    start -> vm.c+0x68A | end -> vm.c+0x69D | owner: vm.c (0x0-0xF)
+
+Notes and next steps
+- The script relies on `kernel/kernel.sym`. Rebuild your kernel if symbols
+  moved or you rebuilt the kernel.
+- The script is an offline annotator. To map arbitrary addresses to their
+  owners in real time inside xv6 you'd need a kernel helper (syscall) that
+  returns the owner information for an address. That syscall could:
+  - check whether the address is in kernel space and find the symbol (as we
+    do here), or
+  - walk the current process' page table (or scan all procs) to see which
+    process maps this virtual address, and return pid + virtual mapping info,
+  - for physical page owners, check the kernel allocator structures (e.g.
+    page reference counts / kmem lists) to attribute ownership.
+
+If you'd like, I can: implement a kernel syscall `mapinfo(addr)` that returns
+structured ownership info, or extend the annotator to also consult a dump of
+kernel data structures (proc table, page tables) to attribute pages to
+processes.
 parse_qemu_log
 =================
 

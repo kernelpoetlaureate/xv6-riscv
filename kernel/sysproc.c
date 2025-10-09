@@ -6,6 +6,7 @@
 #include "spinlock.h"
 #include "proc.h"
 #include "vm.h"
+#include "pageinfo.h"
 
 uint64
 sys_exit(void)
@@ -128,4 +129,41 @@ sys_uptime(void)
   xticks = ticks;
   release(&tickslock);
   return xticks;
+}
+
+// Copy kernel pageinfo table into user-space buffer.
+// syscall pageinfo(dst_user_ptr, max_entries)
+uint64
+sys_pageinfo(void)
+{
+  uint64 dst;
+  int max;
+  argaddr(0, &dst);
+  argint(1, &max);
+  if(max <= 0) return -1;
+
+  return pageinfo_copy_to_user(dst, max);
+}
+
+// syscall pageinfo_va(dst_user_ptr, vaddr)
+// copy the pageinfo entry for the physical page backing vaddr in the
+// current process into user buffer at dst. Returns 0 on success.
+uint64
+sys_pageinfo_va(void)
+{
+  uint64 dst;
+  uint64 va;
+  argaddr(0, &dst);
+  argaddr(1, &va);
+
+  struct proc *p = myproc();
+  if(!p) return -1;
+
+  // find physical address backing this virtual address in this process
+  uint64 pa = walkaddr(p->pagetable, va);
+  if(pa == 0) return -1;
+
+  if(pageinfo_copy_entry_to_user(dst, (void*)pa) < 0)
+    return -1;
+  return 0;
 }

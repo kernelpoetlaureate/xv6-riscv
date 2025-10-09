@@ -21,3 +21,5 @@
 #define SYS_mkdir  20
 #define SYS_close  21
 #define SYS_kread  22
+#define SYS_pageinfo 23
+#define SYS_pageinfo_va 24

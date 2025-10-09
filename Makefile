@@ -8,6 +8,7 @@ OBJS = \
   $K/printf.o \
   $K/uart.o \
   $K/kalloc.o \
+	$K/pageinfo.o \
   $K/spinlock.o \
   $K/string.o \
   $K/main.o \
@@ -94,7 +95,10 @@ $K/%.o: $K/%.S
 tags: $(OBJS)
 	etags kernel/*.S kernel/*.c
 
-ULIB = $U/ulib.o $U/usys.o $U/printf.o $U/umalloc.o
+ULIB = $U/ulib.o $U/usys.o $U/printf.o $U/umalloc.o $U/pageinfo_va.o
+
+$U/%.o: $U/%.S
+	$(CC) $(CFLAGS) -c -o $@ $<
 
 _%: %.o $(ULIB) $U/user.ld
 	$(LD) $(LDFLAGS) -T $U/user.ld -o $@ $< $(ULIB)
@@ -143,6 +147,7 @@ UPROGS=\
 	$U/_forphan\
 	$U/_dorphan\
 	$U/_memdump\
+	$U/_memdump_phys\
 
 fs.img: mkfs/mkfs README $(UPROGS)
 	mkfs/mkfs fs.img README $(UPROGS)

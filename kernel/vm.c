@@ -7,6 +7,7 @@
 #include "spinlock.h"
 #include "proc.h"
 #include "fs.h"
+#include "pageinfo.h"
 
 // proc table is defined in proc.c
 extern struct proc proc[NPROC];
@@ -177,6 +178,12 @@ mappages(pagetable_t pagetable, uint64 va, uint64 size, uint64 pa, int perm)
     if(*pte & PTE_V)
       panic("mappages: remap");
     *pte = PA2PTE(pa) | perm | PTE_V;
+    // record mapping in pageinfo; attribute to current process if available
+    int owner = 0;
+    struct proc *p = myproc();
+    if(p) owner = p->pid;
+    unsigned char t = (pagetable == kernel_pagetable) ? PGTYPE_KERNEL : PGTYPE_USER;
+    pageinfo_set_mapped((void*)pa, a, owner, t);
     if(a == last)
       break;
     a += PGSIZE;
