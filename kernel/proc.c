@@ -800,21 +800,26 @@ dump_process_info(void)
 {
   struct proc *p;
 
-  printf("\n--- Process Inspector Dump ---\n");
+  /* Print header in red to differentiate from body */
+  printf("\n\x1b[31m--- Process Inspector Dump ---\x1b[0m\n");
   for(p = proc; p < &proc[NPROC]; p++){
     if(p->state == UNUSED)
       continue;
     
-    printf("\n=== Process %d (%s) ===\n", p->pid, p->name);
-    printf("State: %d, Parent: %d\n", p->state, p->parent ? p->parent->pid : -1);
-    printf("Memory: 0x%lx-0x%lx, Stack: 0x%lx\n", 0UL, p->sz, p->trapframe ? p->trapframe->sp : 0UL);
+  /* Make the per-process title red to visually separate it from body */
+  printf("\n\x1b[31m=== Process %d (%s) ===\x1b[0m\n", p->pid, p->name);
+    /* State and parent: labels stay normal, dynamic numbers in red */
+    printf("State: \x1b[31m%d\x1b[0m, Parent: \x1b[31m%d\x1b[0m\n", p->state, p->parent ? p->parent->pid : -1);
+    /* Memory addresses and stack pointer in red (hex) */
+    printf("Memory: 0x\x1b[31m%lx\x1b[0m-0x\x1b[31m%lx\x1b[0m, Stack: 0x\x1b[31m%lx\x1b[0m\n", 0UL, p->sz, p->trapframe ? p->trapframe->sp : 0UL);
     printf("Open files: ");
     for(int i = 0; i < NOFILE; i++){
-      if(p->ofile[i]) printf("%d ", i);
+      if(p->ofile[i]) printf("\x1b[31m%d\x1b[0m ", i);
     }
     printf("\n");
   }
-  printf("--- End Process Dump ---\n");
+  /* Print footer in red to match header */
+  printf("\x1b[31m--- End Process Dump ---\x1b[0m\n");
 }
 
 // Simple kernel thread that just yields CPU without doing anything.
