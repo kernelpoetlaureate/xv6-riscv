@@ -17,7 +17,6 @@ struct spinlock pid_lock;
 
 extern void forkret(void);
 static void freeproc(struct proc *p);
-static void proc_verbose_dump(struct proc *p);
 
 extern char trampoline[]; // trampoline.S
 
@@ -57,23 +56,15 @@ procinit(void)
       p->state = UNUSED;
       p->kstack = KSTACK((int) (p - proc));
   }
-  // Print a one-line summary of each proc for debugging (safe: locks initialized).
-  static const char *state_name[] = {
-    "UNUSED", "USED", "SLEEPING", "RUNNABLE", "RUNNING", "ZOMBIE"
-  };
+  // Per-proc summary suppressed to keep boot output quiet. Keep locks initialized.
   for(int i = 0; i < NPROC; i++){
     struct proc *pp = &proc[i];
     acquire(&pp->lock);
-    const char *sname = "?";
-    if(pp->state >= 0 && pp->state <= ZOMBIE)
-      sname = state_name[pp->state];
-    printf("proc[%d] addr=%p pid=%d state=%s kstack=0x%lx pagetable=%p trapframe=%p parent=%p name=\"%s\" ctx_sp=0x%lx\n",
-           i, pp, pp->pid, sname, pp->kstack, pp->pagetable, pp->trapframe, pp->parent, pp->name, pp->context.sp);
     release(&pp->lock);
   }
 
   // One-shot raw PCB hexdump at boot. Set to 1 to enable and choose index.
-#define DUMP_PCB_AT_BOOT 1
+#define DUMP_PCB_AT_BOOT 0
 #define DUMP_PCB_INDEX 1
 #if DUMP_PCB_AT_BOOT
   {
@@ -114,9 +105,9 @@ procinit(void)
   }
 #endif
   // Optionally call verbose dump for index
-#define VERBOSE_DUMP_AT_BOOT 1
+#define VERBOSE_DUMP_AT_BOOT 0
 #define VERBOSE_DUMP_INDEX 62
-#define VERBOSE_DUMP_ALL_AT_BOOT 1
+#define VERBOSE_DUMP_ALL_AT_BOOT 0
 #if VERBOSE_DUMP_AT_BOOT
 #if VERBOSE_DUMP_ALL_AT_BOOT
   // Dump every proc[] entry verbosely, in order, to get deterministic output.
@@ -131,7 +122,7 @@ procinit(void)
 }
 
 // Verbose per-proc printer (print all struct proc fields in human form).
-static void
+static void __attribute__((unused))
 proc_verbose_dump(struct proc *p)
 {
   if(p == 0) return;
