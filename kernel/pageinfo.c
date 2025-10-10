@@ -1,15 +1,35 @@
 // Simple pageinfo implementation storing minimal allocation info per phys page.
+
+// Implementation notes (focus: dump semantics and gaps):
+// - pageinfo is a best-effort debugging/inspection table. It mirrors
+//   allocation and mapping events by observing hooks called from the
+//   allocator (kalloc/kfree) and from mapping helpers (mappages etc.).
+//   It is intentionally conservative and should NOT be used as the
+//   authoritative allocator state.
 //
-// Notes for future maintainers:
-// - pageinfo is a debugging/inspection aid. It mirrors allocation and
-//   mapping events by observing calls from the allocator (kalloc/kfree)
-//   and from mappages()/page-table helpers. It is intentionally
-//   conservative and best-effort — it should not be used as the source
-//   of truth for allocation decisions.
 // - The array `pi_array` is indexed by physical-page number (PA/PGSIZE).
-// - All updates to entries are protected by `pi_state.lock` to avoid
-//   races. However `ref` and `owner_pid` are only approximate counts and
-//   should be considered heuristics.
+//   The dump routine `dump_pageinfo()` iterates this array in index order
+//   (low physical address to high). Therefore the dump output is sorted
+//   by physical address (PA). Each printed line corresponds to one array
+//   entry that is *not* PGTYPE_FREE.
+//
+// - Gaps in the dump (i.e., when successive printed PA values differ by
+//   more than PGSIZE == 0x1000) indicate one or more physical pages that
+//   are not currently tracked as in-use (typically free). The dump does
+//   not explicitly print free pages; it omits PGTYPE_FREE entries. Thus
+//   a larger-than-0x1000 delta between printed PAs means there are
+//   unprinted pages between them (which were either freed or never
+//   recorded).
+//
+// - Both PA and mapped VA fields are recorded as observed by the hooks.
+//   If a page was allocated and immediately mapped at a VA, you will
+//   often see PA and VA fields stepping by 0x1000 in sequence. If a page
+//   was freed (kfree) it will be marked PGTYPE_FREE and won't appear in
+//   the dump until reallocated and re-registered.
+//
+// - Limitations: the subsystem is not perfectly synchronized with every
+//   allocator or VM event — `owner_pid`, `ref`, and `alloc_tick` are
+//   heuristics useful for debugging but not authoritative.
 #include "types.h"
 #include "param.h"
 #include "memlayout.h"

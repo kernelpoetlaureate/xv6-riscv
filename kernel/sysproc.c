@@ -151,6 +151,27 @@ sys_pageinfo(void)
     return -1;
   
   // Mode 2 is special - dump all page info
+  //
+  // Implementation notes for callers and maintainers:
+  // - When `isphys == 2` the kernel prints a textual dump of the
+  //   pageinfo table to the kernel console (QEMU serial). The printed
+  //   lines correspond to entries in `pi_array` that are not PGTYPE_FREE.
+  // - The dump iterates `pi_array` from low physical addresses to high,
+  //   therefore the output is sorted by physical address (PA). Any
+  //   observed gap between successive printed PA values larger than
+  //   PGSIZE (0x1000) implies one or more pages in that physical range
+  //   were omitted from the output (typically they are free / marked
+  //   PGTYPE_FREE). The dump does not explicitly print free pages.
+  // - The dump prints metadata only (pa/type/pid/va/tag/ref). It does
+  //   not print page contents to avoid unsafe kernel memory reads.
+  // - Because pageinfo is best-effort bookkeeping, `owner_pid`, `ref`,
+  //   and `mapped_va` should be treated as heuristics for debugging,
+  //   not authoritative allocator state.
+  //
+  // Example: in the dump a sequence of lines with PA stepping by 0x1000
+  // represents contiguous allocated pages. A jump of 0x2000 means one
+  // unprinted page between them; 0x3000 means two, etc.
+
   if(isphys == 2) {
     return dump_pageinfo();
   }
