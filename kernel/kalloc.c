@@ -63,36 +63,47 @@ static uint64 kmem_initial_pages = 0; // total pages expected to be freed during
 void
 kinit()
 {
-  // Initialize the lock and populate the free-list with the physical
-  // memory range available to the kernel. `end` is the first address
-  // after the kernel image (set by the linker), and `PHYSTOP` is the
-  // top of usable physical memory.
+  // Initialize the spinlock for the kmem structure to ensure thread-safe access.
   initlock(&kmem.lock, "kmem");
+
+  // If boot-time logging is enabled, set the initializing flag and log the memory range.
   if(kmem_log_boot) {
-    kmem_initializing = 1;
-    printf("kinit: freerange from %p to %p\n", end, (void*)PHYSTOP);
+    kmem_initializing = 1; // Indicate that initialization is in progress.
+    printf("kinit: freerange from %p to %p\n", end, (void*)PHYSTOP); // Log the memory range being initialized.
   }
+
+  // Populate the free-list with all available physical memory pages in the range.
   freerange(end, (void*)PHYSTOP);
+
+  // If boot-time logging is enabled, clear the initializing flag and log the number of freed pages.
   if(kmem_log_boot) {
-    kmem_initializing = 0;
-    printf("kinit: finished freerange; freed pages=%lu\n", kmem_freed_pages);
+    kmem_initializing = 0; // Indicate that initialization is complete.
+    printf("kinit: finished freerange; freed pages=%lu\n", kmem_freed_pages); // Log the total freed pages.
   }
-  // initialize pageinfo subsystem after free list is built
+
+  // Initialize the pageinfo subsystem after the free-list has been fully populated.
   pageinfo_init();
 }
 
 void
 freerange(void *pa_start, void *pa_end)
 {
+  // If boot-time logging is enabled and initialization is in progress, log the range being freed.
   if(kmem_log_boot && kmem_initializing)
     printf("freerange: pa_start=%p pa_end=%p\n", pa_start, pa_end);
+
   char *p;
+  // Round up the starting physical address to the nearest page boundary.
   uint64 start_pa = PGROUNDUP((uint64)pa_start);
+
+  // If boot-time logging is enabled and initialization is in progress, calculate the total pages to be freed.
   if(kmem_log_boot && kmem_initializing)
     kmem_initial_pages = (((uint64)pa_end) - start_pa) / PGSIZE;
+
+  // Start freeing pages from the rounded-up starting address to the end address.
   p = (char*)start_pa;
   for(; p + PGSIZE <= (char*)pa_end; p += PGSIZE)
-    kfree(p);
+    kfree(p); // Free each page and add it to the free-list.
 }
 
 // Free the page of physical memory pointed at by v,
