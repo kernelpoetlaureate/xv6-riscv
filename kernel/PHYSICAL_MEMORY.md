@@ -61,9 +61,3 @@ References (key places in the tree)
 - `kernel/vm.c`
 - `kernel/pageinfo.h`, `kernel/pageinfo.c`
 - `kernel/kernel.ld`, `kernel/trampoline.S`
-
-If you'd like, I can:
-- Expand this into a longer `docs/`-style article that includes annotated code excerpts and cross-referenced line numbers.
-- Add a kernel syscall `print_va_pa(uint64 va)` (debug-only) that returns or prints the PA for a supplied VA and include tests.
-- Annotate a selection of `dump_pages.txt` lines showing which calls (kalloc/kfree/mappages) produced them.
-
