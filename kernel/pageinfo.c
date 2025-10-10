@@ -32,11 +32,28 @@ register_page_allocation(uint64 pa, int pid)
     return;
   }
   acquire(&pi_state.lock);
-  pi_array[idx].type = PGTYPE_USER; // best-effort: assume user; caller may update
+  // Best-effort: mark kernel pages when pid==0, otherwise user pages.
+  if (pid == 0)
+    pi_array[idx].type = PGTYPE_KERNEL;
+  else
+    pi_array[idx].type = PGTYPE_USER;
   pi_array[idx].owner_pid = pid;
-  safestrcpy(pi_array[idx].tag, "kalloc", PAGEINFO_TAGLEN);
+  // tag the allocation source; keep it short
+  if (pid == 0)
+    safestrcpy(pi_array[idx].tag, "kalloc:ker", PAGEINFO_TAGLEN);
+  else
+    safestrcpy(pi_array[idx].tag, "kalloc", PAGEINFO_TAGLEN);
   pi_array[idx].mapped_va = 0;
-  pi_array[idx].alloc_tick = 0;
+  // record allocation time (best-effort): read global ticks under its lock
+  {
+    extern uint ticks;
+    extern struct spinlock tickslock;
+    uint t = 0;
+    acquire(&tickslock);
+    t = ticks;
+    release(&tickslock);
+    pi_array[idx].alloc_tick = t;
+  }
   pi_array[idx].ref = 1;
   release(&pi_state.lock);
 }
@@ -74,6 +91,10 @@ dump_pageinfo(void)
     if(pi_array[i].type != PGTYPE_FREE){
       printf("pa=0x%lx type=%d pid=%d va=0x%lx tag=%s ref=%lu\n",
         IDX2PA(i), pi_array[i].type, pi_array[i].owner_pid, pi_array[i].mapped_va, pi_array[i].tag, pi_array[i].ref);
+      // (hexdump removed) If you want to inspect contents safely, use user tools
+      // that copy pages into user-space via a safe syscall or request the kernel
+      // to dump specific mapped virtual addresses. Dereferencing physical
+      // addresses directly in the kernel may cause traps on unmapped ranges.
       count++;
     }
   }
