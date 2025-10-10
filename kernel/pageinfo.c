@@ -1,4 +1,15 @@
-// Simple pageinfo implementation storing minimal allocation info per phys page
+// Simple pageinfo implementation storing minimal allocation info per phys page.
+//
+// Notes for future maintainers:
+// - pageinfo is a debugging/inspection aid. It mirrors allocation and
+//   mapping events by observing calls from the allocator (kalloc/kfree)
+//   and from mappages()/page-table helpers. It is intentionally
+//   conservative and best-effort — it should not be used as the source
+//   of truth for allocation decisions.
+// - The array `pi_array` is indexed by physical-page number (PA/PGSIZE).
+// - All updates to entries are protected by `pi_state.lock` to avoid
+//   races. However `ref` and `owner_pid` are only approximate counts and
+//   should be considered heuristics.
 #include "types.h"
 #include "param.h"
 #include "memlayout.h"
@@ -14,6 +25,13 @@ static struct {
   int initialized;
 } pi_state;
 
+// Initialize the pageinfo subsystem.
+// This creates the lock used to protect the pi_array and marks the
+// subsystem initialized. Callers should check `pi_state.initialized`
+// before attempting to read or write entries (some very early allocations
+// may happen before initialization and thus won't be recorded). pageinfo
+// is initialized late in kinit() after the allocator's free list is
+// populated so that boot-time freed pages don't race with registration.
 void
 pageinfo_init(void)
 {
@@ -24,6 +42,9 @@ pageinfo_init(void)
 void
 register_page_allocation(uint64 pa, int pid)
 {
+  // If pageinfo isn't initialized yet, silently ignore. This ensures
+  // boot-time allocator activity that occurs before pageinfo_init()
+  // doesn't panic the kernel; those allocations simply won't be tracked.
   if(!pi_state.initialized)
     return;
   uint64 idx = PA2IDX((uint64)pa);
@@ -31,6 +52,11 @@ register_page_allocation(uint64 pa, int pid)
     printf("register_page_allocation: pa %p is out of range\n", (void*)pa);
     return;
   }
+  // Acquire lock and update the per-page metadata. This is a best-effort
+  // recording: the allocator (kalloc) calls this to mark pages it hands
+  // out. Other parts of the kernel may also update pageinfo via
+  // pageinfo_set_mapped() when mappings are created. We record a small
+  // allocation tag and a timestamp to help correlate runtime events.
   acquire(&pi_state.lock);
   // Best-effort: mark kernel pages when pid==0, otherwise user pages.
   if (pid == 0)
@@ -61,6 +87,7 @@ register_page_allocation(uint64 pa, int pid)
 void
 register_page_free(uint64 pa)
 {
+  // If pageinfo hasn't been initialized yet, there is nothing to clear.
   if(!pi_state.initialized)
     return;
   uint64 idx = PA2IDX(pa);
@@ -68,6 +95,8 @@ register_page_free(uint64 pa)
     printf("register_page_free: pa %p is out of range\n", (void*)pa);
     return;
   }
+  // Mark the tracked page as free. This clears the owner and mapping
+  // metadata so dump/inspection tools won't treat it as in-use.
   acquire(&pi_state.lock);
   pi_array[idx].type = PGTYPE_FREE;
   pi_array[idx].owner_pid = 0;

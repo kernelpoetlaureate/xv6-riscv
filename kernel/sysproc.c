@@ -111,6 +111,12 @@ sys_kread(void)
   argint(1, &len);
   argaddr(2, &dst);
 
+  // Security: limit reads to a single page (4096 bytes) to avoid abuse
+  // and to keep the syscall simple. kread copies from kernel virtual
+  // addresses (not raw physical addresses). If the caller needs to
+  // inspect a physical page that is not mapped into the kernel virtual
+  // address space, they should use the pageinfo helpers to discover a VA
+  // mapping first or use higher-level facilities implemented in userland.
   if(len < 0 || len > 4096) // limit readers to a page to avoid abuse
     return -1;
 

@@ -1,3 +1,25 @@
+#
+// memdump_phys / pageinfo VA/phys helpers
+//
+// This user utility queries the kernel's `pageinfo` subsystem and prints a
+// single pageinfo entry for either a virtual address (`pageinfo_va`) or a
+// physical address (`pageinfo_phys`). It is a small, safe wrapper that:
+//  - calls `pageinfo_va(dst, vaddr)` to ask the kernel to resolve the
+//    virtual address into a backing physical page and copy that page's
+//    pageinfo into the provided user buffer, or
+//  - calls `pageinfo_phys(dst, pa)` to fetch the pageinfo for a raw
+//    physical address (the kernel verifies the PA is in-range and
+//    page-aligned).
+//
+// Safety notes:
+//  - pageinfo_phys checks that the PA is within the kernel's tracked
+//    PHYSTOP and it will fail otherwise.
+//  - This utility uses the kernel's bookkeeping; it does not attempt to
+//    dereference physical addresses directly.
+//
+// The remainder of this file is an uncomplicated user-side wrapper and
+// printer for the returned `pageinfo` struct.
+
 #include "types.h"
 #include "user.h"
 #include "kernel/fcntl.h"

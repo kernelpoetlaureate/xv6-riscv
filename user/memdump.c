@@ -1,3 +1,32 @@
+#
+// memdump: userland helper to print a small memory region.
+//
+// Usage:
+//   memdump <addr> [length]
+// If <addr> is below the kernel base (KERNBASE) it is treated as a
+// user virtual address and the program directly reads and prints memory
+// from the calling process' address space.
+//
+// If <addr> is at or above KERNBASE (a kernel virtual address), memdump
+// uses the `kread` syscall to safely ask the kernel to copy up to 4096
+// bytes from kernel virtual memory into the user buffer and then prints
+// those bytes. This keeps the kernel from dereferencing arbitrary
+// physical addresses directly in kernel context, and places bounds on
+// what userland can request (page-limited).
+//
+// Security/safety notes:
+//  - kread is intentionally limited to a page (4096 bytes) to limit the
+//    amount of kernel memory a user program can read in one syscall.
+//  - kread copies from the kernel virtual address space (not raw physical
+//    memory). To inspect physical pages that don't have a kernel virtual
+//    mapping, use the pageinfo_phys/pageinfo_va helpers to discover mappings
+//    then request mapped VAs.
+//
+// The rest of this file implements a small hex dumper.
+//
+// (Implementation details below are unchanged.)
+//
+//
 // Simple memory region dumper for xv6 userland
 #include "kernel/types.h"
 #include "kernel/stat.h"

@@ -116,10 +116,25 @@ walk(pagetable_t pagetable, uint64 va, int alloc)
   for(int level = 2; level > 0; level--) {
     pte_t *pte = &pagetable[PX(level, va)];
     if(*pte & PTE_V) {
+      // If the PTE is valid it points to the next-level page table.
+      // Convert the PTE to a physical address and treat it as a
+      // pagetable of the next level. Note: PTE2PA yields a physical
+      // address; callers that access the memory at that physical address
+      // must be careful. In general the kernel should not directly
+      // dereference an arbitrary physical address (casting PA->pointer)
+      // unless it knows a kernel mapping exists for that range. Doing
+      // so can cause kernel traps. Use walkaddr_any() or a safe copy
+      // syscall when you need to inspect page contents.
       pagetable = (pagetable_t)PTE2PA(*pte);
     } else {
       if(!alloc || (pagetable = (pde_t*)kalloc()) == 0)
         return 0;
+      // Newly allocated page-table pages are zeroed so all PTEs are
+      // initially invalid. Zeroing is required to avoid exposing stale
+      // PTEs from recycled pages and to maintain a consistent, safe
+      // page-table state. The zeroing also ensures the initial mapping
+      // and ref accounting will be done through the kernel's page-table
+      // helpers.
       memset(pagetable, 0, PGSIZE);
       *pte = PA2PTE(pagetable) | PTE_V;
     }
@@ -199,24 +214,29 @@ mappages(pagetable_t pagetable, uint64 va, uint64 size, uint64 pa, int perm)
     if(*pte & PTE_V)
       panic("mappages: remap");
     *pte = PA2PTE(pa) | perm | PTE_V;
-    // record mapping in pageinfo; attribute to current process if available
+    // Record mapping in pageinfo. We attribute the mapping to the
+    // current process (myproc()) when available; otherwise owner==0
+    // indicates kernel ownership. The page type is chosen conservatively:
+    //   - kernel_pagetable mappings are PGTYPE_KERNEL
+    //   - mappings with PTE_U set are PGTYPE_USER
+    //   - otherwise (kernel non-user mappings) we treat them as
+    //     PGTYPE_PAGETABLE for bookkeeping purposes.
+    // Note: pageinfo_set_mapped() increments a best-effort ref counter
+    // and stores the last observed VA. This provides useful debugging
+    // information but is not a replacement for the allocator's metadata.
     int owner = 0;
     struct proc *p = myproc();
     if(p) owner = p->pid;
-    
-    // Determine page type with more granularity
     unsigned char t = PGTYPE_UNKNOWN;
     if(pagetable == kernel_pagetable) {
       t = PGTYPE_KERNEL;
     } else {
-      // User or page table page
       if(perm & PTE_U) {
-        t = PGTYPE_USER;    // User page
+        t = PGTYPE_USER;
       } else {
-        t = PGTYPE_PAGETABLE;  // Page table page
+        t = PGTYPE_PAGETABLE;
       }
     }
-    
     pageinfo_set_mapped((void*)pa, a, owner, t);
     if(a == last)
       break;

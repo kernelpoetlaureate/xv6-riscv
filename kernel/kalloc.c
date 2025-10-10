@@ -1,6 +1,32 @@
-// Physical memory allocator, for user processes,
-// kernel stacks, page-table pages,
-// and pipe buffers. Allocates whole 4096-byte pages.
+// Physical memory allocator.
+
+// This simple allocator manages whole 4 KiB pages (PGSIZE) and is used for:
+//  - user process memory (heap/stack)
+//  - kernel stacks
+//  - page-table pages (intermediate and root page table pages)
+//  - buffer cache / pipe buffers
+//
+// Design and semantics (for maintainers):
+// - The allocator represents free pages as a singly-linked list of
+//   `struct run` attached to `kmem.freelist`. Allocation is LIFO: pages are
+//   popped from the head of the list by `kalloc()` and pushed back by
+//   `kfree()`.
+// - The free-list is protected by `kmem.lock` (a spinlock). All accesses to
+//   the linked list must hold that lock.
+// - At boot `kinit()` calls `freerange(end, PHYSTOP)` which uses `kfree()` to
+//   add every page in the available RAM range to the free-list. `end` is the
+//   first address after the kernel image (set by the linker), and `PHYSTOP`
+//   marks the top of usable physical memory. This effectively initializes the
+//   pool of pages the kernel can allocate from at runtime.
+// - Callers allocate pages by calling `kalloc()`. Many higher-level helpers
+//   (walk()/mappages()/uvmalloc()/uvmcopy()/vmfault()) call `kalloc()` to
+//   obtain pages for page tables and user memory. `kalloc()` records
+//   allocations via `register_page_allocation()` for debugging.
+// - Pages are filled with a byte pattern on allocation (memset with 5) and
+//   with a different pattern on free (memset with 1). Higher-level code
+//   commonly zeroes pages immediately after allocation before use (e.g.
+//   uvmalloc() and walk() do memset to 0), so the filler is mainly a debug
+//   aid to catch use-after-free or uninitialized reads.
 
 #include "types.h"
 #include "param.h"
@@ -37,6 +63,10 @@ static uint64 kmem_initial_pages = 0; // total pages expected to be freed during
 void
 kinit()
 {
+  // Initialize the lock and populate the free-list with the physical
+  // memory range available to the kernel. `end` is the first address
+  // after the kernel image (set by the linker), and `PHYSTOP` is the
+  // top of usable physical memory.
   initlock(&kmem.lock, "kmem");
   if(kmem_log_boot) {
     kmem_initializing = 1;
@@ -77,7 +107,9 @@ kfree(void *pa)
   if(((uint64)pa % PGSIZE) != 0 || (char*)pa < end || (uint64)pa >= PHYSTOP)
     panic("kfree");
     
-  // Register the page as free
+  // Register the page as free in the pageinfo debugging table. This will
+  // mark the page as PGTYPE_FREE and clear its metadata so dump/inspection
+  // tools don't show it as in-use.
   register_page_free((uint64)pa);
 
   // Fill with junk to catch dangling refs.
@@ -106,9 +138,15 @@ kalloc(void)
   release(&kmem.lock);
 
   if(r) {
-    memset((char*)r, 5, PGSIZE); // fill with junk
-    
-    // Register this page allocation
+    // Fill with a recognizable pattern to help detect uninitialized
+    // accesses. Most callers will zero the page before use, so this is
+    // primarily for debugging small windows where uninitialized reads
+    // might occur.
+    memset((char*)r, 5, PGSIZE);
+
+    // Register this page allocation in the pageinfo table so that
+    // debugging/inspection tools can attribute the page to the current
+    // process (or to the kernel if myproc() is NULL).
     int pid = 0;
     struct proc *p = myproc();
     if(p)
