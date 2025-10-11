@@ -33,9 +33,13 @@ main()
     virtio_disk_init(); // emulated hard disk
   userinit();      // first user process
   // One-shot test: dump process info once at boot to verify the printer.
+  // Disabled by default. To enable, define ENABLE_PROCESS_INSPECTOR_BOOT_DUMP
+  // (for example, add -DENABLE_PROCESS_INSPECTOR_BOOT_DUMP to CFLAGS).
+#ifdef ENABLE_PROCESS_INSPECTOR_BOOT_DUMP
   // This avoids creating a background kernel thread which can introduce
-  // lock ordering complexities. Remove this call once you've verified output.
+  // lock ordering complexities.
   dump_process_info();
+#endif
     __sync_synchronize();
     started = 1;
   } else {
