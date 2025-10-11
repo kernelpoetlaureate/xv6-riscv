@@ -44,3 +44,4 @@ entry("pause");
 entry("uptime");
 entry("kread");
 entry("pageinfo");
+entry("procstat");

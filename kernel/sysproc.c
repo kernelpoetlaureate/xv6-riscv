@@ -10,6 +10,9 @@ extern pagetable_t kernel_pagetable;
 #include "vm.h"
 extern char end[]; // declared in kalloc.c; needed for phys memory checks
 
+#include "procstat.h"
+
+
 uint64
 sys_exit(void)
 {
@@ -231,4 +234,70 @@ sys_pageinfo_phys(void)
   if(pageinfo_copy_entry_to_user(dst, (void*)pa) < 0)
     return -1;
   return 0;
+}
+
+// syscall procstat(buf, max)
+// Copy up to 'max' procstat entries into user buffer 'buf'.
+uint64
+sys_procstat(void)
+{
+  uint64 addr;
+  int max;
+  if(argaddr(0, &addr) < 0 || argint(1, &max) < 0)
+    return -1;
+  // Debug: log syscall arguments and caller
+  struct proc *caller = myproc();
+  if(caller)
+    printf("sys_procstat: caller pid=%d name=\"%s\" addr=%p max=%d\n", caller->pid, caller->name, (void*)addr, max);
+  else
+    printf("sys_procstat: caller=NULL addr=%p max=%d\n", (void*)addr, max);
+
+  struct proc *p;
+  int count = 0;
+
+  for(p = proc; p < &proc[NPROC] && count < max; p++){
+    struct procstat ps;
+    acquire(&p->lock);
+    if(p->state == UNUSED){
+      // produce an empty/placeholder entry for UNUSED slots
+      ps.pid = 0;
+      ps.state = UNUSED;
+      ps.sz = 0;
+      ps.total_ticks = 0;
+      ps.ctime = 0;
+      ps.etime = 0;
+      ps.io_reads = 0;
+      ps.io_writes = 0;
+      ps.name[0] = '\0';
+    } else {
+      ps.pid = p->pid;
+      ps.state = p->state;
+      ps.sz = p->sz;
+      ps.total_ticks = p->total_ticks;
+      ps.ctime = p->ctime;
+      ps.etime = p->etime;
+      ps.io_reads = p->io_reads;
+      ps.io_writes = p->io_writes;
+      safestrcpy(ps.name, p->name, sizeof(ps.name));
+    }
+    release(&p->lock);
+
+    uint64 dstva = addr + count * sizeof(ps);
+    // Debug: show page mapping info for the destination virtual address
+    uint64 va0 = PGROUNDDOWN(dstva);
+    uint64 pa0 = 0;
+    if(caller)
+      pa0 = walkaddr(caller->pagetable, va0);
+    printf("sys_procstat: dstva=%p va0=%p caller.sz=0x%lx caller.sp=0x%lx walk_pa=%p\n",
+           (void*)dstva, (void*)va0, caller ? caller->sz : 0, caller ? caller->trapframe->sp : 0, (void*)pa0);
+
+    if(copyout(myproc()->pagetable, dstva, (char*)&ps, sizeof(ps)) < 0) {
+      printf("sys_procstat: copyout failed at idx=%d addr=%p (va0=%p pa0=%p)\n", count, (void*)dstva, (void*)va0, (void*)pa0);
+      return -1;
+    }
+
+    count++;
+  }
+
+  return count;
 }

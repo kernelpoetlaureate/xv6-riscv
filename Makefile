@@ -161,6 +161,7 @@ UPROGS=\
 	$U/_dumppi\
 	$U/_alloctest\
 	$U/_dumpall\
+	$U/_htop\
 
 fs.img: mkfs/mkfs README $(UPROGS)
 	mkfs/mkfs fs.img README $(UPROGS)

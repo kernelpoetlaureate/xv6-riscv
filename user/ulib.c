@@ -159,3 +159,10 @@ sbrklazy(int n) {
   return sys_sbrk(n, SBRK_LAZY);
 }
 
+// Sleep wrapper: call the pause syscall which sleeps for n ticks.
+int
+sleep(int n)
+{
+  return pause(n);
+}
+

@@ -24,3 +24,4 @@
 #define SYS_pageinfo  23
 #define SYS_pageinfo_va 24
 #define SYS_pageinfo_phys 25
+#define SYS_procstat 26

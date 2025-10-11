@@ -515,6 +515,12 @@ readi(struct inode *ip, int user_dst, uint64 dst, uint off, uint n)
     }
     brelse(bp);
   }
+  // Account for read operations: if we read any bytes, increment per-process counter.
+  {
+    struct proc *p = myproc();
+    if(p && tot > 0)
+      p->io_reads++;
+  }
   return tot;
 }
 
@@ -557,6 +563,13 @@ writei(struct inode *ip, int user_src, uint64 src, uint off, uint n)
   // because the loop above might have called bmap() and added a new
   // block to ip->addrs[].
   iupdate(ip);
+
+  // Account for write operations: if we wrote any bytes, increment per-process counter.
+  {
+    struct proc *p = myproc();
+    if(p && tot > 0)
+      p->io_writes++;
+  }
 
   return tot;
 }

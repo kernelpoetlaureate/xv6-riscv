@@ -27,6 +27,9 @@ char* sys_sbrk(int,int);
 int pause(int);
 int uptime(void);
 
+// Sleep for `n` ticks (wrapper around pause syscall).
+int sleep(int);
+
 // ulib.c
 int stat(const char*, struct stat*);
 char* strcpy(char*, const char*);
@@ -55,6 +58,9 @@ int pageinfo_va(uint64 dst, uint64 va);
 // copy pageinfo entry for physical address 'pa' into user buffer at dst
 // signature: pageinfo_phys(dst_user_ptr, phys_addr)
 int pageinfo_phys(uint64 dst, uint64 pa);
+
+// procstat: copy process stats into user buffer
+int procstat(uint64 buf, int max);
 
 // umalloc.c
 void* malloc(uint);

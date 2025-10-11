@@ -238,6 +238,16 @@ found:
   p->context.ra = (uint64)forkret;
   p->context.sp = p->kstack + PGSIZE;
 
+  // Initialize new accounting fields
+  p->total_ticks = 0;
+  p->rtime = 0;
+  // Capture creation time (best-effort: read global ticks)
+  // ticks is declared in trap.c and exported via defs.h
+  p->ctime = ticks;
+  p->etime = 0;
+  p->io_reads = 0;
+  p->io_writes = 0;
+
   return p;
 }
 
@@ -448,6 +458,8 @@ kexit(int status)
   acquire(&p->lock);
 
   p->xstate = status;
+  // Record exit time (best-effort snapshot of global ticks)
+  p->etime = ticks;
   p->state = ZOMBIE;
 
   release(&wait_lock);
@@ -533,17 +545,30 @@ scheduler(void)
     for(p = proc; p < &proc[NPROC]; p++) {
       acquire(&p->lock);
       if(p->state == RUNNABLE) {
-        // Switch to chosen process.  It is the process's job
-        // to release its lock and then reacquire it
-        // before jumping back to us.
-        p->state = RUNNING;
-        c->proc = p;
-        swtch(&c->context, &p->context);
+          // Switch to chosen process.  It is the process's job
+          // to release its lock and then reacquire it
+          // before jumping back to us.
+          p->state = RUNNING;
+          c->proc = p;
 
-        // Process is done running for now.
-        // It should have changed its p->state before coming back.
-        c->proc = 0;
-        found = 1;
+          // CRITICAL: Capture time before context switch.
+          // Note: ticks is a global wall-clock tick count (protected by tickslock).
+          // This is an approximation of CPU time for simple monitoring.
+          uint start_ticks = ticks;
+
+          swtch(&c->context, &p->context);
+
+          // After returning from swtch, account for elapsed ticks.
+          // swtch() returns when this process is scheduled again, so
+          // elapsed = ticks - start_ticks approximates time spent since switch.
+          uint64 elapsed = ticks - start_ticks;
+          p->total_ticks += elapsed;
+          p->rtime += elapsed;
+
+          // Process is done running for now.
+          // It should have changed its p->state before coming back.
+          c->proc = 0;
+          found = 1;
       }
       release(&p->lock);
     }

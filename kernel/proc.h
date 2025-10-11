@@ -18,6 +18,9 @@ struct context {
   uint64 s11;
 };
 
+// Forward declaration so `struct cpu` can contain `struct proc *`.
+struct proc;
+
 // Per-CPU state.
 struct cpu {
   struct proc *proc;          // The process running on this cpu, or null.
@@ -104,4 +107,14 @@ struct proc {
   struct file *ofile[NOFILE];  // Open files
   struct inode *cwd;           // Current directory
   char name[16];               // Process name (debugging)
+  
+  // NEW: Accounting fields
+  uint64 total_ticks;      // Total CPU time (ticks in RUNNING state)
+  uint64 rtime;            // Same as total_ticks (alias for compatibility)
+  uint64 ctime;            // Creation time (tick count at fork)
+  uint64 etime;            // End time (tick count at exit)
+  uint64 io_reads;         // Disk read operations
+  uint64 io_writes;        // Disk write operations
 };
+
+extern struct proc proc[NPROC];
