@@ -1,3 +1,21 @@
+#/*********************************************
+# htop (simple process monitor)
+#
+# Notes:
+# - This program is non-interactive: it prints process info in a loop
+#   and does not read stdin. That means typing keys like 'q' or Ctrl-C
+#   while htop runs will generally have no effect here.
+# - To run it and keep a shell prompt, start it from the xv6 shell with
+#     htop &
+#   The trailing '&' is a shell feature (implemented in `user/sh.c`):
+#   the shell forks and runs the command in a background child. See the
+#   BACK case in `runcmd()` and the parser token for '&' in `parsecmd`.
+# - To stop a backgrounded htop, use the shell's `kill` command with the
+#   process ID, for example:
+#     kill <pid>
+#   You can find the PID with Ctrl-P (prints process list) or `ps`.
+#*********************************************/
+
 #include "types.h"
 #include "user.h"
 #include "procstat.h"

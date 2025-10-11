@@ -10,6 +10,12 @@
 #define PIPE  3
 #define LIST  4
 #define BACK  5
+// BACK is the AST node type for background execution using '&'
+// Behavior: when the parser sees an '&' token it wraps the command in a
+// BACK node (see parseline), and runcmd() handles BACK by forking and
+// running the command in the child without waiting in the parent. This
+// is how you run commands like `htop &` to keep a shell prompt while the
+// program runs in the background.
 
 #define MAXARGS 10
 
