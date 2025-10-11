@@ -90,6 +90,11 @@ consoleread(int user_dst, uint64 dst, int n)
   target = n;
   acquire(&cons.lock);
   while(n > 0){
+    // If we've been marked killed, return immediately.
+    if(killed(myproc())){
+      release(&cons.lock);
+      return -1;
+    }
     // wait until interrupt handler has put some
     // input into cons.buffer.
     while(cons.r == cons.w){
@@ -98,6 +103,12 @@ consoleread(int user_dst, uint64 dst, int n)
         return -1;
       }
       sleep(&cons.r, &cons.lock);
+    }
+
+    // Re-check killed after waking but before consuming buffer.
+    if(killed(myproc())){
+      release(&cons.lock);
+      return -1;
     }
 
     c = cons.buf[cons.r++ % INPUT_BUF_SIZE];
@@ -142,6 +153,41 @@ consoleintr(int c)
   acquire(&cons.lock);
 
   switch(c){
+  case C('C'):  // Ctrl-C: kill any process sleeping on console input (like SIGINT)
+    {
+      // First, try to kill the process currently running on this CPU (foreground).
+      struct proc *cur = myproc();
+      if(cur && cur->pid != 1){
+        kkill(cur->pid);
+      }
+
+      // Insert a sentinel newline into the console input buffer so readers
+      // that wake will see data and won't immediately re-sleep.  Only do
+      // this if there's space in the buffer.
+      if(cons.e - cons.r < INPUT_BUF_SIZE){
+        cons.buf[cons.e++ % INPUT_BUF_SIZE] = '\n';
+        cons.w = cons.e;
+      }
+
+      // Scan the proc table and request a kill for processes
+      // whose chan is &cons.r (they're waiting in consoleread()).
+      struct proc *pp;
+      for(pp = proc; pp < &proc[NPROC]; pp++){
+        acquire(&pp->lock);
+        int target = (pp->state == SLEEPING && pp->chan == &cons.r);
+        release(&pp->lock);
+        if(target){
+          kkill(pp->pid);
+        }
+      }
+
+      // Wake up any readers.
+      wakeup(&cons.r);
+
+      // Echo a newline so the prompt appears on a fresh line.
+      consputc('\n');
+    }
+    break;
   case C('P'):  // Print process list.
     procdump();
     // Also call the richer process memory inspector on Ctrl-P so users
