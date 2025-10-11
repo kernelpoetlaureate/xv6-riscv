@@ -16,8 +16,10 @@ main()
   if(cpuid() == 0){
     consoleinit();
     printfinit();
-    printf("\n");
-    printf("Hello, World!\n");
+  /* Professional boot banner: bold cyan title and muted details */
+  printf("\n");
+  printf("\x1b[1;36mWelcome to xv6-riscv\x1b[0m\n");
+  printf("\x1b[90mMinimal teaching OS — kernelpoetlaureate build\x1b[0m\n");
     kinit();         // physical page allocator
     pageinfo_init(); // initialize page allocation tracking
     kvminit();       // create kernel page table
@@ -46,7 +48,8 @@ main()
     while(started == 0)
       ;
     __sync_synchronize();
-    printf("hart %d starting\n", cpuid());
+  /* Per-hart startup message: green for readiness */
+  printf("\x1b[32mhart %d: processor online\x1b[0m\n", cpuid());
     kvminithart();    // turn on paging
     trapinithart();   // install kernel trap vector
     plicinithart();   // ask PLIC for device interrupts

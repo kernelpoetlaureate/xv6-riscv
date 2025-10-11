@@ -24,7 +24,8 @@ main(void)
   dup(0);  // stderr
 
   for(;;){
-    printf("init: starting sh\n");
+    /* Professional init message: bold green to indicate service start */
+    printf("\x1b[1;32minit: launching user shell (sh)\x1b[0m\n");
     pid = fork();
     if(pid < 0){
       printf("init: fork failed\n");
