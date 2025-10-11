@@ -12,6 +12,12 @@ extern char end[]; // declared in kalloc.c; needed for phys memory checks
 
 #include "procstat.h"
 
+// Debug prints in this file can be enabled by defining PROCSTAT_DEBUG=1
+// for example: make CFLAGS+=-DPROCSTAT_DEBUG=1
+#ifndef PROCSTAT_DEBUG
+#define PROCSTAT_DEBUG 0
+#endif
+
 
 uint64
 sys_exit(void)
@@ -246,11 +252,13 @@ sys_procstat(void)
   if(argaddr(0, &addr) < 0 || argint(1, &max) < 0)
     return -1;
   // Debug: log syscall arguments and caller
+#if PROCSTAT_DEBUG
   struct proc *caller = myproc();
   if(caller)
     printf("sys_procstat: caller pid=%d name=\"%s\" addr=%p max=%d\n", caller->pid, caller->name, (void*)addr, max);
   else
     printf("sys_procstat: caller=NULL addr=%p max=%d\n", (void*)addr, max);
+#endif
 
   struct proc *p;
   int count = 0;
@@ -284,15 +292,19 @@ sys_procstat(void)
 
     uint64 dstva = addr + count * sizeof(ps);
     // Debug: show page mapping info for the destination virtual address
+#if PROCSTAT_DEBUG
     uint64 va0 = PGROUNDDOWN(dstva);
     uint64 pa0 = 0;
     if(caller)
       pa0 = walkaddr(caller->pagetable, va0);
     printf("sys_procstat: dstva=%p va0=%p caller.sz=0x%lx caller.sp=0x%lx walk_pa=%p\n",
            (void*)dstva, (void*)va0, caller ? caller->sz : 0, caller ? caller->trapframe->sp : 0, (void*)pa0);
+#endif
 
     if(copyout(myproc()->pagetable, dstva, (char*)&ps, sizeof(ps)) < 0) {
+#if PROCSTAT_DEBUG
       printf("sys_procstat: copyout failed at idx=%d addr=%p (va0=%p pa0=%p)\n", count, (void*)dstva, (void*)va0, (void*)pa0);
+#endif
       return -1;
     }
 
