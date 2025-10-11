@@ -7,6 +7,7 @@ OBJS = \
   $K/console.o \
   $K/printf.o \
   $K/uart.o \
+	$K/klog.o \
   $K/kalloc.o \
 	$K/pageinfo.o \
   $K/spinlock.o \

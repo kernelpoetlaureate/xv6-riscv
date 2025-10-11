@@ -16,10 +16,8 @@ main()
   if(cpuid() == 0){
     consoleinit();
     printfinit();
-  /* Professional boot banner: bold cyan title and muted details */
-  printf("\n");
-  printf("\x1b[1;36mWelcome to xv6-riscv\x1b[0m\n");
-  printf("\x1b[90mMinimal teaching OS — kernelpoetlaureate build\x1b[0m\n");
+  /* Professional boot banner: use reusable kbanner helper */
+  kbanner("Welcome to xv6-riscv", "Minimal teaching OS — kernelpoetlaureate build");
     kinit();         // physical page allocator
     pageinfo_init(); // initialize page allocation tracking
     kvminit();       // create kernel page table
@@ -49,7 +47,7 @@ main()
       ;
     __sync_synchronize();
   /* Per-hart startup message: green for readiness */
-  printf("\x1b[32mhart %d: processor online\x1b[0m\n", cpuid());
+  KLOG_INFO("hart %d: processor online\n", cpuid());
     kvminithart();    // turn on paging
     trapinithart();   // install kernel trap vector
     plicinithart();   // ask PLIC for device interrupts

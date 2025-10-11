@@ -77,6 +77,15 @@ int             printf(char*, ...) __attribute__ ((format (printf, 1, 2)));
 void            panic(char*) __attribute__((noreturn));
 void            printfinit(void);
 
+// Kernel logging helpers (lightweight, macro-based for variadic forwarding)
+void            kbanner(const char *title, const char *subtitle);
+
+// Log level macros: forward to printf so callers can use printf-style format args
+#define KLOG_DEBUG(fmt, ...) do { printf("\x1b[34m[DEBUG]\x1b[0m "); printf(fmt, ##__VA_ARGS__); } while(0)
+#define KLOG_INFO(fmt, ...)  do { printf("\x1b[32m[INFO ]\x1b[0m "); printf(fmt, ##__VA_ARGS__); } while(0)
+#define KLOG_WARN(fmt, ...)  do { printf("\x1b[33m[WARN ]\x1b[0m "); printf(fmt, ##__VA_ARGS__); } while(0)
+#define KLOG_ERROR(fmt, ...) do { printf("\x1b[31m[ERROR]\x1b[0m "); printf(fmt, ##__VA_ARGS__); } while(0)
+
 // proc.c
 int             cpuid(void);
 void            kexit(int);
