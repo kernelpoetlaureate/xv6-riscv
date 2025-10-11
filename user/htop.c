@@ -4,6 +4,65 @@
 
 #define MAX_PROCS 64
 
+// Simple helpers: xv6 user printf doesn't support width/flags
+static int
+ustrlen(const char *s){
+  int i=0; while(s && s[i]) i++; return i;
+}
+
+// print string s truncated to at most 'max' chars (no null-termination needed)
+static void
+print_trunc(const char *s, int max){
+  int i;
+  for(i = 0; i < max && s[i]; i++)
+    printf("%c", s[i]);
+}
+
+// print s in a field of width 'w'. If left_align non-zero, left-align; else right-align.
+static void
+print_field_str(const char *s, int w, int left_align){
+  int len = ustrlen(s);
+  if(len >= w){
+    print_trunc(s, w);
+    return;
+  }
+  int pad = w - len;
+  if(left_align){
+    printf("%s", s);
+    for(int i = 0; i < pad; i++) printf(" ");
+  } else {
+    for(int i = 0; i < pad; i++) printf(" ");
+    printf("%s", s);
+  }
+}
+
+// convert integer (non-negative) to decimal string in buf; returns length
+static int
+itoa(int v, char *buf, int bufsz){
+  if(bufsz <= 0) return 0;
+  if(v == 0){ if(bufsz > 1){ buf[0] = '0'; buf[1] = '\0'; return 1; } buf[0] = '\0'; return 0; }
+  int neg = 0;
+  unsigned int x = v;
+  if(v < 0){ neg = 1; x = (unsigned int)(-v); }
+  char tmp[32]; int ti = 0;
+  while(x && ti < (int)sizeof(tmp)-1){ tmp[ti++] = '0' + (x % 10); x /= 10; }
+  if(neg) tmp[ti++] = '-';
+  int len = 0;
+  // reverse into buf
+  for(int j = ti-1; j >= 0 && len < bufsz-1; j--){ buf[len++] = tmp[j]; }
+  buf[len] = '\0';
+  return len;
+}
+
+static void
+print_field_int(int v, int w){
+  char buf[32];
+  int len = itoa(v, buf, sizeof(buf));
+  (void)len; // silence unused-variable if any toolchain warns
+  // right align numeric fields
+  print_field_str(buf, w, 0);
+}
+
 void sort_by_cpu(struct procstat *arr, int n) {
   for(int i = 0; i < n-1; i++){
     for(int j = 0; j < n-i-1; j++){
@@ -40,9 +99,16 @@ int main(int argc, char **argv){
 
     sort_by_cpu(procs, n);
 
-    // Clear screen and home cursor
-    printf("\x1b[2J\x1b[H");
-  printf("PID NAME STATE RAM_KB CPU%% IO_R IO_W\n");
+      // Clear screen and home cursor
+      printf("\x1b[2J\x1b[H");
+    // Column widths: PID(5) NAME(16) STATE(6) RAM_KB(8) CPU%(5) IO_R(6) IO_W(6)
+    print_field_str("PID", 5, 1); printf(" ");
+    print_field_str("NAME", 16, 1); printf(" ");
+    print_field_str("STATE", 6, 1); printf(" ");
+    print_field_str("RAM_KB", 8, 0); printf(" ");
+    print_field_str("CPU%", 5, 0); printf(" ");
+    print_field_str("IO_R", 6, 0); printf(" ");
+    print_field_str("IO_W", 6, 0); printf("\n");
 
     for(int i = 0; i < n; i++){
       // Skip empty / UNUSED entries (pid==0 and no counters)
@@ -54,14 +120,27 @@ int main(int argc, char **argv){
         uint64 delta = procs[i].total_ticks - prev[pidx].total_ticks;
         cpu_pct = (int)delta; // interval is 100 ticks (1s)
       }
-      printf("%d %s %d %d %d%% %d %d\n",
-        procs[i].pid,
-        procs[i].name,
-        procs[i].state,
-        (int)(procs[i].sz / 1024),
-        cpu_pct,
-        (int)procs[i].io_reads,
-        (int)procs[i].io_writes);
+      // Truncate name to fit column and print fields
+      char namebuf[17];
+      for(int k = 0; k < 16; k++) namebuf[k] = procs[i].name[k];
+      namebuf[16] = '\0';
+      print_field_int(procs[i].pid, 5); printf(" ");
+      print_field_str(namebuf, 16, 1); printf(" ");
+      // STATE currently numeric; print right-aligned in 6 columns
+      print_field_int(procs[i].state, 6); printf(" ");
+      print_field_int((int)(procs[i].sz / 1024), 8); printf(" ");
+      // CPU% with a trailing percent sign
+      char cpubuf[16]; int cpulen = itoa(cpu_pct, cpubuf, sizeof(cpubuf));
+      if(cpulen + 1 <= 5){ // leave room for '%'
+        // right align into 5 columns
+        for(int s = 0; s < 5 - (cpulen+1); s++) printf(" ");
+        printf("%s%%", cpubuf);
+      } else {
+        print_trunc(cpubuf, 5-1); printf("%%");
+      }
+      printf(" ");
+      print_field_int((int)procs[i].io_reads, 6); printf(" ");
+      print_field_int((int)procs[i].io_writes, 6); printf("\n");
     }
 
   // copy to prev
