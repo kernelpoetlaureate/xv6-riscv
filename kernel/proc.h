@@ -118,3 +118,7 @@ struct proc {
 };
 
 extern struct proc proc[NPROC];
+
+// Find a process by pid. Returns pointer to proc with its lock held, or 0 if not found.
+// Caller must call release(&p->lock) when done.
+struct proc* find_proc(int pid);

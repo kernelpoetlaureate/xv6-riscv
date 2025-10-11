@@ -45,3 +45,5 @@ entry("uptime");
 entry("kread");
 entry("pageinfo");
 entry("procstat");
+entry("getrss");
+entry("get_pagemap");

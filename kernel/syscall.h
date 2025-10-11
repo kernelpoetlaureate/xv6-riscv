@@ -25,3 +25,6 @@
 #define SYS_pageinfo_va 24
 #define SYS_pageinfo_phys 25
 #define SYS_procstat 26
+// New syscalls
+#define SYS_getrss 27
+#define SYS_get_pagemap 28

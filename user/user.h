@@ -61,6 +61,12 @@ int pageinfo_phys(uint64 dst, uint64 pa);
 
 // procstat: copy process stats into user buffer
 int procstat(uint64 buf, int max);
+// getrss: returns resident bytes for pid, or -1 on error
+int getrss(int pid);
+
+// get_pagemap: fills user buffer `buf` (array of struct page_info) with up to max entries.
+// Returns number of entries written, or -1 on error.
+int get_pagemap(int pid, uint64 buf, int max);
 
 // umalloc.c
 void* malloc(uint);

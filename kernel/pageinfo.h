@@ -1,3 +1,17 @@
+// Page map info exported to userspace
+#ifndef _PAGEINFO_H_
+#define _PAGEINFO_H_
+
+#include "types.h"
+
+struct page_info {
+  uint64 va;    // virtual address (page-aligned)
+  uint64 pa;    // physical address
+  uint16 flags; // low bits of PTE
+  uint16 refcount; // optional: 0 if unknown
+};
+
+#endif // _PAGEINFO_H_
 #
 // Per-physical-page metadata for debugging/inspection.
 //

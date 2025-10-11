@@ -191,6 +191,24 @@ allocpid()
   return pid;
 }
 
+// Find a process by pid. Returns pointer to proc with its lock held, or 0 if not found.
+// Caller must call release(&p->lock) when done.
+struct proc*
+find_proc(int pid)
+{
+  struct proc *p;
+
+  for(p = proc; p < &proc[NPROC]; p++){
+    acquire(&p->lock);
+    if(p->state != UNUSED && p->pid == pid){
+      // found, return with lock held
+      return p;
+    }
+    release(&p->lock);
+  }
+  return 0;
+}
+
 // Look in the process table for an UNUSED proc.
 // If found, initialize state required to run in the kernel,
 // and return with p->lock held.

@@ -218,6 +218,72 @@ sys_pageinfo_va(void)
   return 0;
 }
 
+// Walk a target process pagetable and count resident pages within [0, p->sz).
+uint64
+sys_getrss(void)
+{
+  int pid;
+  if(argint(0, &pid) < 0)
+    return -1;
+
+  struct proc *p = find_proc(pid);
+  if(p == 0)
+    return -1;
+
+  // p->lock is held
+  uint64 count = 0;
+  for(uint64 va = 0; va < p->sz; va += PGSIZE){
+    pte_t *pte = walk(p->pagetable, va, 0);
+    if(pte && (*pte & PTE_V))
+      count++;
+  }
+
+  release(&p->lock);
+  return count * PGSIZE; // return bytes
+}
+
+// get_pagemap(pid, buf_addr, max)
+// Fill up to `max` struct page_info entries into user buffer at buf_addr.
+uint64
+sys_get_pagemap(void)
+{
+  int pid;
+  uint64 bufaddr;
+  int max;
+  if(argint(0, &pid) < 0 || argaddr(1, &bufaddr) < 0 || argint(2, &max) < 0)
+    return -1;
+
+  if(max <= 0)
+    return -1;
+
+  struct proc *p = find_proc(pid);
+  if(p == 0)
+    return -1;
+
+  int written = 0;
+  struct page_info pi;
+
+  for(uint64 va = 0; va < p->sz && written < max; va += PGSIZE){
+    pte_t *pte = walk(p->pagetable, va, 0);
+    if(pte && (*pte & PTE_V)){
+      uint64 pa = PTE2PA(*pte);
+      pi.va = va;
+      pi.pa = pa;
+      pi.flags = (uint16)(*pte & 0x3FF); // low 10 bits
+      pi.refcount = 0; // unknown unless page_refs implemented
+
+      if(copyout(myproc()->pagetable, bufaddr + written * sizeof(pi), (char*)&pi, sizeof(pi)) < 0){
+        release(&p->lock);
+        return -1;
+      }
+      written++;
+    }
+  }
+
+  release(&p->lock);
+  return written;
+}
+
 // syscall pageinfo_phys(dst_user_ptr, phys_addr)
 // Copy the pageinfo entry for the specified physical address directly.
 // Returns 0 on success.

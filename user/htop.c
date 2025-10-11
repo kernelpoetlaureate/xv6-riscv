@@ -19,6 +19,7 @@
 #include "types.h"
 #include "user.h"
 #include "procstat.h"
+#include "pageinfo.h"
 
 #define MAX_PROCS 64
 
@@ -119,11 +120,13 @@ int main(int argc, char **argv){
 
       // Clear screen and home cursor
       printf("\x1b[2J\x1b[H");
-    // Column widths: PID(5) NAME(16) STATE(6) RAM_KB(8) CPU%(5) IO_R(6) IO_W(6)
+  // Column widths: PID(5) NAME(16) STATE(6) VIRT_KB(8) RSS_KB(8) RSS%(6) CPU%(5) IO_R(6) IO_W(6)
     print_field_str("PID", 5, 1); printf(" ");
     print_field_str("NAME", 16, 1); printf(" ");
     print_field_str("STATE", 6, 1); printf(" ");
-    print_field_str("RAM_KB", 8, 0); printf(" ");
+  print_field_str("VIRT_KB", 8, 0); printf(" ");
+  print_field_str("RSS_KB", 8, 0); printf(" ");
+  print_field_str("RSS%", 6, 0); printf(" ");
     print_field_str("CPU%", 5, 0); printf(" ");
     print_field_str("IO_R", 6, 0); printf(" ");
     print_field_str("IO_W", 6, 0); printf("\n");
@@ -146,7 +149,17 @@ int main(int argc, char **argv){
       print_field_str(namebuf, 16, 1); printf(" ");
       // STATE currently numeric; print right-aligned in 6 columns
       print_field_int(procs[i].state, 6); printf(" ");
-      print_field_int((int)(procs[i].sz / 1024), 8); printf(" ");
+      int virt_kb = (int)(procs[i].sz / 1024);
+      int rss_kb = 0;
+      int rss_pct = 0;
+      int rss = getrss(procs[i].pid);
+      if(rss >= 0){
+        rss_kb = rss / 1024;
+        if(procs[i].sz > 0) rss_pct = (int)((rss * 100) / procs[i].sz);
+      }
+      print_field_int(virt_kb, 8); printf(" ");
+      print_field_int(rss_kb, 8); printf(" ");
+      print_field_int(rss_pct, 6); printf(" ");
       // CPU% with a trailing percent sign
       char cpubuf[16]; int cpulen = itoa(cpu_pct, cpubuf, sizeof(cpubuf));
       if(cpulen + 1 <= 5){ // leave room for '%'
@@ -166,6 +179,50 @@ int main(int argc, char **argv){
   for(int i = 0; i < n; i++) prev[i] = procs[i];
 
     sleep(100);
+  }
+  
+  // If htop was called with a PID, show its pagemap once before exiting (non-interactive)
+  if(argc >= 2){
+    int pid = atoi(argv[1]);
+    struct page_info *pages = malloc(4096 * sizeof(*pages));
+    if(pages){
+      int got = get_pagemap(pid, (uint64)pages, 4096);
+      if(got < 0) {
+        printf("get_pagemap failed for pid %d\n", pid);
+      } else {
+        printf("PID %d Page Map (%d pages):\n", pid, got);
+        printf("VA               PA               FLAGS REFS TYPE OWNER TAG\n");
+
+        // pageinfo_user matches the user-side layout used by memdump_phys/dumppi
+        struct pageinfo_user {
+          unsigned char type;
+          int owner_pid;
+          uint64 mapped_va;
+          char tag[16];
+          uint64 alloc_tick;
+          uint64 ref;
+        } pi;
+
+        for(int i = 0; i < got; i++){
+          // Try to fetch kernel pageinfo for this virtual address. If it fails,
+          // fallback to printing VA/PA/flags from get_pagemap.
+          int r = pageinfo_va((uint64)&pi, pages[i].va);
+          if(r < 0){
+            printf("0x%016lx  0x%016lx  %04x %4d - - -\n",
+                   pages[i].va, pages[i].pa, pages[i].flags, pages[i].refcount);
+          } else {
+            // Print tag as a short string (may not be NUL-terminated)
+            char tagbuf[17];
+            for(int t = 0; t < 16; t++) tagbuf[t] = pi.tag[t] ? pi.tag[t] : ' ';
+            tagbuf[16] = '\0';
+            printf("0x%016lx  0x%016lx  %04x %4d  %2d   %3d %s\n",
+                   pages[i].va, pages[i].pa, pages[i].flags, pages[i].refcount,
+                   (int)pi.type, pi.owner_pid, tagbuf);
+          }
+        }
+      }
+      free(pages);
+    }
   }
   free(procs);
   free(prev);

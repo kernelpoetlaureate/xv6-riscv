@@ -108,6 +108,8 @@ extern uint64 sys_pageinfo(void);
 extern uint64 sys_pageinfo_va(void);
 extern uint64 sys_pageinfo_phys(void);
 extern uint64 sys_procstat(void);
+extern uint64 sys_getrss(void);
+extern uint64 sys_get_pagemap(void);
 
 // An array mapping syscall numbers from syscall.h
 // to the function that handles the system call.
@@ -138,6 +140,8 @@ static uint64 (*syscalls[])(void) = {
   [SYS_pageinfo_va] = sys_pageinfo_va,
   [SYS_pageinfo_phys] = sys_pageinfo_phys,
   [SYS_procstat] = sys_procstat,
+  [SYS_getrss] = sys_getrss,
+  [SYS_get_pagemap] = sys_get_pagemap,
 };
 
 // Optional human-readable syscall names aligned with syscall numbers.
