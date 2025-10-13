@@ -1,4 +1,3 @@
-#
 // memdump_phys / pageinfo VA/phys helpers
 //
 // This user utility queries the kernel's `pageinfo` subsystem and prints a
