@@ -23,6 +23,20 @@
 //    then request mapped VAs.
 //
 // The rest of this file implements a small hex dumper.
+
+// NOTE / INSIGHTS:
+// - `memdump` prints raw bytes at the requested virtual address (or a
+//   kernel virtual address via `kread`). It does not consult or print
+//   pageinfo metadata (type, owner_pid, tag, etc.). Use `memdump` when
+//   you want to inspect the actual contents of memory.
+// - To correlate raw contents with kernel bookkeeping, first query
+//   `pageinfo` (via `memdump_phys <addr> -p` or `dumppi`) to learn the
+//   page's `type`, `owner_pid`, and `tag`, then use `memdump` on the
+//   mapped virtual address or the kernel VA that maps the PA
+//   (KERNBASE + pa) to inspect bytes.
+// - `kread` is intentionally limited to a page to avoid exposing large
+//   amounts of kernel memory in one syscall; prefer `memdump` for user
+//   addresses and `memdump_phys`/`dumppi` for metadata.
 //
 // (Implementation details below are unchanged.)
 //

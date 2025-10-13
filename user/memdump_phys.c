@@ -20,6 +20,30 @@
 // The remainder of this file is an uncomplicated user-side wrapper and
 // printer for the returned `pageinfo` struct.
 
+// NOTE / INSIGHTS:
+// - `memdump_phys` (and the underlying `pageinfo` syscall) return
+//   metadata about the physical page: `type` (FREE/KERNEL/USER/etc),
+//   `owner_pid` (best-effort PID associated with the allocation),
+//   `mapped_va` (last-observed mapped virtual address, may be 0 if not
+//   recorded), `tag` (allocation tag such as "kalloc"), `ref`, and
+//   `alloc_tick`.
+// - `mapped_va` can be 0 even when you queried by VA. The pageinfo
+//   subsystem records mapping events when they occur; `mapped_va` is
+//   a best-effort field and may be empty if the page was allocated but
+//   not observed being mapped, or if bookkeeping wasn't triggered.
+// - `owner_pid` is best-effort and reflects the PID supplied when the
+//   page was allocated or registered; it is useful for debugging but
+//   not a strict authority on exclusive ownership.
+// - To verify the relationship between metadata and contents:
+//     1) use `memdump_phys <pa> -p` to get the pageinfo for PA
+//     2) use `memdump <kva>` on the kernel virtual address that maps
+//        that PA (KERNBASE + pa) or `memdump <va>` for the process VA
+//        to inspect bytes
+// - Use `dumppi` to list all non-FREE tracked pages from the kernel
+//   pageinfo table; if `dumppi` prints nothing, the kernel pageinfo
+//   subsystem may be empty and you should fallback to `procstat`+
+//   `get_pagemap` to discover process mappings.
+
 #include "types.h"
 #include "user.h"
 #include "kernel/fcntl.h"
