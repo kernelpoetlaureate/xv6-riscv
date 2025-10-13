@@ -24,6 +24,58 @@ fmtname(char *path)
   return buf;
 }
 
+// Extract the plain filename (no padding) from a path into out (size DIRSIZ+1).
+static void
+plain_name(const char *path, char *out)
+{
+  const char *p;
+  int i = 0;
+  for(p = path + strlen(path); p >= path && *p != '/'; p--)
+    ;
+  p++;
+  while(*p && i < DIRSIZ){
+    out[i++] = *p++;
+  }
+  out[i] = '\0';
+}
+
+// Return a short human-friendly description for known utilities.
+static const char*
+descr_for(const char *name)
+{
+  if(strcmp(name, "README") == 0) return "project README";
+  if(strcmp(name, "cat") == 0) return "concatenate and print files";
+  if(strcmp(name, "echo") == 0) return "print arguments";
+  if(strcmp(name, "forktest") == 0) return "fork/test concurrency";
+  if(strcmp(name, "grep") == 0) return "search for pattern";
+  if(strcmp(name, "init") == 0) return "initial user process";
+  if(strcmp(name, "kill") == 0) return "send signal to process";
+  if(strcmp(name, "ln") == 0) return "create a link";
+  if(strcmp(name, "ls") == 0) return "list directory";
+  if(strcmp(name, "mkdir") == 0) return "create directory";
+  if(strcmp(name, "rm") == 0) return "remove file";
+  if(strcmp(name, "sh") == 0) return "shell";
+  if(strcmp(name, "stressfs") == 0) return "fs stress tester";
+  if(strcmp(name, "usertests") == 0) return "suite of user tests";
+  if(strcmp(name, "grind") == 0) return "stress test";
+  if(strcmp(name, "wc") == 0) return "word/line/byte count";
+  if(strcmp(name, "zombie") == 0) return "zombie process demo";
+  if(strcmp(name, "logstress") == 0) return "logging stress";
+  if(strcmp(name, "forphan") == 0) return "fork+orphan test";
+  if(strcmp(name, "dorphan") == 0) return "double-orphan test";
+  if(strcmp(name, "memdump") == 0) return "dump memory contents";
+  if(strcmp(name, "memdump_phys") == 0) return "dump pageinfo for PA/VA";
+  if(strcmp(name, "dump_pages") == 0) return "dump kernel pageinfo table";
+  if(strcmp(name, "dumppi") == 0) return "dump pageinfo entries";
+  if(strcmp(name, "memmap") == 0) return "scan physical memory map";
+  if(strcmp(name, "alloctest") == 0) return "allocator test";
+  if(strcmp(name, "dumpall") == 0) return "dump all memory info";
+  if(strcmp(name, "htop") == 0) return "interactive process viewer";
+  if(strcmp(name, "printlink") == 0) return "print link targets";
+  if(strcmp(name, "console") == 0) return "serial console device";
+  return "utility";
+}
+
 // Human-readable size formatting into buf (must be at least 16 bytes)
 // Convert unsigned long long to decimal string, return pointer to end
 static char*
@@ -119,12 +171,15 @@ ls(char *path)
   case T_FILE:
   {
     char sizebuf[16];
+    char pname[DIRSIZ+1];
+    plain_name(path, pname);
+    const char *d = descr_for(pname);
     if(color_output){
       const char *col = (st.type == T_DIR) ? "\x1b[36m" : (st.type == T_DEVICE) ? "\x1b[33m" : "\x1b[37m";
       fmtsize(st.size, sizebuf);
-      printf("%s%s\x1b[0m %d %d %s\n", col, fmtname(path), st.type, st.ino, sizebuf);
+      printf("%s%s\x1b[0m %d %d %s (%s)\n", col, fmtname(path), st.type, st.ino, sizebuf, d);
     } else {
-      printf("%s %d %d %d\n", fmtname(path), st.type, st.ino, (int) st.size);
+      printf("%s %d %d %d (%s)\n", fmtname(path), st.type, st.ino, (int) st.size, d);
     }
     break;
   }
@@ -146,13 +201,16 @@ ls(char *path)
         printf("ls: cannot stat %s\n", buf);
         continue;
       }
+      char pname[DIRSIZ+1];
+      plain_name(buf, pname);
+      const char *d = descr_for(pname);
       if(color_output){
         char sizebuf[16];
         const char *col = (st.type == T_DIR) ? "\x1b[36m" : (st.type == T_DEVICE) ? "\x1b[33m" : "\x1b[37m";
         fmtsize(st.size, sizebuf);
-        printf("%s%s\x1b[0m %d %d %s\n", col, fmtname(buf), st.type, st.ino, sizebuf);
+        printf("%s%s\x1b[0m %d %d %s (%s)\n", col, fmtname(buf), st.type, st.ino, sizebuf, d);
       } else {
-        printf("%s %d %d %d\n", fmtname(buf), st.type, st.ino, (int) st.size);
+        printf("%s %d %d %d (%s)\n", fmtname(buf), st.type, st.ino, (int) st.size, d);
       }
     }
     break;
