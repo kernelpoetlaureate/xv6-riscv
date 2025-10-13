@@ -162,6 +162,7 @@ UPROGS=\
 	$U/_alloctest\
 	$U/_dumpall\
 	$U/_htop\
+	$U/_printlink\
 
 fs.img: mkfs/mkfs README $(UPROGS)
 	mkfs/mkfs fs.img README $(UPROGS)
