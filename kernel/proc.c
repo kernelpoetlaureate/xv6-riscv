@@ -41,10 +41,11 @@ proc_mapstacks(pagetable_t kpgtbl)
     uint64 va = KSTACK((int) (p - proc));
     kvmmap(kpgtbl, va, (uint64)pa, PGSIZE, PTE_R | PTE_W);
   // Log kernel stack mapping (index because pid is not yet assigned at boot)
-#ifdef KDEBUG_MEM
+  // NOTE: This shows the hidden kernel-side stack infrastructure that exists
+  // alongside the user-space stacks. Every process gets both a kernel stack
+  // (for handling system calls/interrupts) and a user stack (for user code).
   int idx = (int)(p - proc);
   printf("KSTACK mapped idx=%d va=0x%lx pa=0x%lx\n", idx, va, (uint64)pa);
-#endif
   }
 }
 
@@ -256,10 +257,12 @@ found:
   }
 
   // Report important kernel allocations for this proc
-#ifdef KDEBUG_MEM
+  // This shows the kernel-side memory infrastructure that supports each process:
+  // - kstack: kernel stack for handling syscalls/interrupts in kernel mode
+  // - trapframe: saves/restores user registers during kernel transitions
+  // - pagetable: virtual memory translation structure for this process
   printf("PROC alloc pid=%d kstack_va=0x%lx trapframe_pa=0x%lx pagetable=%p\n",
          p->pid, p->kstack, (uint64)p->trapframe, p->pagetable);
-#endif
 
   // Set up new context to start executing at forkret,
   // which returns to user space.
