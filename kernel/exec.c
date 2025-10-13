@@ -91,7 +91,13 @@ kexec(char *path, char **argv)
   sz = sz1;
   // Log that the user stack pages were created for this process
   // Keep output succinct to avoid excessive boot noise
-  printf("STACK created for pid %d name %s at 0x%lx\n", p->pid, p->name, sz - USERSTACK*PGSIZE);
+  // Also print the physical address backing the stack virtual address
+  uint64 stack_va = sz - USERSTACK*PGSIZE;
+  uint64 stack_pa = walkaddr(pagetable, stack_va);
+  if(stack_pa)
+    printf("STACK created for pid %d name %s at va=0x%lx pa=0x%lx\n", p->pid, p->name, stack_va, stack_pa);
+  else
+    printf("STACK created for pid %d name %s at va=0x%lx pa=UNKNOWN\n", p->pid, p->name, stack_va);
   uvmclear(pagetable, sz-(USERSTACK+1)*PGSIZE);
   sp = sz;
   stackbase = sp - USERSTACK*PGSIZE;
