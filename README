@@ -46,3 +46,48 @@ You will need a RISC-V "newlib" tool chain from
 https://github.com/riscv/riscv-gnu-toolchain, and qemu compiled for
 riscv64-softmmu.  Once they are installed, and in your shell
 search path, you can run "make qemu".
+
+MEMORY INSPECTION TOOLS (userspace)
+----------------------------------
+
+This xv6 tree includes several userspace utilities to inspect memory and
+the kernel's `pageinfo` bookkeeping. Quick summary and notes about
+behavior you may observe when using them:
+
+- `memdump <addr> [len]` - dump memory at a virtual address; for kernel
+	virtual addresses (>= KERNBASE) it uses `kread` to safely copy a page.
+- `memdump_phys <addr> -p` - query the kernel `pageinfo` for a physical
+	address and print the metadata (type, owner_pid, mapped_va, tag, ref).
+- `dumppi` - scans the kernel's `pageinfo` array and prints all tracked
+	(non-FREE) physical pages. This is authoritative *if* the kernel's
+	pageinfo subsystem is populated.
+- `dump_pages` / `dumpall` - trigger kernel dumps of the pageinfo table
+	(and optionally page contents) to the kernel console. Useful for large
+	batch exports.
+- `procstat` + `get_pagemap(pid, buf, max)` - user-facing helpers that
+	report per-process VA->PA mappings; useful as a fallback when the
+	kernel's pageinfo table is empty or not fully populated.
+
+Important behavior note (observed):
+
+- In some runs `pageinfo_phys` / `dumppi` may report no tracked pages
+	("No allocated/mapped pages found."). When that happens `memmap` will
+	fall back to using `procstat` + `get_pagemap` to build a birds-eye
+	map of physical pages from process page tables. The fallback is
+	reliable for discovering USER pages but will not necessarily show
+	kernel-owned pages (those are typically only visible via kernel
+	bookkeeping like `pageinfo`). The tool also attempts to re-query
+	`pageinfo_phys(pa)` for discovered PAs to refine the classification
+	when possible.
+
+How to verify:
+
+- Run `dumppi` to see kernel-tracked pages. If it prints nothing,
+	try `procstat` and `get_pagemap` (or `memmap`) to inspect process
+	mappings.
+- Use `memdump_phys <pa> -p` to check a single physical page's
+	`pageinfo` details.
+
+If you prefer, use `memmap -v` (if available) to dump raw discovered
+entries (PA, type, owner_pid, mapped_va, tag, ref) for auditing and
+verification.
