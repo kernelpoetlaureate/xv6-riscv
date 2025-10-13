@@ -315,7 +315,8 @@ int main(int argc, char *argv[]) {
     if (b % width == 0) {
       uint64 start_idx = b * pages_per_block;
       if (start_idx < (uint64)pages_count) {
-        printf("0x%08lx: ", pages[start_idx].pa);
+        // use %p which xv6 printf supports for full-width hex pointers
+        printf("%p: ", (void*)pages[start_idx].pa);
       }
     }
     
@@ -363,6 +364,23 @@ int main(int argc, char *argv[]) {
     printf("\nOwner symbols:\n");
     for (int i = 0; i < owner_map_size; i++) {
       printf("  %c = PID %d\n", owner_map[i].symbol, owner_map[i].pid);
+    }
+
+    // Verification: count pages per owner and print counts so numbers are not placeholders
+    int *owner_counts = malloc(owner_map_size * sizeof(int));
+    if (owner_counts) {
+      for (int i = 0; i < owner_map_size; i++) owner_counts[i] = 0;
+      for (int i = 0; i < pages_count; i++) {
+        if (pages[i].type != PGTYPE_USER) continue;
+        for (int j = 0; j < owner_map_size; j++) {
+          if (owner_map[j].pid == pages[i].owner_pid) { owner_counts[j]++; break; }
+        }
+      }
+      printf("\nPer-owner page counts:\n");
+      for (int i = 0; i < owner_map_size; i++) {
+        printf("  %c (PID %d) -> %d pages\n", owner_map[i].symbol, owner_map[i].pid, owner_counts[i]);
+      }
+      free(owner_counts);
     }
   }
   
