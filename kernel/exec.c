@@ -89,6 +89,9 @@ kexec(char *path, char **argv)
   if((sz1 = uvmalloc(pagetable, sz, sz + (USERSTACK+1)*PGSIZE, PTE_W)) == 0)
     goto bad;
   sz = sz1;
+  // Log that the user stack pages were created for this process
+  // Keep output succinct to avoid excessive boot noise
+  printf("STACK created for pid %d name %s at 0x%lx\n", p->pid, p->name, sz - USERSTACK*PGSIZE);
   uvmclear(pagetable, sz-(USERSTACK+1)*PGSIZE);
   sp = sz;
   stackbase = sp - USERSTACK*PGSIZE;

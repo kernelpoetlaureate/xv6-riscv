@@ -367,6 +367,9 @@ growproc(int n)
     if((sz = uvmalloc(p->pagetable, sz, sz + n, PTE_W)) == 0) {
       return -1;
     }
+    // Log heap growth: report PID, name and new heap start address
+    // Report the start of the newly allocated region (old sz)
+    printf("HEAP expanded for pid %d name %s from 0x%lx to 0x%lx\n", p->pid, p->name, p->sz, sz);
   } else if(n < 0){
     sz = uvmdealloc(p->pagetable, sz, sz + n);
   }
