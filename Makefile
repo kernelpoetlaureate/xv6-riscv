@@ -159,6 +159,7 @@ UPROGS=\
 	$U/_memdump_phys\
 	$U/_dump_pages\
 	$U/_dumppi\
+	$U/_memmap\
 	$U/_alloctest\
 	$U/_dumpall\
 	$U/_htop\
