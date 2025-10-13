@@ -296,15 +296,26 @@ sys_pageinfo_phys(void)
   argaddr(1, &pa);
 
   // Verify the physical address is within valid range
-  if(pa < (uint64)end || pa >= PHYSTOP)
+  if(pa < (uint64)end || pa >= PHYSTOP) {
+    // Provide an explanatory kernel log so callers (and developers)
+    // can see why the syscall failed. This prints to the kernel
+    // console / QEMU serial.
+    printf("pageinfo_phys: rejected pa=0x%lx; allowed range [end=0x%lx, PHYSTOP=0x%lx)\n",
+           pa, (uint64)end, PHYSTOP);
     return -1;
+  }
 
-  // Make sure pa is page-aligned
-  if((pa % PGSIZE) != 0)
-    pa = PGROUNDDOWN(pa);
+  // Make sure pa is page-aligned; if not, log the rounding we perform.
+  if((pa % PGSIZE) != 0) {
+    uint64 rounded = PGROUNDDOWN(pa);
+    printf("pageinfo_phys: pa=0x%lx not page-aligned; rounding down to 0x%lx\n", pa, rounded);
+    pa = rounded;
+  }
 
-  if(pageinfo_copy_entry_to_user(dst, (void*)pa) < 0)
+  if(pageinfo_copy_entry_to_user(dst, (void*)pa) < 0) {
+    printf("pageinfo_phys: pageinfo_copy_entry_to_user failed for pa=0x%lx dst=0x%lx\n", pa, dst);
     return -1;
+  }
   return 0;
 }
 
