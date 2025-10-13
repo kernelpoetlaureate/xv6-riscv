@@ -215,6 +215,16 @@ mappages(pagetable_t pagetable, uint64 va, uint64 size, uint64 pa, int perm)
     if(*pte & PTE_V)
       panic("mappages: remap");
     *pte = PA2PTE(pa) | perm | PTE_V;
+    // Log the mapping we just created. Attribute to current proc if available.
+#ifdef KDEBUG_MEM
+    {
+      struct proc *curp = myproc();
+      if(curp)
+        printf("MAPPAGES pid=%d name=%s va=0x%lx pa=0x%lx perm=0x%x\n", curp->pid, curp->name, a, pa, perm);
+      else
+        printf("MAPPAGES va=0x%lx pa=0x%lx perm=0x%x\n", a, pa, perm);
+    }
+#endif
     // Record mapping in pageinfo. We attribute the mapping to the
     // current process (myproc()) when available; otherwise owner==0
     // indicates kernel ownership. The page type is chosen conservatively:
@@ -309,6 +319,16 @@ uvmalloc(pagetable_t pagetable, uint64 oldsz, uint64 newsz, int xperm)
       uvmdealloc(pagetable, a, oldsz);
       return 0;
     }
+    // Log user allocation: which process (if any), virtual addr and backing PA
+#ifdef KDEBUG_MEM
+    {
+      struct proc *cur = myproc();
+      if(cur)
+        printf("UVMMAP pid=%d name=%s va=0x%lx pa=0x%lx\n", cur->pid, cur->name, a, (uint64)mem);
+      else
+        printf("UVMMAP va=0x%lx pa=0x%lx\n", a, (uint64)mem);
+    }
+#endif
   }
   return newsz;
 }

@@ -132,6 +132,9 @@ kfree(void *pa)
   r->next = kmem.freelist;
   kmem.freelist = r;
   release(&kmem.lock);
+#ifdef KDEBUG_MEM
+  printf("KFREE pa=0x%lx\n", (uint64)pa);
+#endif
 }
 
 // Allocate one 4096-byte page of physical memory.
@@ -163,6 +166,12 @@ kalloc(void)
     if(p)
       pid = p->pid;
     register_page_allocation((uint64)r, pid);
+  #ifdef KDEBUG_MEM
+    if(pid)
+      printf("KALLOC pid=%d pa=0x%lx\n", pid, (uint64)r);
+    else
+      printf("KALLOC kernel pa=0x%lx\n", (uint64)r);
+  #endif
   }
   return (void*)r;
 }
