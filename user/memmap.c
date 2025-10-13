@@ -71,13 +71,37 @@ int try_pageinfo_phys(struct pageinfo_user **pages_out, int *count_out) {
   int pages_count = 0;
   int pages_capacity = 1024;
   
-  // Skip initial failing PAs and scan forward
+  // Avoid spamming kernel logs by first doing a coarse scan (1MB steps)
+  // to find the approximate region where pageinfo_phys accepts PAs, then
+  // do a page-sized scan around that region.
+  const uint64 SEARCH_LIMIT = 0x10000000;
+  const uint64 COARSE_STEP = 0x100000; // 1MB
   int found_any = 0;
-  for (uint64 pa = 0; pa < 0x10000000; pa += PGSIZE) {
+  uint64 probe_pa;
+
+  for (probe_pa = 0; probe_pa < SEARCH_LIMIT; probe_pa += COARSE_STEP) {
+    struct pageinfo_user pi;
+    int ret = pageinfo_phys((uint64)&pi, probe_pa);
+    if (ret >= 0) {
+      found_any = 1;
+      break;
+    }
+  }
+
+  if (!found_any) {
+    // No pageinfo entries found in coarse scan
+    free(pages);
+    return -1;
+  }
+
+  // Back up one coarse step to ensure we didn't skip the beginning
+  uint64 start_pa = (probe_pa >= COARSE_STEP) ? probe_pa - COARSE_STEP : 0;
+
+  // Fine-grained scan: iterate page-by-page starting at start_pa
+  for (uint64 pa = start_pa; pa < SEARCH_LIMIT; pa += PGSIZE) {
     struct pageinfo_user pi;
     int ret = pageinfo_phys((uint64)&pi, pa);
     if (ret >= 0) {
-      found_any = 1;
       if (pages_count >= pages_capacity) {
         pages_capacity *= 2;
         pages = (void*)xrealloc(pages, 
@@ -87,8 +111,9 @@ int try_pageinfo_phys(struct pageinfo_user **pages_out, int *count_out) {
       }
       pi.pa = pa;
       pages[pages_count++] = pi;
-    } else if (found_any) {
-      // Hit the end of valid pages
+    } else if (pages_count > 0) {
+      // We already found pages and now pageinfo_phys stopped accepting PAs;
+      // assume we've reached the end of the tracked region
       break;
     }
   }
@@ -210,7 +235,9 @@ int try_procstat_pagemap(struct pageinfo_user **pages_out, int *count_out) {
 
 int main(int argc, char *argv[]) {
   int width = 64;
-  int pages_per_block = 1;
+  int pages_per_block = 1; // existing: pages grouped into one character
+  int pages_per_char = 1;   // new: alias for pages_per_block but allows -g option
+  int group_by_owner = 0;   // if set, aggregate ranges by owner instead of by page
   
   // Parse command line
   for (int i = 1; i < argc; i++) {
@@ -219,7 +246,16 @@ int main(int argc, char *argv[]) {
       i++;
     } else if (i + 1 < argc && strcmp(argv[i], "-b") == 0) {
       pages_per_block = atoi(argv[i + 1]);
+      pages_per_char = pages_per_block;
       i++;
+    } else if (i + 1 < argc && strcmp(argv[i], "-g") == 0) {
+      // -g is a more intuitive alias for grouping granularity (pages per displayed char)
+      pages_per_char = atoi(argv[i + 1]);
+      if (pages_per_char > 0) pages_per_block = pages_per_char;
+      i++;
+    } else if (strcmp(argv[i], "-O") == 0 || strcmp(argv[i], "--owners") == 0) {
+      // Group by owner mode: coalesce contiguous runs owned by same pid
+      group_by_owner = 1;
     } else {
       printf("usage: %s [-w width] [-b pages_per_block]\n", argv[0]);
       return 1;
@@ -228,6 +264,7 @@ int main(int argc, char *argv[]) {
   
   if (width <= 0) width = 64;
   if (pages_per_block <= 0) pages_per_block = 1;
+  if (pages_per_char <= 0) pages_per_char = pages_per_block;
   
   struct pageinfo_user *pages = 0;
   int pages_count = 0;
@@ -267,9 +304,14 @@ int main(int argc, char *argv[]) {
     }
   }
   
-  printf("\nPhysical Memory Map (%d pages, %d pages per block, %d blocks per row)\n", 
-         pages_count, pages_per_block, width);
-  printf("Legend: . = FREE, # = KERNEL, B = BCACHE, T = PAGETBL, 0-9A-Za-z = USER (pid)\n\n");
+  if (group_by_owner) {
+    printf("\nPhysical Memory Map (grouped by owner runs, %d pages total)\n", pages_count);
+    printf("Legend: . = FREE, # = KERNEL, B = BCACHE, T = PAGETBL, 0-9A-Za-z = USER (pid)\n\n");
+  } else {
+    printf("\nPhysical Memory Map (%d pages, %d pages per char, %d chars per row)\n", 
+           pages_count, pages_per_char, width);
+    printf("Legend: . = FREE, # = KERNEL, B = BCACHE, T = PAGETBL, 0-9A-Za-z = USER (pid)\n\n");
+  }
   
   // Deterministic owner symbol assignment: collect unique PIDs and sort
   int max_owners = 128;
@@ -306,54 +348,102 @@ int main(int argc, char *argv[]) {
   int counts[256] = {0};
   
   // Generate map
-  int blocks = (pages_count + pages_per_block - 1) / pages_per_block;
-  for (int b = 0; b < blocks; b++) {
-    if (b > 0 && b % width == 0) {
-      printf("\n");
-    }
-    // print starting PA for this row (every width or at beginning)
-    if (b % width == 0) {
-      uint64 start_idx = b * pages_per_block;
-      if (start_idx < (uint64)pages_count) {
-        // use %p which xv6 printf supports for full-width hex pointers
-        printf("%p: ", (void*)pages[start_idx].pa);
+  if (group_by_owner) {
+    // Coalesce contiguous runs by owner/type. We'll walk pages in order and print a char per run.
+    int chars = 0;
+    for (int i = 0; i < pages_count; ) {
+      // determine run starting at i
+      struct pageinfo_user *pi = &pages[i];
+      // aggregate counts for every page in run
+      int j = i;
+      while (j < pages_count) {
+        struct pageinfo_user *pj = &pages[j];
+        // run continues while owner and type match and pages are contiguous (by PA)
+        if (pj->type != pi->type) break;
+        if (pj->pa != pages[j-1].pa + PGSIZE && j > i) break;
+        if (pi->type == PGTYPE_USER && pj->owner_pid != pi->owner_pid) break;
+        j++;
       }
+
+      // print header for new row when needed
+      if (chars > 0 && chars % width == 0) printf("\n");
+      if (chars % width == 0) printf("%p: ", (void*)pi->pa);
+
+      // choose character for this run
+      char ch = '.';
+      switch (pi->type) {
+        case PGTYPE_FREE: ch = '.'; break;
+        case PGTYPE_KERNEL: ch = '#'; break;
+        case PGTYPE_BCACHE: ch = 'B'; break;
+        case PGTYPE_PAGETABLE: ch = 'T'; break;
+        case PGTYPE_USER: {
+          char s = '?';
+          for (int oi = 0; oi < owner_map_size; oi++) if (owner_map[oi].pid == pi->owner_pid) { s = owner_map[oi].symbol; break; }
+          ch = s;
+          break;
+        }
+        default: ch = '?'; break;
+      }
+
+      // advance counts for run
+      for (int k = i; k < j; k++) counts[pages[k].type]++;
+
+      printf("%c", ch);
+      chars++;
+      i = j;
     }
-    
-    // Determine block character - find first non-free type
-    char ch = '.';
-    for (int p = 0; p < pages_per_block && b * pages_per_block + p < pages_count; p++) {
-      struct pageinfo_user *pi = &pages[b * pages_per_block + p];
-      counts[pi->type]++;
-      
-      if (ch == '.') { // Only override if still FREE
-        switch (pi->type) {
-          case PGTYPE_FREE:
-            ch = '.';
-            break;
-          case PGTYPE_KERNEL:
-            ch = '#';
-            break;
-          case PGTYPE_BCACHE:
-            ch = 'B';
-            break;
-          case PGTYPE_PAGETABLE:
-            ch = 'T';
-            break;
-          case PGTYPE_USER: {
-            char s = '?';
-            // find symbol in owner_map for pid
-            for (int oi = 0; oi < owner_map_size; oi++) if (owner_map[oi].pid == pi->owner_pid) { s = owner_map[oi].symbol; break; }
-            ch = s;
-            break;
-          }
-          default:
-            ch = '?';
-            break;
+    printf("\n");
+  } else {
+    int blocks = (pages_count + pages_per_char - 1) / pages_per_char;
+    for (int b = 0; b < blocks; b++) {
+      if (b > 0 && b % width == 0) {
+        printf("\n");
+      }
+      // print starting PA for this row (every width or at beginning)
+      if (b % width == 0) {
+        uint64 start_idx = b * pages_per_char;
+        if (start_idx < (uint64)pages_count) {
+          // use %p which xv6 printf supports for full-width hex pointers
+          printf("%p: ", (void*)pages[start_idx].pa);
         }
       }
+
+      // Determine block character - find first non-free type
+      char ch = '.';
+      for (int p = 0; p < pages_per_char && b * pages_per_char + p < pages_count; p++) {
+        struct pageinfo_user *pi = &pages[b * pages_per_char + p];
+        counts[pi->type]++;
+
+        if (ch == '.') { // Only override if still FREE
+          switch (pi->type) {
+            case PGTYPE_FREE:
+              ch = '.';
+              break;
+            case PGTYPE_KERNEL:
+              ch = '#';
+              break;
+            case PGTYPE_BCACHE:
+              ch = 'B';
+              break;
+            case PGTYPE_PAGETABLE:
+              ch = 'T';
+              break;
+            case PGTYPE_USER: {
+              char s = '?';
+              // find symbol in owner_map for pid
+              for (int oi = 0; oi < owner_map_size; oi++) if (owner_map[oi].pid == pi->owner_pid) { s = owner_map[oi].symbol; break; }
+              ch = s;
+              break;
+            }
+            default:
+              ch = '?';
+              break;
+          }
+        }
+      }
+      printf("%c", ch);
     }
-    printf("%c", ch);
+    printf("\n");
   }
   printf("\n\nCounts:\n");
   printf("FREE: %d, KERNEL: %d, BCACHE: %d, PAGETABLE: %d, USER: %d\n",
