@@ -29,6 +29,20 @@ struct spinlock wait_lock;
 // Allocate a page for each process's kernel stack.
 // Map it high in memory, followed by an invalid
 // guard page.
+// Pre-allocate kernel stacks for all possible processes at boot time.
+// This creates the "hidden" kernel infrastructure that supports user processes.
+// 
+// MEMORY ARCHITECTURE OVERVIEW:
+// Each process exists in TWO worlds simultaneously:
+// 1. KERNEL SPACE: kernel stack (this function), trapframe, page table
+// 2. USER SPACE: user stack (exec.c), heap (proc.c growproc)
+//
+// KERNEL STACK ALLOCATION PATTERN:
+// - 64 kernel stacks pre-allocated (one per NPROC slot)
+// - Virtual addresses: high kernel space (0x3ffff...)  
+// - Physical addresses: sequential/contiguous allocation
+// - Kernel stacks are REUSED when processes terminate
+// - Same kernel stack VA can serve multiple processes over time
 void
 proc_mapstacks(pagetable_t kpgtbl)
 {
@@ -259,8 +273,17 @@ found:
   // Report important kernel allocations for this proc
   // This shows the kernel-side memory infrastructure that supports each process:
   // - kstack: kernel stack for handling syscalls/interrupts in kernel mode
-  // - trapframe: saves/restores user registers during kernel transitions
+  //   (REUSED from pre-allocated pool - same VA can serve multiple processes)
+  // - trapframe: saves/restores user registers during kernel transitions  
+  //   (ALLOCATED per process - unique physical page)
   // - pagetable: virtual memory translation structure for this process
+  //   (ALLOCATED per process - enables virtual memory isolation)
+  // 
+  // PROCESS MEMORY FOOTPRINT: Each process requires 4 memory regions:
+  // 1. Kernel stack (reused from boot-time pool)
+  // 2. Trapframe (allocated here) 
+  // 3. Page table (allocated here)
+  // 4. User stack (allocated later in exec.c)
   printf("PROC alloc pid=%d kstack_va=0x%lx trapframe_pa=0x%lx pagetable=%p\n",
          p->pid, p->kstack, (uint64)p->trapframe, p->pagetable);
 
@@ -381,8 +404,16 @@ growproc(int n)
     if((sz = uvmalloc(p->pagetable, sz, sz + n, PTE_W)) == 0) {
       return -1;
     }
-    // Log heap growth: report PID, name and new heap start address
-    // Report the start of the newly allocated region (old sz)
+    // HEAP EXPANSION: Dynamic memory allocation in user space
+    // The heap grows upward from its initial size when process requests more memory.
+    // This complements the static user stack (allocated in exec.c).
+    //
+    // USER SPACE MEMORY LAYOUT (typical process):
+    // - Code/Data: starts at low addresses 
+    // - Heap: grows upward from ~0x5000 (this function handles growth)
+    // - Stack: fixed at higher address like 0x4000 (allocated in exec.c)
+    //
+    // Note: This is SEPARATE from kernel space infrastructure (kstack, trapframe, pagetable)
     printf("HEAP expanded for pid %d name %s from 0x%lx to 0x%lx\n", p->pid, p->name, p->sz, sz);
   } else if(n < 0){
     sz = uvmdealloc(p->pagetable, sz, sz + n);

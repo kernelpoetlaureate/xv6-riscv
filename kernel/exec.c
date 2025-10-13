@@ -91,12 +91,19 @@ kexec(char *path, char **argv)
   sz = sz1;
   // Log that the user stack pages were created for this process
   // Keep output succinct to avoid excessive boot noise
-  // Also print the physical address backing the stack virtual address
+  // USER STACK ALLOCATION: Create user-mode execution stack
+  // This is the 4th and final memory region for each process:
+  // 1. Kernel stack (pre-allocated at boot in proc_mapstacks)
+  // 2. Trapframe (allocated in allocproc) 
+  // 3. Page table (allocated in allocproc)
+  // 4. User stack (allocated HERE)
+  //
+  // VIRTUAL MEMORY ISOLATION:
+  // - Same virtual address (e.g., 0x4000) used across all processes
+  // - Different physical address per process ensures isolation
+  // - Virtual memory hardware translates VA→PA using per-process page table
   uint64 stack_va = sz - USERSTACK*PGSIZE;
   uint64 stack_pa = walkaddr(pagetable, stack_va);
-  // The stack virtual address (va) is the same for all processes (e.g., 0x4000),
-  // but the physical address (pa) is unique for each process. This is due to
-  // the virtual memory mechanism, which ensures isolation between processes.
   if(stack_pa)
     printf("STACK created for pid %d name %s at va=0x%lx pa=0x%lx\n", p->pid, p->name, stack_va, stack_pa);
   else
