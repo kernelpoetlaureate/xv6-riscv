@@ -94,6 +94,9 @@ kexec(char *path, char **argv)
   // Also print the physical address backing the stack virtual address
   uint64 stack_va = sz - USERSTACK*PGSIZE;
   uint64 stack_pa = walkaddr(pagetable, stack_va);
+  // The stack virtual address (va) is the same for all processes (e.g., 0x4000),
+  // but the physical address (pa) is unique for each process. This is due to
+  // the virtual memory mechanism, which ensures isolation between processes.
   if(stack_pa)
     printf("STACK created for pid %d name %s at va=0x%lx pa=0x%lx\n", p->pid, p->name, stack_va, stack_pa);
   else

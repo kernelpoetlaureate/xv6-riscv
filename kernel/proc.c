@@ -388,6 +388,11 @@ growproc(int n)
   return 0;
 }
 
+// The heap is dynamically expanded when a process requests more memory.
+// This involves allocating additional physical memory and mapping it to
+// the process's virtual address space. The virtual address range grows
+// upwards, while the physical memory remains isolated per process.
+
 // Create a new process, copying the parent.
 // Sets up child kernel stack to return as if from fork() system call.
 int
