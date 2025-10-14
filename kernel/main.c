@@ -57,10 +57,11 @@ main()
     printf("[BOOT INFO] kvminithart completed. Paging ENABLED - satp loaded, TLB flushed, virtual addressing active.\n");
 
     // Phase 3.3: Pre-allocate kernel stacks and process table
-    printf("[BOOT INFO] Phase 3.3: procinit - initialize process table and pre-map kernel stacks.\n");
+    printf("[BOOT INFO] Phase 3.3: procinit - initialize process table and assign kernel stack addresses.\n");
     printf("[BOOT INFO] This initializes struct proc[] for NPROC slots and sets each p->kstack = KSTACK(i).\n");
+    printf("[BOOT INFO] NOTE: Kernel stacks already allocated in kvmmake() - this just assigns VA addresses.\n");
     procinit();      // process table
-    printf("[BOOT INFO] procinit completed. proc[] entries initialized and kstack addresses assigned.\n");
+    printf("[BOOT INFO] procinit completed. proc[] entries initialized, kernel stack VAs assigned.\n");
 
     // Phase 3.4: Trap vectors
     printf("[BOOT INFO] Phase 3.4: trapinit - configure trap handlers and trampoline support.\n");
@@ -99,13 +100,14 @@ main()
     printf("[BOOT COMPLETE] Phase 1: entry.S → per-CPU stacks, call start()\n");  
     printf("[BOOT COMPLETE] Phase 2: start.c → PMP config, M→S mode switch to main()\n");
     printf("[BOOT COMPLETE] Phase 3: main.c → kinit, kvminit, procinit, devices\n");
-    printf("[BOOT COMPLETE] Phase 4: userinit → PID 1 allocated\n");
-    printf("[BOOT COMPLETE] Phase 5: PID 1 user stack created\n");  
+    printf("[BOOT COMPLETE] Phase 4: userinit → PID 1 allocated (kernel stack assigned)\n");
+    printf("[BOOT COMPLETE] Phase 5: PID 1 user stack dynamically created in exec()\n");  
     printf("[BOOT COMPLETE] Phase 6: Shell (PID 2) ready for user interaction\n");
     printf("[BOOT COMPLETE] Critical invariants established:\n");
     printf("                - Physical memory allocator (freelist with SMP locking)\n");
     printf("                - Kernel page table with identity mappings + TRAMPOLINE\n");
-    printf("                - 64 pre-allocated kernel stacks with guard pages\n");
+    printf("                - 64 pre-allocated KERNEL stacks (reused across processes)\n");
+    printf("                - Per-process USER stacks (dynamically allocated/freed)\n");
     printf("                - Per-process virtual memory isolation via page tables\n");
     printf("[BOOT COMPLETE] Entering scheduler. Kernel→user transitions now possible.\n");
     printf("========================================================\n\n");

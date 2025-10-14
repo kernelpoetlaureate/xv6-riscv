@@ -66,10 +66,11 @@ proc_mapstacks(pagetable_t kpgtbl)
     // This log shows the virtual address reserved for the stack and the
     // physical page backing it.
     int idx = (int)(p - proc);
-    printf("KSTACK mapped idx=%d va=0x%lx pa=0x%lx\n", idx, va, (uint64)pa);
+    printf("KERNEL STACK pre-allocated idx=%d va=0x%lx pa=0x%lx\n", idx, va, (uint64)pa);
     if(idx == 0) {
-      printf("KSTACK: each has 4KB usable + 4KB guard page (unmapped to catch overflow)\n");
-      printf("KSTACK: VAs descend from TRAMPOLINE (0x3ffffff000), guard pages prevent corruption\n");
+      printf("KERNEL STACK: 64 stacks allocated at boot - NEVER FREED, reused when proc[] slots recycled\n");
+      printf("KERNEL STACK: each has 4KB usable + 4KB guard page (unmapped to catch overflow)\n");
+      printf("KERNEL STACK: VAs descend from TRAMPOLINE (0x3ffffff000), guard pages prevent corruption\n");
     }
   }
 }
@@ -262,6 +263,13 @@ allocproc(void)
 found:
   p->pid = allocpid();
   p->state = USED;
+  
+  // Log kernel stack assignment - this is REUSE of pre-allocated stack
+  int slot_idx = (int)(p - proc);
+  if(p->pid > 2) {  // Avoid noise for init processes  
+    printf("KERNEL STACK reused: pid=%d gets slot[%d] kstack_va=0x%lx (same VA/PA as previous pid in this slot)\n",
+           p->pid, slot_idx, p->kstack);
+  }
 
   // Allocate a trapframe page.
   if((p->trapframe = (struct trapframe *)kalloc()) == 0){
@@ -284,20 +292,21 @@ found:
   // Report important kernel allocations for this proc
   // This shows the kernel-side memory infrastructure that supports each process:
   // - kstack: kernel stack for handling syscalls/interrupts in kernel mode
-  //   (REUSED from pre-allocated pool - same VA can serve multiple processes)
+  //   (ASSIGNED from pre-allocated pool - same VA can serve multiple processes)
   // - trapframe: saves/restores user registers during kernel transitions  
   //   (ALLOCATED per process - unique physical page)
   // - pagetable: virtual memory translation structure for this process
   //   (ALLOCATED per process - enables virtual memory isolation)
   // 
   // PROCESS MEMORY FOOTPRINT: Each process requires 4 memory regions:
-  // 1. Kernel stack (reused from boot-time pool)
-  // 2. Trapframe (allocated here) 
-  // 3. Page table (allocated here)
-  // 4. User stack (allocated later in exec.c)
-  printf("PROC alloc pid=%d kstack_va=0x%lx trapframe_pa=0x%lx pagetable=%p\n",
+  // 1. Kernel stack (assigned from boot-time pool - REUSED across processes)
+  // 2. Trapframe (allocated here - FREED on exit)
+  // 3. Page table (allocated here - FREED on exit)
+  // 4. User stack (allocated later in exec.c - FREED on exit)
+  printf("PROC alloc pid=%d assigned kstack_va=0x%lx trapframe_pa=0x%lx pagetable=%p\n",
          p->pid, p->kstack, (uint64)p->trapframe, p->pagetable);
-  printf("PROC alloc: trapframe stores user registers during traps; pagetable enables virtual memory isolation\n");
+  printf("KERNEL STACK assigned: REUSED from pre-allocated pool (same VA/PA for proc[] slot)\n");
+  printf("TRAPFRAME/PAGETABLE allocated: FREED on exit, different PA per process\n");
 
   // Set up new context to start executing at forkret,
   // which returns to user space.
