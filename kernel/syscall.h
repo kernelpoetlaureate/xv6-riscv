@@ -28,3 +28,5 @@
 // New syscalls
 #define SYS_getrss 27
 #define SYS_get_pagemap 28
+// trace read
+#define SYS_trace_read 29

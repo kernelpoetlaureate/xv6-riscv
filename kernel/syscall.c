@@ -6,6 +6,7 @@
 #include "proc.h"
 #include "syscall.h"
 #include "defs.h"
+#include "trace.h"
 
 // Fetch the uint64 at addr from the current process.
 int
@@ -110,6 +111,7 @@ extern uint64 sys_pageinfo_phys(void);
 extern uint64 sys_procstat(void);
 extern uint64 sys_getrss(void);
 extern uint64 sys_get_pagemap(void);
+extern uint64 sys_trace_read(void);
 
 // An array mapping syscall numbers from syscall.h
 // to the function that handles the system call.
@@ -142,6 +144,7 @@ static uint64 (*syscalls[])(void) = {
   [SYS_procstat] = sys_procstat,
   [SYS_getrss] = sys_getrss,
   [SYS_get_pagemap] = sys_get_pagemap,
+  [SYS_trace_read] = sys_trace_read,
 };
 
 // Optional human-readable syscall names aligned with syscall numbers.
@@ -181,16 +184,13 @@ syscall(void)
 
   num = p->trapframe->a7;
   if(num > 0 && num < NELEM(syscalls) && syscalls[num]) {
-    // Log BEFORE execution: pid, syscall num/name, and basic memory state
-    // const char *name = (num < NELEM(syscall_names) && syscall_names[num]) ? syscall_names[num] : "?";
-    // printf("PID %d: SYSCALL %d (%s) - ", p->pid, num, name);
-    // printf("Heap end(sz)=0x%lx User SP=0x%lx\n", p->sz, p->trapframe->sp);
+    // Emit syscall enter trace
+    trace_emit(TRACE_SYSCALL_ENTER, num, p->trapframe->a0, p->trapframe->a1, p->trapframe->a2, p->sz, p->trapframe->sp);
 
     // Call the syscall and store its return value in a0
     p->trapframe->a0 = syscalls[num]();
-
-    // Log AFTER execution: return value
-    // printf("PID %d: RETURN %d (0x%lx)\n", p->pid, (int)p->trapframe->a0, p->trapframe->a0);
+    // Emit syscall exit trace
+    trace_emit(TRACE_SYSCALL_EXIT, num, p->trapframe->a0, 0, 0, 0, 0);
   } else {
     printf("%d %s: unknown sys call %d\n",
             p->pid, p->name, num);

@@ -6,6 +6,7 @@
 #include "proc.h"
 #include "defs.h"
 #include "elf.h"
+#include "trace.h"
 
 static int loadseg(pde_t *, uint64, struct inode *, uint, uint);
 
@@ -75,6 +76,8 @@ kexec(char *path, char **argv)
     if((sz1 = uvmalloc(pagetable, sz, ph.vaddr + ph.memsz, flags2perm(ph.flags))) == 0)
       goto bad;
     sz = sz1;
+    // Emit trace for segment allocation/load
+    trace_emit(TRACE_EXEC_SEGMENT, ph.vaddr, ph.vaddr + ph.memsz, ph.filesz, ph.flags, 0, 0);
     if(loadseg(pagetable, ph.vaddr, ip, ph.off, ph.filesz) < 0)
       goto bad;
   }
@@ -161,6 +164,8 @@ kexec(char *path, char **argv)
   p->sz = sz;
   p->trapframe->epc = elf.entry;  // initial program counter = ulib.c:start()
   p->trapframe->sp = sp; // initial stack pointer
+  // Exec complete trace
+  trace_emit(TRACE_EXEC_DONE, p->trapframe->epc, p->trapframe->sp, argc, 0, 0, 0);
   proc_freepagetable(oldpagetable, oldsz);
 
   return argc; // this ends up in a0, the first argument to main(argc, argv)

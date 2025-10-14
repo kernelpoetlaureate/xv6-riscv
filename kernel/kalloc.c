@@ -36,6 +36,7 @@
 #include "defs.h"
 #include "proc.h"
 #include "pageinfo.h"
+#include "trace.h"
 
 extern char end[]; // first address after kernel.
                    // defined by kernel.ld.
@@ -186,6 +187,8 @@ kalloc(void)
     if(p)
       pid = p->pid;
     register_page_allocation((uint64)r, pid);
+  // Emit a KALLOC trace event: pa, pid, caller (approx via ra)
+  trace_emit(TRACE_KALLOC, (uint64)r, pid, (uint64)r_ra(), 0, 0, 0);
   #ifdef KDEBUG_MEM
     if(pid)
       printf("KALLOC pid=%d pa=0x%lx\n", pid, (uint64)r);

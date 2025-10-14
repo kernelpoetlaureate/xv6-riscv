@@ -47,3 +47,4 @@ entry("pageinfo");
 entry("procstat");
 entry("getrss");
 entry("get_pagemap");
+entry("trace_read");
