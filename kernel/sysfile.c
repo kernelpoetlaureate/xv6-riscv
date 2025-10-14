@@ -461,10 +461,20 @@ sys_exec(void)
       goto bad;
   }
 
+  // Log exec transition
+  struct proc *cur = myproc();
+  printf("EXEC TRANSITION: pid=%d, old pagetable=0x%lx, old sz=0x%lx\n",
+         cur->pid, (uint64)cur->pagetable, cur->sz);
   int ret = kexec(path, argv);
 
   for(i = 0; i < NELEM(argv) && argv[i] != 0; i++)
     kfree(argv[i]);
+
+  if(ret == 0){
+    // After successful exec, dump address space
+    printf("EXEC TRANSITION: exec returned 0, dumping address space for pid=%d\n", cur->pid);
+    dump_process_address_space(cur);
+  }
 
   return ret;
 

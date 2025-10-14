@@ -129,11 +129,15 @@ kexec(char *path, char **argv)
     
   // Commit to the user image.
   oldpagetable = p->pagetable;
+  printf("EXEC: old pagetable=0x%lx, oldsz=0x%lx\n", (uint64)oldpagetable, oldsz);
   p->pagetable = pagetable;
   p->sz = sz;
   p->trapframe->epc = elf.entry;  // initial program counter = ulib.c:start()
   p->trapframe->sp = sp; // initial stack pointer
-  printf("User stack pointer set to: 0x%lx\n", sp);
+  printf("EXEC: new pagetable=0x%lx, sz=0x%lx, final sp=0x%lx, stack base=0x%lx\n",
+    (uint64)p->pagetable, p->sz, sp, stackbase);
+  // Dump key mappings for verification
+  dump_process_address_space(p);
   proc_freepagetable(oldpagetable, oldsz);
 
   return argc; // this ends up in a0, the first argument to main(argc, argv)

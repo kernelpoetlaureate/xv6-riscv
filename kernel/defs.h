@@ -95,6 +95,7 @@ void            scheduler(void) __attribute__((noreturn));
 void            sched(void);
 void            sleep(void*, struct spinlock*);
 void            userinit(void);
+void            dump_process_address_space(struct proc *p);
 int             kwait(uint64);
 void            wakeup(void*);
 void            yield(void);

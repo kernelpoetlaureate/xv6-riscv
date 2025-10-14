@@ -136,6 +136,8 @@ found:
     release(&p->lock);
     return 0;
   }
+  printf("allocproc: pid=%d, kstack_va=0x%lx, trapframe_pa=0x%lx\n",
+         p->pid, p->kstack, (uint64)p->trapframe);
 
   // An empty user page table.
   p->pagetable = proc_pagetable(p);
@@ -144,6 +146,7 @@ found:
     release(&p->lock);
     return 0;
   }
+  printf("allocproc: pid=%d, pagetable=0x%lx\n", p->pid, (uint64)p->pagetable);
 
   // Set up new context to start executing at forkret,
   // which returns to user space.

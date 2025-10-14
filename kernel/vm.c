@@ -8,6 +8,57 @@
 #include "proc.h"
 #include "fs.h"
 
+extern pagetable_t kernel_pagetable;
+
+// Helper: print PTE flags nicely
+static void
+print_pte_flags(pte_t pte)
+{
+  if(pte & PTE_R) printf(" R");
+  if(pte & PTE_W) printf(" W");
+  if(pte & PTE_X) printf(" X");
+  if(pte & PTE_U) printf(" U");
+}
+
+// Walk and log a single VA translation for a given pagetable.
+void
+log_va_translation(pagetable_t pagetable, uint64 va)
+{
+  pte_t *pte;
+  if(va >= MAXVA){
+    printf("VA 0x%lx: INVALID (>= MAXVA)\n", va);
+    return;
+  }
+  pte = walk(pagetable, va, 0);
+  if(pte == 0){
+    printf("VA 0x%lx: NOT MAPPED\n", va);
+    return;
+  }
+  if((*pte & PTE_V) == 0){
+    printf("VA 0x%lx: INVALID PTE\n", va);
+    return;
+  }
+  uint64 pa = PTE2PA(*pte);
+  printf("VA 0x%lx -> PA 0x%lx, flags:", va, pa);
+  print_pte_flags(*pte);
+  printf("\n");
+}
+
+void
+dump_process_address_space(struct proc *p)
+{
+  if(p == 0) return;
+  printf("Process %d address space:\n", p->pid);
+  printf("  User memory: 0x0 - 0x%lx\n", p->sz);
+  printf("  VA 0x0:\n    "); log_va_translation(p->pagetable, 0);
+  printf("  User stack top (p->sz - PGSIZE = 0x%lx):\n    ", p->sz - PGSIZE); log_va_translation(p->pagetable, p->sz - PGSIZE);
+  printf("  User stack guard (p->sz - 2*PGSIZE = 0x%lx):\n    ", p->sz - 2*PGSIZE); log_va_translation(p->pagetable, p->sz - 2*PGSIZE);
+  printf("  TRAPFRAME (0x%lx):\n    ", TRAPFRAME); log_va_translation(p->pagetable, TRAPFRAME);
+  printf("  TRAMPOLINE (0x%lx):\n    ", TRAMPOLINE); log_va_translation(p->pagetable, TRAMPOLINE);
+  printf("  Kernel stack VA (0x%lx) translation in kernel page table:\n    ", p->kstack); log_va_translation(kernel_pagetable, p->kstack);
+}
+
+
 /*
  * the kernel's page table.
  */
@@ -16,6 +67,7 @@ pagetable_t kernel_pagetable;
 extern char etext[];  // kernel.ld sets this to end of kernel code.
 
 extern char trampoline[]; // trampoline.S
+extern pagetable_t kernel_pagetable;
 
 // Make a direct-map page table for the kernel.
 pagetable_t
@@ -235,6 +287,7 @@ uvmalloc(pagetable_t pagetable, uint64 oldsz, uint64 newsz, int xperm)
       uvmdealloc(pagetable, a, oldsz);
       return 0;
     }
+    printf("uvmalloc: allocated PA 0x%lx -> VA 0x%lx (newsz=0x%lx)\n", (uint64)mem, a, newsz);
   }
   return newsz;
 }
@@ -308,6 +361,9 @@ uvmcopy(pagetable_t old, pagetable_t new, uint64 sz)
       continue;   // physical page hasn't been allocated
     pa = PTE2PA(*pte);
     flags = PTE_FLAGS(*pte);
+    printf("uvmcopy: copying VA 0x%lx, parent PA 0x%lx, flags:", i, pa);
+    print_pte_flags(*pte);
+    printf("\n");
     if((mem = kalloc()) == 0)
       goto err;
     memmove(mem, (char*)pa, PGSIZE);
@@ -315,6 +371,7 @@ uvmcopy(pagetable_t old, pagetable_t new, uint64 sz)
       kfree(mem);
       goto err;
     }
+    printf("uvmcopy: child PA 0x%lx mapped to VA 0x%lx\n", (uint64)mem, i);
   }
   return 0;
 
