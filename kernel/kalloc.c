@@ -135,6 +135,18 @@ kfree(void *pa)
   r->next = kmem.freelist;
   kmem.freelist = r;
   release(&kmem.lock);
+#if 1
+  // If we are in boot initialization, account for freed pages so the
+  // kinit() summary can report how many pages were added to the free list.
+  if(kmem_initializing)
+    kmem_freed_pages++;
+
+  // Print a progress dot every 4096 freed pages to show activity without
+  // overwhelming the console. This is useful when running on large RAM
+  // sizes or slow consoles.
+  if(kmem_log_boot && kmem_initializing && (kmem_freed_pages % 4096) == 0)
+    printf("kinit: freed pages so far=%lu\n", kmem_freed_pages);
+#endif
 #ifdef KDEBUG_MEM
   printf("KFREE pa=0x%lx\n", (uint64)pa);
 #endif

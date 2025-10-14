@@ -61,6 +61,15 @@ kvmmake(void)
   printf("KVMMake: about to map proc kernel stacks (proc_mapstacks)\n");
   proc_mapstacks(kpgtbl);
   printf("KVMMake: finished proc_mapstacks\n");
+
+// One-shot diagnostic: dump the pageinfo table after the kernel has
+// created its page table and mapped kernel stacks. This prints a compact
+// list of allocated/mapped physical pages (PA) and any associated VA.
+// Enable by defining DUMP_PAGEINFO_AT_BOOT to 1.
+#if DUMP_PAGEINFO_AT_BOOT
+  printf("KVMMake: dumping pageinfo (one-shot)\n");
+  dump_pageinfo();
+#endif
   
   return kpgtbl;
 }
