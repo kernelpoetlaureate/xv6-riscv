@@ -49,17 +49,24 @@ proc_mapstacks(pagetable_t kpgtbl)
   struct proc *p;
   
   for(p = proc; p < &proc[NPROC]; p++) {
+    // Allocate one physical page for each process's kernel stack and map it
+    // at the KSTACK virtual address. Note that KSTACK reserves two
+    // virtual pages per process (usable page + guard page). Only the
+    // usable page is backed by a physical page returned by kalloc(); the
+    // adjacent guard page remains unmapped. This is why virtual addresses
+    // for successive stacks are spaced by 2*PGSIZE (0x2000) while the
+    // mapped physical pages are spaced by PGSIZE (0x1000).
     char *pa = kalloc();
     if(pa == 0)
       panic("kalloc");
     uint64 va = KSTACK((int) (p - proc));
     kvmmap(kpgtbl, va, (uint64)pa, PGSIZE, PTE_R | PTE_W);
-  // Log kernel stack mapping (index because pid is not yet assigned at boot)
-  // NOTE: This shows the hidden kernel-side stack infrastructure that exists
-  // alongside the user-space stacks. Every process gets both a kernel stack
-  // (for handling system calls/interrupts) and a user stack (for user code).
-  int idx = (int)(p - proc);
-  printf("KSTACK mapped idx=%d va=0x%lx pa=0x%lx\n", idx, va, (uint64)pa);
+
+    // Log kernel stack mapping (index because pid is not yet assigned at boot)
+    // This log shows the virtual address reserved for the stack and the
+    // physical page backing it.
+    int idx = (int)(p - proc);
+    printf("KSTACK mapped idx=%d va=0x%lx pa=0x%lx\n", idx, va, (uint64)pa);
   }
 }
 

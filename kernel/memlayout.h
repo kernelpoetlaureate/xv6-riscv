@@ -43,8 +43,18 @@
 // in both user and kernel space.
 #define TRAMPOLINE (MAXVA - PGSIZE)
 
-// map kernel stacks beneath the trampoline,
-// each surrounded by invalid guard pages.
+// map kernel stacks beneath the trampoline.
+// Each process's kernel stack is reserved as two consecutive pages
+// in the virtual address space: one usable page for the stack and
+// one adjacent unmapped guard page. The guard page is left
+// intentionally invalid to catch stack overflows and to separate
+// kernel stacks in the virtual address map.
+//
+// KSTACK(p) computes the virtual address of the usable stack page
+// for process index p. Note the factor 2 * PGSIZE: successive
+// KSTACK indices are spaced by 2 pages (2 * PGSIZE = 0x2000 on x86/RISCV
+// with PGSIZE=4096), while only one physical page (PGSIZE) is
+// actually allocated and mapped for each stack.
 #define KSTACK(p) (TRAMPOLINE - ((p)+1)* 2*PGSIZE)
 
 // User memory layout.
