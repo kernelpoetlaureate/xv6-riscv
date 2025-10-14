@@ -55,7 +55,10 @@ struct {
 // Enable automatic boot-time free-list logging by default, but
 // only while the allocator is being initialized. This keeps
 // normal kfree/kalloc quiet after boot.
-static int kmem_log_boot = 0;       // set to 0 to disable boot logging
+// Enable boot logging to make early allocator activity visible on the
+// console. This helps trace what happens before kernel stack mappings
+// (proc_mapstacks) are printed.
+static int kmem_log_boot = 1;       // set to 1 to enable boot logging
 static int kmem_initializing = 0;   // true while kinit/freerange runs
 static uint64 kmem_freed_pages = 0;
 static uint64 kmem_initial_pages = 0; // total pages expected to be freed during init

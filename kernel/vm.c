@@ -33,6 +33,11 @@ kvmmake(void)
   kpgtbl = (pagetable_t) kalloc();
   memset(kpgtbl, 0, PGSIZE);
 
+  // Log kernel page-table allocation event so we can trace the very
+  // earliest VM-related allocations on the console. This runs before
+  // we map kernel stacks for processes.
+  printf("KVMMake: allocated kernel_pagetable pa=0x%lx\n", (uint64)kpgtbl);
+
   // uart registers
   kvmmap(kpgtbl, UART0, UART0, PGSIZE, PTE_R | PTE_W);
 
@@ -53,7 +58,9 @@ kvmmake(void)
   kvmmap(kpgtbl, TRAMPOLINE, (uint64)trampoline, PGSIZE, PTE_R | PTE_X);
 
   // allocate and map a kernel stack for each process.
+  printf("KVMMake: about to map proc kernel stacks (proc_mapstacks)\n");
   proc_mapstacks(kpgtbl);
+  printf("KVMMake: finished proc_mapstacks\n");
   
   return kpgtbl;
 }
