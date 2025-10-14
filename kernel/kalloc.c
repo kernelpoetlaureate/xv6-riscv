@@ -156,6 +156,8 @@ kfree(void *pa)
 #ifdef KDEBUG_MEM
   printf("KFREE pa=0x%lx\n", (uint64)pa);
 #endif
+  // Emit KFREE trace event for debugging/tracing tools
+  trace_emit(TRACE_KFREE, (uint64)pa, 0, 0, 0, 0, 0);
 }
 
 // Allocate one 4096-byte page of physical memory.
@@ -187,8 +189,11 @@ kalloc(void)
     if(p)
       pid = p->pid;
     register_page_allocation((uint64)r, pid);
-  // Emit a KALLOC trace event: pa, pid, caller (approx via ra)
-  trace_emit(TRACE_KALLOC, (uint64)r, pid, (uint64)r_ra(), 0, 0, 0);
+    // Emit a KALLOC trace event: pa, pid, caller (approx via ra)
+    trace_emit(TRACE_KALLOC, (uint64)r, pid, (uint64)r_ra(), 0, 0, 0);
+    // Print a brief console line for allocations performed on behalf of user processes.
+    if(pid)
+      printf("KALLOC: pa=0x%lx pid=%d\n", (uint64)r, pid);
   #ifdef KDEBUG_MEM
     if(pid)
       printf("KALLOC pid=%d pa=0x%lx\n", pid, (uint64)r);

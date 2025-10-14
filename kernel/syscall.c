@@ -184,13 +184,19 @@ syscall(void)
 
   num = p->trapframe->a7;
   if(num > 0 && num < NELEM(syscalls) && syscalls[num]) {
-    // Emit syscall enter trace
+    // Emit syscall enter trace (ring buffer)
     trace_emit(TRACE_SYSCALL_ENTER, num, p->trapframe->a0, p->trapframe->a1, p->trapframe->a2, p->sz, p->trapframe->sp);
+    // Also print a short console line showing the syscall and its common args.
+    printf("SYSCALL ENTRY: pid=%d name=%s num=%d a0=0x%lx a1=0x%lx a2=0x%lx\n",
+           p->pid, p->name, num, p->trapframe->a0, p->trapframe->a1, p->trapframe->a2);
 
     // Call the syscall and store its return value in a0
     p->trapframe->a0 = syscalls[num]();
-    // Emit syscall exit trace
+    // Emit syscall exit trace (ring buffer)
     trace_emit(TRACE_SYSCALL_EXIT, num, p->trapframe->a0, 0, 0, 0, 0);
+    // And print the return value for immediate console debugging.
+    printf("SYSCALL EXIT: pid=%d num=%d retval=%lu\n",
+      p->pid, num, p->trapframe->a0);
   } else {
     printf("%d %s: unknown sys call %d\n",
             p->pid, p->name, num);

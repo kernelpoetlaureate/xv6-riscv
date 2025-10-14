@@ -164,8 +164,13 @@ kexec(char *path, char **argv)
   p->sz = sz;
   p->trapframe->epc = elf.entry;  // initial program counter = ulib.c:start()
   p->trapframe->sp = sp; // initial stack pointer
-  // Exec complete trace
+  // Exec complete trace (ring buffer)
   trace_emit(TRACE_EXEC_DONE, p->trapframe->epc, p->trapframe->sp, argc, 0, 0, 0);
+  // Also print a concise exec-complete line to the console so users
+  // who haven't installed a trace reader still see when the program
+  // actually begins executing in user mode.
+  printf("EXEC DONE: pid=%d name=%s epc=0x%lx sp=0x%lx argc=%lu\n",
+    p->pid, p->name, p->trapframe->epc, p->trapframe->sp, argc);
   proc_freepagetable(oldpagetable, oldsz);
 
   return argc; // this ends up in a0, the first argument to main(argc, argv)

@@ -8,6 +8,7 @@
 #include "proc.h"
 #include "fs.h"
 #include "pageinfo.h"
+#include "trace.h"
 
 // proc table is defined in proc.c
 extern struct proc proc[NPROC];
@@ -614,6 +615,8 @@ vmfault(pagetable_t pagetable, uint64 va, int read)
     kfree((void *)mem);
     return 0;
   }
+  // Emit a page-fault-resolved trace so viewers can correlate faults->allocs
+  trace_emit(TRACE_PAGE_FAULT, p->pid, va, 0 /*resolved*/, mem, 0, 0);
   return mem;
 }
 

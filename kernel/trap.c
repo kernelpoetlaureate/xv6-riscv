@@ -5,6 +5,7 @@
 #include "spinlock.h"
 #include "proc.h"
 #include "defs.h"
+#include "trace.h"
 
 struct spinlock tickslock;
 uint ticks;
@@ -71,6 +72,8 @@ usertrap(void)
   } else if((r_scause() == 15 || r_scause() == 13) &&
             vmfault(p->pagetable, r_stval(), (r_scause() == 13)? 1 : 0) != 0) {
     // page fault on lazily-allocated page
+    // Emit page fault trace: pid, faulting VA, scause
+    trace_emit(TRACE_PAGE_FAULT, p->pid, r_stval(), r_scause(), 0, 0, 0);
   } else {
     printf("usertrap(): unexpected scause 0x%lx pid=%d\n", r_scause(), p->pid);
     printf("            sepc=0x%lx stval=0x%lx\n", r_sepc(), r_stval());

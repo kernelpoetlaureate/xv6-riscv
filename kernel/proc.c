@@ -5,6 +5,7 @@
 #include "spinlock.h"
 #include "proc.h"
 #include "defs.h"
+#include "trace.h"
 
 struct cpu cpus[NCPU];
 
@@ -492,6 +493,9 @@ kfork(void)
 
   release(&np->lock);
 
+  // Emit fork trace event: parent pid, child pid, child size
+  trace_emit(TRACE_FORK, p->pid, np->pid, np->sz, 0, 0, 0);
+
   acquire(&wait_lock);
   np->parent = p;
   release(&wait_lock);
@@ -556,6 +560,10 @@ kexit(int status)
   p->xstate = status;
   // Record exit time (best-effort snapshot of global ticks)
   p->etime = ticks;
+  // Emit exit trace before marking zombie so viewer can see exiting process
+  trace_emit(TRACE_EXIT, p->pid, status, p->sz, 0, 0, 0);
+  // Console-visible exit line for quick diagnostics
+  printf("EXIT ENTRY: pid=%d name=%s status=%d sz=0x%lx\n", p->pid, p->name, status, p->sz);
   p->state = ZOMBIE;
 
   release(&wait_lock);
@@ -594,6 +602,10 @@ kwait(uint64 addr)
             release(&wait_lock);
             return -1;
           }
+          // Emit wait/reap trace with parent pid, child pid, and exit status
+          trace_emit(TRACE_WAIT_REAP, p->pid, pp->pid, pp->xstate, 0, 0, 0);
+          // Console-visible reap message
+          printf("WAIT REAP ZOMBIE: parent pid=%d child pid=%d status=%d\n", p->pid, pp->pid, pp->xstate);
           freeproc(pp);
           release(&pp->lock);
           release(&wait_lock);
@@ -645,6 +657,8 @@ scheduler(void)
           // to release its lock and then reacquire it
           // before jumping back to us.
           p->state = RUNNING;
+          // Emit scheduler switch: from CPU (scheduler) to this pid
+          trace_emit(TRACE_SCHED_SWITCH, 0 /*from: scheduler*/, p->pid, p->state, 0, 0, 0);
           c->proc = p;
 
           // CRITICAL: Capture time before context switch.
@@ -663,6 +677,8 @@ scheduler(void)
 
           // Process is done running for now.
           // It should have changed its p->state before coming back.
+          // Emit sched switch back to scheduler (from process pid)
+          trace_emit(TRACE_SCHED_SWITCH, p->pid, 0 /*to: scheduler*/, p->state, 0, 0, 0);
           c->proc = 0;
           found = 1;
       }
