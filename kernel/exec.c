@@ -39,9 +39,13 @@ kexec(char *path, char **argv)
 
   // Open the executable file.
   if((ip = namei(path)) == 0){
+    // Log namei failure so we can see failed exec attempts that return early
+    printf("kexec: namei(%s) FAILED for pid %d name %s\n", path, p->pid, p->name);
     end_op();
     return -1;
   }
+  // namei succeeded; log that exec is proceeding (helps distinguish fork vs exec allocations)
+  printf("kexec: namei(%s) SUCCEEDED for pid %d name %s - proceeding to load ELF\n", path, p->pid, p->name);
   ilock(ip);
 
   // Read the ELF header.

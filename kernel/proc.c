@@ -463,11 +463,15 @@ kfork(void)
   }
 
   // Copy user memory from parent to child.
+  // Log start of memory copy from parent to child. This allocates pages and can trigger kalloc().
+  printf("kfork: starting uvmcopy parent pid=%d name=%s sz=0x%lx -> child pid=%d slot=%d\n",
+         p->pid, p->name, p->sz, np->pid, (int)(np - proc));
   if(uvmcopy(p->pagetable, np->pagetable, p->sz) < 0){
     freeproc(np);
     release(&np->lock);
     return -1;
   }
+  printf("kfork: finished uvmcopy child pid=%d name=%s sz=0x%lx\n", np->pid, np->name, np->sz);
   np->sz = p->sz;
 
   // copy saved user registers.
