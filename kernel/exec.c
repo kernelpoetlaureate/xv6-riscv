@@ -108,6 +108,10 @@ kexec(char *path, char **argv)
     printf("STACK created for pid %d name %s at va=0x%lx pa=0x%lx\n", p->pid, p->name, stack_va, stack_pa);
   else
     printf("STACK created for pid %d name %s at va=0x%lx pa=UNKNOWN\n", p->pid, p->name, stack_va);
+  if(p->pid <= 2) {  // Only log for first two processes to avoid noise
+    printf("STACK: same VA (0x%lx) across processes, different PA ensures isolation via per-process page table\n", stack_va);
+    printf("STACK: grows downward from sp=0x%lx (RISC-V convention)\n", sz);
+  }
   uvmclear(pagetable, sz-(USERSTACK+1)*PGSIZE);
   sp = sz;
   stackbase = sp - USERSTACK*PGSIZE;

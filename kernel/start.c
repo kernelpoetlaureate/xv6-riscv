@@ -14,6 +14,13 @@ __attribute__ ((aligned (16))) char stack0[4096 * NCPU];
 void
 start()
 {
+  // Phase 2: start.c — Machine-Mode Configuration
+  // start() executes privileged machine-mode initialization:
+  // 1. PMP Configuration: Sets Physical Memory Protection registers
+  // 2. Delegation: Configures medeleg/mideleg to delegate exceptions
+  // 3. Timer Setup: Programs mtime comparator for timer interrupts
+  // 4. Mode Switch: Drops to supervisor mode and jumps to main()
+  
   // set M Previous Privilege mode to Supervisor, for mret.
   unsigned long x = r_mstatus();
   x &= ~MSTATUS_MPP_MASK;
@@ -44,6 +51,10 @@ start()
   int id = r_mhartid();
   w_tp(id);
 
+  // Phase 2→3 transition: Mode Switch complete
+  // Writes main's address to mepc, sets SATP=0 (paging off),
+  // sets mstatus.MPP to supervisor mode, then executes mret to 
+  // drop privilege and jump to main()
   // switch to supervisor mode and jump to main().
   asm volatile("mret");
 }

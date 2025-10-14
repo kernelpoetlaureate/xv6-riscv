@@ -73,6 +73,8 @@ kinit()
   if(kmem_log_boot) {
     kmem_initializing = 1; // Indicate that initialization is in progress.
     printf("kinit: freerange from %p to %p\n", end, (void*)PHYSTOP); // Log the memory range being initialized.
+    printf("kinit: building freelist of 4KB pages from end (first address after kernel .bss) to PHYSTOP\n");
+    printf("kinit: each page added via kfree() onto singly-linked freelist (struct run embedded in free pages)\n");
   }
 
   // Populate the free-list with all available physical memory pages in the range.
@@ -82,6 +84,9 @@ kinit()
   if(kmem_log_boot) {
     kmem_initializing = 0; // Indicate that initialization is complete.
     printf("kinit: finished freerange; freed pages=%lu\n", kmem_freed_pages); // Log the total freed pages.
+    uint64 total_mb = (kmem_freed_pages * PGSIZE) / (1024 * 1024);
+    printf("kinit: %lu pages = ~%lu MB of usable RAM after kernel image\n", kmem_freed_pages, total_mb);
+    printf("kinit: freelist uses spinlock kmem.lock for SMP safety; each page has next pointer at start\n");
   }
 
   // Initialize the pageinfo subsystem after the free-list has been fully populated.

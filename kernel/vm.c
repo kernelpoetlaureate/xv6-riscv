@@ -37,6 +37,8 @@ kvmmake(void)
   // earliest VM-related allocations on the console. This runs before
   // we map kernel stacks for processes.
   printf("KVMMake: allocated kernel_pagetable pa=0x%lx\n", (uint64)kpgtbl);
+  printf("KVMMake: constructing identity mappings (va == pa) for kernel simplicity\n");
+  printf("KVMMake: mapping UART, VIRTIO, PLIC (device MMIO), kernel text (R+X), kernel data (R+W)\n");
 
   // uart registers
   kvmmap(kpgtbl, UART0, UART0, PGSIZE, PTE_R | PTE_W);
@@ -56,11 +58,13 @@ kvmmake(void)
   // map the trampoline for trap entry/exit to
   // the highest virtual address in the kernel.
   kvmmap(kpgtbl, TRAMPOLINE, (uint64)trampoline, PGSIZE, PTE_R | PTE_X);
+  printf("KVMMake: mapped TRAMPOLINE page at va=0x%lx for user↔kernel transitions\n", TRAMPOLINE);
 
   // allocate and map a kernel stack for each process.
   printf("KVMMake: about to map proc kernel stacks (proc_mapstacks)\n");
+  printf("KVMMake: pre-allocating 64 kernel stacks (NPROC=64) with guard pages\n");
   proc_mapstacks(kpgtbl);
-  printf("KVMMake: finished proc_mapstacks\n");
+  printf("KVMMake: finished proc_mapstacks - each stack is 4KB at high VAs with guard pages\n");
 
 // One-shot diagnostic: dump the pageinfo table after the kernel has
 // created its page table and mapped kernel stacks. This prints a compact

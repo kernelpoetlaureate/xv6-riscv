@@ -67,6 +67,10 @@ proc_mapstacks(pagetable_t kpgtbl)
     // physical page backing it.
     int idx = (int)(p - proc);
     printf("KSTACK mapped idx=%d va=0x%lx pa=0x%lx\n", idx, va, (uint64)pa);
+    if(idx == 0) {
+      printf("KSTACK: each has 4KB usable + 4KB guard page (unmapped to catch overflow)\n");
+      printf("KSTACK: VAs descend from TRAMPOLINE (0x3ffffff000), guard pages prevent corruption\n");
+    }
   }
 }
 
@@ -293,6 +297,7 @@ found:
   // 4. User stack (allocated later in exec.c)
   printf("PROC alloc pid=%d kstack_va=0x%lx trapframe_pa=0x%lx pagetable=%p\n",
          p->pid, p->kstack, (uint64)p->trapframe, p->pagetable);
+  printf("PROC alloc: trapframe stores user registers during traps; pagetable enables virtual memory isolation\n");
 
   // Set up new context to start executing at forkret,
   // which returns to user space.
