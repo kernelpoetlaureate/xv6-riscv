@@ -2,14 +2,26 @@
 // kernel stacks, page-table pages,
 // and pipe buffers. Allocates whole 4096-byte pages.
 
-#include "types.h"
-#include "param.h"
-#include "memlayout.h"
-#include "spinlock.h"
-#include "riscv.h"
-#include "defs.h"
+#include "types.h" // basic type definitions
+#include "param.h" // system parameters
+#include "memlayout.h" // memory layout
+#include "spinlock.h" // spinlock definitions
+#include "riscv.h" // RISC-V definitions
+#include "defs.h" // kernel function definitions
 
 void freerange(void *pa_start, void *pa_end);
+//this is a function prototype declaration for freerange
+//it tells the compiler that there is a function named freerange
+// that takes two void pointer arguments and returns nothing (void)
+//it contains 2 parameters: pa_start and pa_end, which are pointers to the start and end
+// of the physical memory range to be freed. 
+
+//pa_start points to the first address after the kernel code and data 
+// in physical memory, 
+//not the start of physical memory itself.
+
+//pa_end points to the end of the physical memory range to be freed.
+
 
 extern char end[]; // first address after kernel.
                    // defined by kernel.ld.
