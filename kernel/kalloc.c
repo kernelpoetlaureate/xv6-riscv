@@ -41,14 +41,22 @@ kinit()
   initlock(&kmem.lock, "kmem");
   freerange(end, (void*)PHYSTOP);
 }
+//
+
+//this function defines and frees physical memory pages 
+// between pa_start and pa_end
 
 void
-freerange(void *pa_start, void *pa_end)
+freerange(void *pa_start, void *pa_end) 
 {
-  char *p;
-  p = (char*)PGROUNDUP((uint64)pa_start);
-  for(; p + PGSIZE <= (char*)pa_end; p += PGSIZE)
-    kfree(p);
+  char *p; //declares a pointer to char type, we use the pointer inside
+           //the for loop below 
+  p = (char*)PGROUNDUP((uint64)pa_start); //some rounding up operation
+  
+
+  for(; p + PGSIZE <= (char*)pa_end; p += PGSIZE) { //marking the range
+    kfree(p); //Free the current page
+  }
 }
 
 // Free the page of physical memory pointed at by pa,
