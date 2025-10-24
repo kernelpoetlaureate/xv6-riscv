@@ -23,8 +23,12 @@ main(void)
   dup(0);  // stdout
   dup(0);  // stderr
 
-  printf("init: starting sh\n");
+  // Start the first process aka shell.
+  printf("init: starting sh\n"); //just a log message
+
+
   pid = fork();
+  printf("fork returned pid: %d\n", pid);
   if(pid < 0){
     printf("init: fork failed\n");
     exit(1);

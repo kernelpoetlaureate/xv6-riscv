@@ -215,13 +215,25 @@ proc_freepagetable(pagetable_t pagetable, uint64 sz)
   uvmfree(pagetable, sz);
 }
 
-// Set up first user process.
-void
-userinit(void)
-{
-  struct proc *p;
+// Set up first user process. this is called init,
+// its the only user process that does not come from fork. after this ,
+// every new process is created by fork
+// as you can see there are 2 ways of creating a user process, 
+//fork is used by other user processes mainly, while kernel itself 
+//doesnt require fork at all. 
+//The kernel directly creates the first process (init) using userinit().
 
-  p = allocproc();
+void //The first void indicates that the function does not return any value
+userinit(void)  //The second void inside the parentheses (void) 
+                // specifies that the function does not take any arguments
+{
+  struct proc *p; //proc is a structure that represents a process in the operating system
+  // struct proc is defined in proc.h and contains various fields
+  // that store information about a process, such as its state. 
+  //but proc.h is just a blueprint, the structure comes alive in proc.c "struct proc proc[NPROC]; "
+// when we assign the pointer above, it latches onto one of those actual process structures in memory.
+
+  p = allocproc(); // now we are using the ABOVE pointer to latch onto the actual process structure. 
   initproc = p;
   
   p->cwd = namei("/");
