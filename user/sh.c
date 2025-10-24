@@ -1,4 +1,9 @@
 // Shell.
+// after init and sh processes are started, with pid 1 and 2 respectively,
+// we are left with a command line like shell, where user can type commands
+// and have them executed by the OS. in xv6, there are some programs
+// available by default, like cat, echo, forktest, etc., and user can
+// also create new programs and compile them into the OS image.
 
 #include "kernel/types.h"
 #include "user/user.h"
