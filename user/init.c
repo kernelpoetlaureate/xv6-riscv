@@ -24,11 +24,11 @@ main(void)
   dup(0);  // stderr
 
   // Start the first process aka shell.
-  printf("init: starting sh\n"); //just a log message
 
-
-  pid = fork();
-  printf("fork returned pid: %d\n", pid);
+  pid = fork(); //with this exact line here sh process gets assigned next free PID, e.g., 2
+                //its always 2 btw because init is the first process with PID 1
+                //making the second usable pid - 2
+  printf("sh returned pid: %d\n", pid);
   if(pid < 0){
     printf("init: fork failed\n");
     exit(1);
