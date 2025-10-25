@@ -89,10 +89,19 @@ freerange(void *pa_start, void *pa_end)
 }
 
 
+//kfree: "Free range could not have done it without me !!"
+/*kfree is the muscle and actual executive of freerange function */
 void
 kfree(void *pa)
 {
   struct run *r;
+
+//we need some validation checks here
+//this branch does 3 things:
+//1. it checks if the address is page aligned, meaning it should be multiple of PGSIZE
+//2. it checks if the address is not below 'end' symbol, because below is kernel space
+//3. it checks if the address is not above PHYSTOP - the upper limit of physical memory, the ceiling ! 
+
 
   if(((uint64)pa % PGSIZE) != 0 || (char*)pa < end || (uint64)pa >= PHYSTOP)
     panic("kfree");
