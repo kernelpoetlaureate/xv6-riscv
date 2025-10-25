@@ -105,8 +105,8 @@ kfree(void *pa)
 
   if(((uint64)pa % PGSIZE) != 0 || (char*)pa < end || (uint64)pa >= PHYSTOP)
     panic("kfree");
+  //we are done with validation checks
 
-//we are done with validation checks
 
 
   // now here we fill all the allocated pages with junk to catch dangling refs.
@@ -114,6 +114,7 @@ kfree(void *pa)
   // example : First 10 bytes at 0x0000000087f25000 after memset: 1 1 1 1 1 1 1 1 1 1
   // for each page, theres an array of 4096 ones. 
   memset(pa, 1, PGSIZE);
+  //done. all the pages are filled with 1111111....11 now. 
 
   r = (struct run*)pa;
 

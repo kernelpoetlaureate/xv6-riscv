@@ -1,21 +1,26 @@
 // Physical memory layout
+//consists of 3 regions:
 
-// qemu -machine virt is set up like this,
-// based on qemu's hw/riscv/virt.c:
-//
-// 00001000 -- boot ROM, provided by qemu
-// 02000000 -- CLINT
-// 0C000000 -- PLIC
-// 10000000 -- uart0 
-// 10001000 -- virtio disk 
-// 80000000 -- qemu's boot ROM loads the kernel here,
-//             then jumps here.
-// unused RAM after 80000000.
+// 1. Before 0x00000000 to 0x80000000 - hard coded, fixed in stone area (I/O devices)
+                // 00001000 -- boot ROM, provided by qemu
+                // 02000000 -- CLINT
+                // 0C000000 -- PLIC
+                // 10000000 -- uart0 
+                // 10001000 -- virtio disk 
+                // 80000000 -- qemu's boot ROM loads the kernel here,
 
-// the kernel uses physical memory thus:
-// 80000000 -- entry.S, then kernel text and data
-// end -- start of kernel page allocation area
-// PHYSTOP -- end RAM used by the kernel
+
+/*2. 0x80000000 to 0x80023578 - Kernel space
+with current settings, we can speculate that the kernel size is around 
+0x23578 bytes
+Size: 0x23578 bytes (144,760 bytes)
+In KB: 141.37 KB
+In MB: 0.14 MB
+Page size: 4,096 bytes (4KB)
+Number of pages: 35.34 pages (35 full pages)
+*/ 
+
+
 
 // qemu puts UART registers here in physical memory.
 #define UART0 0x10000000L
