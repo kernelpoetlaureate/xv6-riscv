@@ -37,9 +37,22 @@ this is how it looks like:
 3. 0x80023578 to PHYSTOP - Free memory for allocation
 */
 
+/*kernel is already initialized before the memory allocation functions are used
+in fact, none of the functions defined and used in this file
+touch the kernel area. they are already taken care of by this time
+whatever we do here, we do it after the kernel is loaded and running
+thus only affecting the free memory area aka user space. 
+
+
+
+*/
+
+
+
 //here we just define the 'end' symbol, we will use it shortly. 
 extern char end[];
 //from now on, begins the sea of free memory , that we can allocate.
+
 
 
 struct run {
