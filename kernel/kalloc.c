@@ -68,6 +68,13 @@ and all of them are free of course,right after the freerange
 function is done*/
 
 
+// wait, what are these functions below?
+//its intiuitive to call/use functions only after they are defined right?
+//we could have done that way
+//but for some reasons,xv6 authors chose the prototype declaration style
+//so all the functions we used above are defined below now
+
+
 void
 freerange(void *pa_start, void *pa_end) 
 {
@@ -81,10 +88,6 @@ freerange(void *pa_start, void *pa_end)
   }
 }
 
-// Free the page of physical memory pointed at by pa,
-// which normally should have been returned by a
-// call to kalloc().  (The exception is when
-// initializing the allocator; see kinit above.)
 
 void
 kfree(void *pa)
