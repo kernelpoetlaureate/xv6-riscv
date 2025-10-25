@@ -60,7 +60,12 @@ kinit()
   freerange(end, (void*)PHYSTOP);
 
 }
-// now 
+/* now right after this function is run, 
+we have 128 mib worth of free memory 
+available for allocation 
+according to the default settings, there are 32732 pages generated
+and all of them are free of course,right after the freerange
+function is done*/
 
 
 void
