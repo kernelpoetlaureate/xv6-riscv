@@ -23,9 +23,23 @@ void freerange(void *pa_start, void *pa_end);
 //pa_end points to the end of the physical memory range to be freed.
 
 
+//according to the linker script, kernels code and data sections
+//are stored in the interval 0x80000000 to 0x80023578
+//the latter address is is calculated at link time, but 
+//with current settings, it always ends up being 0x80023578
+
+/*if we want highest possible memory layout view, 
+this is how it looks like:
+
+1. Before 0x80000000 - hard coded, fixed in stone area (I/O devices)
+2. 0x80000000 to 0x80023578 - Kernel space
+3. 0x80023578 to PHYSTOP - Free memory for allocation
+*/
 extern char end[]; // first address after kernel.
                    // defined by kernel.ld.
-
+                   //it is calculated at link time.
+                   //linker starts placing sections at `0x80000000`
+                   //the order is text, rodata, data, bss
 struct run {
   struct run *next;
 };
@@ -38,6 +52,7 @@ struct {
 void
 kinit()
 {
+  printf("Address of end: %p\n", end); // Print the address of 'end' during initialization
   initlock(&kmem.lock, "kmem");
   freerange(end, (void*)PHYSTOP);
 }
@@ -63,6 +78,7 @@ freerange(void *pa_start, void *pa_end)
 // which normally should have been returned by a
 // call to kalloc().  (The exception is when
 // initializing the allocator; see kinit above.)
+
 void
 kfree(void *pa)
 {
