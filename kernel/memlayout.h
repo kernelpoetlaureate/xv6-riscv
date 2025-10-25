@@ -22,6 +22,20 @@ the kernel sections are laid out as follows:
 .text, .rodata, .data, .bss, 
 */ 
 
+/*
+kernel has 2 types of stacks:
+1. A global stack used during boot (stack0)
+2. Per-process kernel stacks used during process execution
+
+the global stack is defined in .bss and used only for a short period :
+1. entry.S (_entry) ← Uses stack0
+2. start.c (start()) ← Uses stack0  
+3. main.c (main())   ← Uses stack0
+
+right after this stage of execution, kernel starts using per-process kernel stacks
+
+*/
+
 
 
 // qemu puts UART registers here in physical memory.
