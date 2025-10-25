@@ -42,9 +42,8 @@ in fact, none of the functions defined and used in this file
 touch the kernel area. they are already taken care of by this time
 whatever we do here, we do it after the kernel is loaded and running
 thus only affecting the free memory area aka user space. 
-
-
-
+kernel is allocated using static allocation method, 
+in the range 0x80000000 to 0x80023578
 */
 
 

@@ -18,6 +18,8 @@ In KB: 141.37 KB
 In MB: 0.14 MB
 Page size: 4,096 bytes (4KB)
 Number of pages: 35.34 pages (35 full pages)
+the kernel sections are laid out as follows:
+.text, .rodata, .data, .bss, 
 */ 
 
 
