@@ -10,7 +10,8 @@
 #include "defs.h" // kernel function definitions
 
 void freerange(void *pa_start, void *pa_end);
-//this is a function prototype declaration for freerange
+
+/*this is a function prototype declaration for freerange
 //it tells the compiler that there is a function named freerange
 // that takes two void pointer arguments and returns nothing (void)
 //it contains 2 parameters: pa_start and pa_end, which are pointers to the start and end
@@ -28,18 +29,19 @@ void freerange(void *pa_start, void *pa_end);
 //the latter address is is calculated at link time, but 
 //with current settings, it always ends up being 0x80023578
 
-/*if we want highest possible memory layout view, 
+if we want highest possible memory layout view, 
 this is how it looks like:
 
 1. Before 0x80000000 - hard coded, fixed in stone area (I/O devices)
 2. 0x80000000 to 0x80023578 - Kernel space
 3. 0x80023578 to PHYSTOP - Free memory for allocation
 */
-extern char end[]; // first address after kernel.
-                   // defined by kernel.ld.
-                   //it is calculated at link time.
-                   //linker starts placing sections at `0x80000000`
-                   //the order is text, rodata, data, bss
+
+//here we just define the 'end' symbol, we will use it shortly. 
+extern char end[];
+//from now on, begins the sea of free memory , that we can allocate.
+
+
 struct run {
   struct run *next;
 };
@@ -52,14 +54,14 @@ struct {
 void
 kinit()
 {
-  printf("Address of end: %p\n", end); // Print the address of 'end' during initialization
-  initlock(&kmem.lock, "kmem");
-  freerange(end, (void*)PHYSTOP);
-}
-//
+  initlock(&kmem.lock, "kmem"); 
 
-//this function defines and frees physical memory pages 
-// between pa_start and pa_end
+//below we call the freerange function, which actually does the freeing 
+  freerange(end, (void*)PHYSTOP);
+
+}
+// now 
+
 
 void
 freerange(void *pa_start, void *pa_end) 
@@ -116,3 +118,4 @@ kalloc(void)
     memset((char*)r, 5, PGSIZE); // fill with junk
   return (void*)r;
 }
+
