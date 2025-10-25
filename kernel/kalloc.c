@@ -109,7 +109,10 @@ kfree(void *pa)
 //we are done with validation checks
 
 
-  // Fill with junk to catch dangling refs.
+  // now here we fill all the allocated pages with junk to catch dangling refs.
+  //every byte of the page is set to 1, so 4096 ones for each page. 
+  // example : First 10 bytes at 0x0000000087f25000 after memset: 1 1 1 1 1 1 1 1 1 1
+  // for each page, theres an array of 4096 ones. 
   memset(pa, 1, PGSIZE);
 
   r = (struct run*)pa;
