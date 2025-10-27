@@ -1,3 +1,81 @@
+/*
+COMPILE TIME:
+┌────────────────────────────────────────────────────────┐
+│ 1. Compiler compiles start.c                          │
+│    - Sees: char stack0[4096 * NCPU];                  │
+│    - Allocates 32 KB in .bss section                  │
+│                                                        │
+│ 2. Linker (kernel.ld) runs                            │
+│    - Places .text at 0x80000000                       │
+│    - Places .rodata after .text                       │
+│    - Places .data after .rodata                       │
+│    - Places .bss after .data (includes stack0!)       │
+│    - Creates kernel binary file                       │
+│                                                        │
+│ Result: kernel binary contains stack0 space           │
+└────────────────────────────────────────────────────────┘
+
+BOOT TIME (QEMU):
+┌────────────────────────────────────────────────────────┐
+│ 1. QEMU loads entire kernel binary to 0x80000000      │
+│    - Loads .text section                              │
+│    - Loads .rodata section                            │
+│    - Loads .data section                              │
+│    - Allocates .bss section (includes stack0!)        │
+│                                                        │
+│ 2. QEMU jumps to 0x80000000 (_entry)                 │
+│                                                        │
+│ Result: stack0 is ALREADY IN MEMORY                   │
+│         at some address (say 0x80020000)              │
+└────────────────────────────────────────────────────────┘
+
+RUN TIME:
+┌────────────────────────────────────────────────────────┐
+│ entry.S FIRST INSTRUCTION:                            │
+│    la sp, stack0                                      │
+│                                                        │
+│ This instruction means:                               │
+│    "Load the ADDRESS of stack0 into sp"               │
+│                                                        │
+│ stack0 ALREADY EXISTS at this point!                  │
+│ entry.S just points sp to it                          │
+└────────────────────────────────────────────────────────┘
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // Physical memory layout
 //consists of 3 regions:
 

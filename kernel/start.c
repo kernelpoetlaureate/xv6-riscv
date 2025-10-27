@@ -7,7 +7,13 @@
 void main();
 void timerinit();
 
-// entry.S needs one stack per CPU.
+/*
+based on the current state, below line of code 
+generates 32 768 bytes(32KB) amount of global stack for booting
+number of cpus being 8, so each cpu gets 4 KB of stack space. 
+
+
+*/
 __attribute__ ((aligned (16))) char stack0[4096 * NCPU];
 
 // entry.S jumps here in machine mode on stack0.
@@ -43,6 +49,7 @@ start()
   // keep each CPU's hartid in its tp register, for cpuid().
   int id = r_mhartid();
   w_tp(id);
+
 
   // switch to supervisor mode and jump to main().
   asm volatile("mret");
