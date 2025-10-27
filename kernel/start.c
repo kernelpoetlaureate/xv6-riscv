@@ -12,8 +12,16 @@ based on the current state, below line of code
 generates 32 768 bytes(32KB) amount of global stack for booting
 number of cpus being 8, so each cpu gets 4 KB of stack space. 
 
+there are 3 types of stacks in the kernel:
+1. A global stack used during boot (stack0)
+2. A per-CPU kernel stack used when running in the kernel on behalf of a process
+3. A user stack used when running user code.
 
+It goes without saying that below declaration is for the first type of stack,
+the global stack used during boot.
 */
+
+
 __attribute__ ((aligned (16))) char stack0[4096 * NCPU];
 
 // entry.S jumps here in machine mode on stack0.
