@@ -1,0 +1,9 @@
+{
+  "workbench.editorAssociations": {
+    "kernel/kernel": "elfinsight.customEditor",
+    "user/_*": "elfinsight.customEditor"
+  },
+  "elfinsight.toolchainPath": "/usr/bin",
+  "elfinsight.toolchainPrefix": "riscv64-linux-gnu-",
+  "elfinsight.architecture": "riscv64"
+}
