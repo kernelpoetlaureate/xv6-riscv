@@ -59,7 +59,7 @@ LD = $(TOOLPREFIX)ld
 OBJCOPY = $(TOOLPREFIX)objcopy
 OBJDUMP = $(TOOLPREFIX)objdump
 
-CFLAGS = -Wall -Werror -Wno-unknown-attributes -O -fno-omit-frame-pointer -ggdb -gdwarf-2
+CFLAGS = -Wall -Werror -Wno-unknown-attributes -O -fno-omit-frame-pointer -ggdb -gdwarf-4
 CFLAGS += -march=rv64gc
 CFLAGS += -MD
 CFLAGS += -mcmodel=medany
@@ -73,6 +73,11 @@ CFLAGS += -fno-builtin-memcpy -Wno-main
 CFLAGS += -fno-builtin-printf -fno-builtin-fprintf -fno-builtin-vprintf
 CFLAGS += -I.
 CFLAGS += $(shell $(CC) -fno-stack-protector -E -x c /dev/null >/dev/null 2>&1 && echo -fno-stack-protector)
+
+# Enhanced debug flags for comprehensive symbol information
+DEBUG_CFLAGS = -g3 -gdwarf-4 -gstrict-dwarf -feliminate-unused-debug-symbols
+DEBUG_CFLAGS += -fvar-tracking -fvar-tracking-assignments -ginline-points
+DEBUG_CFLAGS += -gno-eliminate-unused-debug-types -fno-merge-debug-strings
 
 # Disable PIE when possible (for Ubuntu 16.10 toolchain)
 ifneq ($(shell $(CC) -dumpspecs 2>/dev/null | grep -e '[^f]no-pie'),)
@@ -91,6 +96,61 @@ $K/kernel: $(OBJS) $K/kernel.ld
 
 $K/%.o: $K/%.S
 	$(CC) -march=rv64gc -g -c -o $@ $<
+
+# Enhanced symbol file generation
+enhanced-symbols: $K/kernel
+	@echo "Generating enhanced symbol file..."
+	@{ \
+		echo "# XV6-RISCV Enhanced Symbol Table"; \
+		echo "# Generated on $$(date)"; \
+		echo "# Kernel: $K/kernel"; \
+		echo ""; \
+		echo "=== MEMORY LAYOUT ==="; \
+		$(OBJDUMP) -h $K/kernel | grep -E '^\s*[0-9]+\s+\.'; \
+		echo ""; \
+		echo "=== FUNCTIONS WITH SIZES ==="; \
+		$(OBJDUMP) -t $K/kernel | grep -E '\s+[gG]\s+[Ff]\s+' | sort -k1,1; \
+		echo ""; \
+		echo "=== TEXT SYMBOLS (Functions) ==="; \
+		$(OBJDUMP) -t $K/kernel | grep -E '\s+[gGlL]\s+[Tt]\s+' | sort -k1,1; \
+		echo ""; \
+		echo "=== DATA SYMBOLS (Variables) ==="; \
+		$(OBJDUMP) -t $K/kernel | grep -E '\s+[gGlL]\s+[BbDdGg]\s+' | sort -k1,1; \
+		echo ""; \
+		echo "=== READ-ONLY DATA ==="; \
+		$(OBJDUMP) -t $K/kernel | grep -E '\s+[gGlL]\s+[Rr]\s+' | sort -k1,1; \
+		echo ""; \
+		echo "=== SYMBOL COUNT SUMMARY ==="; \
+		echo "Text symbols: $$($(OBJDUMP) -t $K/kernel | grep -c '\s[Tt]\s')"; \
+		echo "Data symbols: $$($(OBJDUMP) -t $K/kernel | grep -c '\s[BbDd]\s')"; \
+		echo "Read-only: $$($(OBJDUMP) -t $K/kernel | grep -c '\s[Rr]\s')"; \
+		echo "Total: $$($(OBJDUMP) -t $K/kernel | wc -l)"; \
+	} > $K/kernel-enhanced.sym
+
+# Generate detailed debug information
+debug-info: $K/kernel
+	$(OBJDUMP) -g $K/kernel > $K/kernel.debug
+	$(OBJDUMP) -W $K/kernel > $K/kernel.dwarf
+	readelf -a $K/kernel > $K/kernel.elf-info
+
+# Advanced symbol analysis using Python script
+symbol-analysis: $K/kernel
+	@if command -v python3 >/dev/null 2>&1; then \
+		python3 scripts/symbol-analyzer.py $K/kernel -o $K/kernel-analysis.sym; \
+	else \
+		echo "Python3 not found. Using basic analysis..."; \
+		$(MAKE) enhanced-symbols; \
+	fi
+
+# Complete symbol package - generates all symbol-related files
+symbols-complete: enhanced-symbols debug-info symbol-analysis
+	@echo "Complete symbol analysis generated:"
+	@echo "  - $K/kernel.sym (basic)"
+	@echo "  - $K/kernel-enhanced.sym (detailed)"
+	@echo "  - $K/kernel-analysis.sym (advanced)"
+	@echo "  - $K/kernel.debug (debug info)"
+	@echo "  - $K/kernel.dwarf (DWARF info)"
+	@echo "  - $K/kernel.elf-info (ELF headers)"
 
 tags: $(OBJS)
 	etags kernel/*.S kernel/*.c

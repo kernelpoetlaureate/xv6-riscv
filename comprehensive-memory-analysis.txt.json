@@ -1,0 +1,1751 @@
+{
+  "kernel_file": "kernel/kernel",
+  "generation_time": "Tue Oct 28 04:43:24 PM +04 2025",
+  "memory_layout": {},
+  "bss_globals": [
+    {
+      "name": "panicked",
+      "address": "0x000000008000a230",
+      "size": 4,
+      "source_file": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/printf.c",
+      "source_line": "19",
+      "source_detail": "?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/printf.c:19",
+      "section": ".bss"
+    },
+    {
+      "name": "panicking",
+      "address": "0x000000008000a234",
+      "size": 4,
+      "source_file": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/printf.c",
+      "source_line": "18",
+      "source_detail": "?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/printf.c:18",
+      "section": ".bss"
+    },
+    {
+      "name": "tx_chan",
+      "address": "0x000000008000a238",
+      "size": 4,
+      "source_file": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/uart.c",
+      "source_line": "43",
+      "source_detail": "?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/uart.c:43",
+      "section": ".bss"
+    },
+    {
+      "name": "tx_busy",
+      "address": "0x000000008000a23c",
+      "size": 4,
+      "source_file": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/uart.c",
+      "source_line": "42",
+      "source_detail": "?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/uart.c:42",
+      "section": ".bss"
+    },
+    {
+      "name": "started",
+      "address": "0x000000008000a240",
+      "size": 4,
+      "source_file": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/main.c",
+      "source_line": "7",
+      "source_detail": "?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/main.c:7",
+      "section": ".bss"
+    },
+    {
+      "name": "kernel_pagetable",
+      "address": "0x000000008000a248",
+      "size": 8,
+      "source_file": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/vm.c",
+      "source_line": "14",
+      "source_detail": "?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/vm.c:14",
+      "section": ".bss"
+    },
+    {
+      "name": "initproc",
+      "address": "0x000000008000a250",
+      "size": 8,
+      "source_file": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/proc.c",
+      "source_line": "13",
+      "source_detail": "?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/proc.c:13",
+      "section": ".bss"
+    },
+    {
+      "name": "ticks",
+      "address": "0x000000008000a258",
+      "size": 4,
+      "source_file": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/trap.c",
+      "source_line": "10",
+      "source_detail": "?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/trap.c:10",
+      "section": ".bss"
+    },
+    {
+      "name": "stack0",
+      "address": "0x000000008000a260",
+      "size": 32768,
+      "source_file": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/start.c",
+      "source_line": "25",
+      "source_detail": "?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/start.c:25",
+      "section": ".bss"
+    },
+    {
+      "name": "cons",
+      "address": "0x0000000080012260",
+      "size": 168,
+      "source_file": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/console.c",
+      "source_line": "54",
+      "source_detail": "?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/console.c:54",
+      "section": ".bss"
+    },
+    {
+      "name": "pr",
+      "address": "0x0000000080012308",
+      "size": 24,
+      "source_file": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/printf.c",
+      "source_line": "24",
+      "source_detail": "?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/printf.c:24",
+      "section": ".bss"
+    },
+    {
+      "name": "tx_lock",
+      "address": "0x0000000080012320",
+      "size": 24,
+      "source_file": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/uart.c",
+      "source_line": "41",
+      "source_detail": "?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/uart.c:41",
+      "section": ".bss"
+    },
+    {
+      "name": "kmem",
+      "address": "0x0000000080012338",
+      "size": 32,
+      "source_file": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/kalloc.c",
+      "source_line": "64",
+      "source_detail": "?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/kalloc.c:64",
+      "section": ".bss"
+    },
+    {
+      "name": "pid_lock",
+      "address": "0x0000000080012358",
+      "size": 24,
+      "source_file": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/proc.c",
+      "source_line": "16",
+      "source_detail": "?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/proc.c:16",
+      "section": ".bss"
+    },
+    {
+      "name": "wait_lock",
+      "address": "0x0000000080012370",
+      "size": 24,
+      "source_file": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/proc.c",
+      "source_line": "27",
+      "source_detail": "?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/proc.c:27",
+      "section": ".bss"
+    },
+    {
+      "name": "cpus",
+      "address": "0x0000000080012388",
+      "size": 1024,
+      "source_file": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/proc.c",
+      "source_line": "9",
+      "source_detail": "?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/proc.c:9",
+      "section": ".bss"
+    },
+    {
+      "name": "proc",
+      "address": "0x0000000080012788",
+      "size": 23040,
+      "source_file": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/proc.c",
+      "source_line": "11",
+      "source_detail": "?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/proc.c:11",
+      "section": ".bss"
+    },
+    {
+      "name": "tickslock",
+      "address": "0x0000000080018188",
+      "size": 24,
+      "source_file": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/trap.c",
+      "source_line": "9",
+      "source_detail": "?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/trap.c:9",
+      "section": ".bss"
+    },
+    {
+      "name": "bcache",
+      "address": "0x00000000800181a0",
+      "size": 34496,
+      "source_file": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/bio.c",
+      "source_line": "34",
+      "source_detail": "?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/bio.c:34",
+      "section": ".bss"
+    },
+    {
+      "name": "sb",
+      "address": "0x0000000080020860",
+      "size": 32,
+      "source_file": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/fs.c",
+      "source_line": "27",
+      "source_detail": "?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/fs.c:27",
+      "section": ".bss"
+    },
+    {
+      "name": "itable",
+      "address": "0x0000000080020880",
+      "size": 6824,
+      "source_file": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/fs.c",
+      "source_line": "180",
+      "source_detail": "?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/fs.c:180",
+      "section": ".bss"
+    },
+    {
+      "name": "log",
+      "address": "0x0000000080022328",
+      "size": 168,
+      "source_file": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/log.c",
+      "source_line": "48",
+      "source_detail": "?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/log.c:48",
+      "section": ".bss"
+    },
+    {
+      "name": "devsw",
+      "address": "0x00000000800223d0",
+      "size": 160,
+      "source_file": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/file.c",
+      "source_line": "16",
+      "source_detail": "?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/file.c:16",
+      "section": ".bss"
+    },
+    {
+      "name": "ftable",
+      "address": "0x0000000080022470",
+      "size": 4024,
+      "source_file": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/file.c",
+      "source_line": "20",
+      "source_detail": "?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/file.c:20",
+      "section": ".bss"
+    },
+    {
+      "name": "disk",
+      "address": "0x0000000080023428",
+      "size": 320,
+      "source_file": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/virtio_disk.c",
+      "source_line": "59",
+      "source_detail": "?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/virtio_disk.c:59",
+      "section": ".bss"
+    },
+    {
+      "name": "end",
+      "address": "0x0000000080023568",
+      "size": 0,
+      "source_file": "unknown",
+      "source_line": "unknown",
+      "source_detail": "?? ??:0",
+      "section": ".bss"
+    }
+  ],
+  "all_symbols": [
+    {
+      "address": "0x0000000080000000",
+      "type": "t",
+      "name": "$xrv64i2p1_m2p0_a2p1_f2p2_d2p2_c2p0_zicsr2p0_zifencei2p0_zmmul1p0_zaamo1p0_zalrsc1p0",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/entry.S:12"
+    },
+    {
+      "address": "0x000000008000001c",
+      "type": "t",
+      "name": "$xrv64i2p1_m2p0_a2p1_f2p2_d2p2_c2p0_zicsr2p0_zifencei2p0_zmmul1p0_zaamo1p0_zalrsc1p0",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/start.c:69"
+    },
+    {
+      "address": "0x00000000800000d4",
+      "type": "t",
+      "name": "$xrv64i2p1_m2p0_a2p1_f2p2_d2p2_c2p0_zicsr2p0_zifencei2p0_zmmul1p0_zaamo1p0_zalrsc1p0",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/console.c:62"
+    },
+    {
+      "address": "0x0000000080000470",
+      "type": "t",
+      "name": "$xrv64i2p1_m2p0_a2p1_f2p2_d2p2_c2p0_zicsr2p0_zifencei2p0_zmmul1p0_zaamo1p0_zalrsc1p0",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/printf.c:30"
+    },
+    {
+      "address": "0x000000008000083e",
+      "type": "t",
+      "name": "$xrv64i2p1_m2p0_a2p1_f2p2_d2p2_c2p0_zicsr2p0_zifencei2p0_zmmul1p0_zaamo1p0_zalrsc1p0",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/uart.c:50"
+    },
+    {
+      "address": "0x0000000080000a16",
+      "type": "t",
+      "name": "$xrv64i2p1_m2p0_a2p1_f2p2_d2p2_c2p0_zicsr2p0_zifencei2p0_zmmul1p0_zaamo1p0_zalrsc1p0",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/kalloc.c:108"
+    },
+    {
+      "address": "0x0000000080000b48",
+      "type": "t",
+      "name": "$xrv64i2p1_m2p0_a2p1_f2p2_d2p2_c2p0_zicsr2p0_zifencei2p0_zmmul1p0_zaamo1p0_zalrsc1p0",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/spinlock.c:13"
+    },
+    {
+      "address": "0x0000000080000c9c",
+      "type": "t",
+      "name": "$xrv64i2p1_m2p0_a2p1_f2p2_d2p2_c2p0_zicsr2p0_zifencei2p0_zmmul1p0_zaamo1p0_zalrsc1p0",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/string.c:5"
+    },
+    {
+      "address": "0x0000000080000e52",
+      "type": "t",
+      "name": "$xrv64i2p1_m2p0_a2p1_f2p2_d2p2_c2p0_zicsr2p0_zifencei2p0_zmmul1p0_zaamo1p0_zalrsc1p0",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/main.c:12"
+    },
+    {
+      "address": "0x0000000080000f04",
+      "type": "t",
+      "name": "$xrv64i2p1_m2p0_a2p1_f2p2_d2p2_c2p0_zicsr2p0_zifencei2p0_zmmul1p0_zaamo1p0_zalrsc1p0",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/vm.c:75"
+    },
+    {
+      "address": "0x000000008000173c",
+      "type": "t",
+      "name": "$xrv64i2p1_m2p0_a2p1_f2p2_d2p2_c2p0_zicsr2p0_zifencei2p0_zmmul1p0_zaamo1p0_zalrsc1p0",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/proc.c:34"
+    },
+    {
+      "address": "0x0000000080002356",
+      "type": "t",
+      "name": "$xrv64i2p1_m2p0_a2p1_f2p2_d2p2_c2p0_zicsr2p0_zifencei2p0_zmmul1p0_zaamo1p0_zalrsc1p0",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/swtch.S:10"
+    },
+    {
+      "address": "0x00000000800023c0",
+      "type": "t",
+      "name": "$xrv64i2p1_m2p0_a2p1_f2p2_d2p2_c2p0_zicsr2p0_zifencei2p0_zmmul1p0_zaamo1p0_zalrsc1p0",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/trap.c:21"
+    },
+    {
+      "address": "0x00000000800026e0",
+      "type": "t",
+      "name": "$xrv64i2p1_m2p0_a2p1_f2p2_d2p2_c2p0_zicsr2p0_zifencei2p0_zmmul1p0_zaamo1p0_zalrsc1p0",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/syscall.c:35"
+    },
+    {
+      "address": "0x000000008000288e",
+      "type": "t",
+      "name": "$xrv64i2p1_m2p0_a2p1_f2p2_d2p2_c2p0_zicsr2p0_zifencei2p0_zmmul1p0_zaamo1p0_zalrsc1p0",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/sysproc.c:12"
+    },
+    {
+      "address": "0x0000000080002a76",
+      "type": "t",
+      "name": "$xrv64i2p1_m2p0_a2p1_f2p2_d2p2_c2p0_zicsr2p0_zifencei2p0_zmmul1p0_zaamo1p0_zalrsc1p0",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/bio.c:38"
+    },
+    {
+      "address": "0x0000000080002cf0",
+      "type": "t",
+      "name": "$xrv64i2p1_m2p0_a2p1_f2p2_d2p2_c2p0_zicsr2p0_zifencei2p0_zmmul1p0_zaamo1p0_zalrsc1p0",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/fs.c:94"
+    },
+    {
+      "address": "0x00000000800039fe",
+      "type": "t",
+      "name": "$xrv64i2p1_m2p0_a2p1_f2p2_d2p2_c2p0_zicsr2p0_zifencei2p0_zmmul1p0_zaamo1p0_zalrsc1p0",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/log.c:105"
+    },
+    {
+      "address": "0x0000000080003df2",
+      "type": "t",
+      "name": "$xrv64i2p1_m2p0_a2p1_f2p2_d2p2_c2p0_zicsr2p0_zifencei2p0_zmmul1p0_zaamo1p0_zalrsc1p0",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/sleeplock.c:14"
+    },
+    {
+      "address": "0x0000000080003ef0",
+      "type": "t",
+      "name": "$xrv64i2p1_m2p0_a2p1_f2p2_d2p2_c2p0_zicsr2p0_zifencei2p0_zmmul1p0_zaamo1p0_zalrsc1p0",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/file.c:24"
+    },
+    {
+      "address": "0x00000000800042c8",
+      "type": "t",
+      "name": "$xrv64i2p1_m2p0_a2p1_f2p2_d2p2_c2p0_zicsr2p0_zifencei2p0_zmmul1p0_zaamo1p0_zalrsc1p0",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/pipe.c:24"
+    },
+    {
+      "address": "0x00000000800045d4",
+      "type": "t",
+      "name": "$xrv64i2p1_m2p0_a2p1_f2p2_d2p2_c2p0_zicsr2p0_zifencei2p0_zmmul1p0_zaamo1p0_zalrsc1p0",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/exec.c:14"
+    },
+    {
+      "address": "0x000000008000494c",
+      "type": "t",
+      "name": "$xrv64i2p1_m2p0_a2p1_f2p2_d2p2_c2p0_zicsr2p0_zifencei2p0_zmmul1p0_zaamo1p0_zalrsc1p0",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/sysfile.c:23"
+    },
+    {
+      "address": "0x0000000080005370",
+      "type": "t",
+      "name": "$xrv64i2p1_m2p0_a2p1_f2p2_d2p2_c2p0_zicsr2p0_zifencei2p0_zmmul1p0_zaamo1p0_zalrsc1p0",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/kernelvec.S:14"
+    },
+    {
+      "address": "0x00000000800053ce",
+      "type": "t",
+      "name": "$xrv64i2p1_m2p0_a2p1_f2p2_d2p2_c2p0_zicsr2p0_zifencei2p0_zmmul1p0_zaamo1p0_zalrsc1p0",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/plic.c:13"
+    },
+    {
+      "address": "0x0000000080005462",
+      "type": "t",
+      "name": "$xrv64i2p1_m2p0_a2p1_f2p2_d2p2_c2p0_zicsr2p0_zifencei2p0_zmmul1p0_zaamo1p0_zalrsc1p0",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/virtio_disk.c:171"
+    },
+    {
+      "address": "0x0000000080000bcc",
+      "type": "T",
+      "name": "acquire",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/spinlock.c:22"
+    },
+    {
+      "address": "0x0000000080003e28",
+      "type": "T",
+      "name": "acquiresleep",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/sleeplock.c:22"
+    },
+    {
+      "address": "0x0000000080001986",
+      "type": "T",
+      "name": "allocpid",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/proc.c:93"
+    },
+    {
+      "address": "0x0000000080001ade",
+      "type": "t",
+      "name": "allocproc",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/proc.c:110"
+    },
+    {
+      "address": "0x00000000800027e6",
+      "type": "T",
+      "name": "argaddr",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/syscall.c:66"
+    },
+    {
+      "address": "0x000000008000494c",
+      "type": "t",
+      "name": "argfd",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/sysfile.c:22"
+    },
+    {
+      "address": "0x00000000800027ca",
+      "type": "T",
+      "name": "argint",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/syscall.c:57"
+    },
+    {
+      "address": "0x00000000800026e0",
+      "type": "t",
+      "name": "argraw",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/syscall.c:34"
+    },
+    {
+      "address": "0x0000000080002802",
+      "type": "T",
+      "name": "argstr",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/syscall.c:75"
+    },
+    {
+      "address": "0x0000000080002d5c",
+      "type": "t",
+      "name": "balloc",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/fs.c:67"
+    },
+    {
+      "address": "0x00000000800181a0",
+      "type": "B",
+      "name": "bcache",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/bio.c:34"
+    },
+    {
+      "address": "0x0000000080003ba6",
+      "type": "T",
+      "name": "begin_op",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/log.c:128"
+    },
+    {
+      "address": "0x0000000080002cf0",
+      "type": "t",
+      "name": "bfree",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/fs.c:93"
+    },
+    {
+      "address": "0x0000000080002a76",
+      "type": "T",
+      "name": "binit",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/bio.c:37"
+    },
+    {
+      "address": "0x0000000080002e6e",
+      "type": "t",
+      "name": "bmap",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/fs.c:406"
+    },
+    {
+      "address": "0x0000000080002c88",
+      "type": "T",
+      "name": "bpin",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/bio.c:140"
+    },
+    {
+      "address": "0x0000000080002afc",
+      "type": "T",
+      "name": "bread",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/bio.c:93"
+    },
+    {
+      "address": "0x0000000080002c04",
+      "type": "T",
+      "name": "brelse",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/bio.c:117"
+    },
+    {
+      "address": "0x0000000080002cbc",
+      "type": "T",
+      "name": "bunpin",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/bio.c:147"
+    },
+    {
+      "address": "0x0000000080002bd2",
+      "type": "T",
+      "name": "bwrite",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/bio.c:107"
+    },
+    {
+      "address": "0x000000008000247a",
+      "type": "T",
+      "name": "clockintr",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/trap.c:165"
+    },
+    {
+      "address": "0x0000000080012260",
+      "type": "B",
+      "name": "cons",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/console.c:54"
+    },
+    {
+      "address": "0x000000008000042c",
+      "type": "T",
+      "name": "consoleinit",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/console.c:188"
+    },
+    {
+      "address": "0x00000000800002ac",
+      "type": "T",
+      "name": "consoleintr",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/console.c:142"
+    },
+    {
+      "address": "0x0000000080000176",
+      "type": "T",
+      "name": "consoleread",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/console.c:86"
+    },
+    {
+      "address": "0x00000000800000d4",
+      "type": "T",
+      "name": "consolewrite",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/console.c:61"
+    },
+    {
+      "address": "0x000000008000027a",
+      "type": "T",
+      "name": "consputc",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/console.c:35"
+    },
+    {
+      "address": "0x00000000800016ae",
+      "type": "T",
+      "name": "copyin",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/vm.c:381"
+    },
+    {
+      "address": "0x00000000800014ae",
+      "type": "T",
+      "name": "copyinstr",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/vm.c:410"
+    },
+    {
+      "address": "0x00000000800015f0",
+      "type": "T",
+      "name": "copyout",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/vm.c:343"
+    },
+    {
+      "address": "0x000000008000188a",
+      "type": "T",
+      "name": "cpuid",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/proc.c:65"
+    },
+    {
+      "address": "0x0000000080012388",
+      "type": "B",
+      "name": "cpus",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/proc.c:9"
+    },
+    {
+      "address": "0x00000000800049e2",
+      "type": "t",
+      "name": "create",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/sysfile.c:246"
+    },
+    {
+      "address": "0x00000000800024ce",
+      "type": "T",
+      "name": "devintr",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/trap.c:186"
+    },
+    {
+      "address": "0x00000000800223d0",
+      "type": "B",
+      "name": "devsw",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/file.c:16"
+    },
+    {
+      "address": "0x0000000080007710",
+      "type": "r",
+      "name": "digits",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/printf.c:26"
+    },
+    {
+      "address": "0x0000000080003922",
+      "type": "T",
+      "name": "dirlink",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/fs.c:603"
+    },
+    {
+      "address": "0x0000000080003740",
+      "type": "T",
+      "name": "dirlookup",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/fs.c:575"
+    },
+    {
+      "address": "0x0000000080023428",
+      "type": "b",
+      "name": "disk",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/virtio_disk.c:59"
+    },
+    {
+      "address": "0x0000000080002268",
+      "type": "T",
+      "name": "either_copyin",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/proc.c:663"
+    },
+    {
+      "address": "0x000000008000221e",
+      "type": "T",
+      "name": "either_copyout",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/proc.c:648"
+    },
+    {
+      "address": "0x0000000080023568",
+      "type": "B",
+      "name": "end",
+      "source": "unknown"
+    },
+    {
+      "address": "0x0000000080003c10",
+      "type": "T",
+      "name": "end_op",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/log.c:148"
+    },
+    {
+      "address": "0x0000000080000000",
+      "type": "T",
+      "name": "_entry",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/entry.S:12"
+    },
+    {
+      "address": "0x0000000080007000",
+      "type": "T",
+      "name": "etext",
+      "source": "unknown"
+    },
+    {
+      "address": "0x00000000800049a4",
+      "type": "t",
+      "name": "fdalloc",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/sysfile.c:40"
+    },
+    {
+      "address": "0x0000000080002740",
+      "type": "T",
+      "name": "fetchaddr",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/syscall.c:12"
+    },
+    {
+      "address": "0x000000008000278a",
+      "type": "T",
+      "name": "fetchstr",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/syscall.c:25"
+    },
+    {
+      "address": "0x0000000080003f14",
+      "type": "T",
+      "name": "filealloc",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/file.c:30"
+    },
+    {
+      "address": "0x0000000080003fb8",
+      "type": "T",
+      "name": "fileclose",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/file.c:60"
+    },
+    {
+      "address": "0x0000000080003f72",
+      "type": "T",
+      "name": "filedup",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/file.c:48"
+    },
+    {
+      "address": "0x0000000080003ef0",
+      "type": "T",
+      "name": "fileinit",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/file.c:23"
+    },
+    {
+      "address": "0x00000000800040d8",
+      "type": "T",
+      "name": "fileread",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/file.c:107"
+    },
+    {
+      "address": "0x0000000080004076",
+      "type": "T",
+      "name": "filestat",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/file.c:88"
+    },
+    {
+      "address": "0x0000000080004196",
+      "type": "T",
+      "name": "filewrite",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/file.c:135"
+    },
+    {
+      "address": "0x000000008000a200",
+      "type": "d",
+      "name": "first.1",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/proc.c:521"
+    },
+    {
+      "address": "0x00000000800045d4",
+      "type": "T",
+      "name": "flags2perm",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/exec.c:13"
+    },
+    {
+      "address": "0x00000000800018ee",
+      "type": "T",
+      "name": "forkret",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/proc.c:518"
+    },
+    {
+      "address": "0x0000000080005462",
+      "type": "t",
+      "name": "free_desc",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/virtio_disk.c:170"
+    },
+    {
+      "address": "0x0000000080001a8e",
+      "type": "t",
+      "name": "freeproc",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/proc.c:156"
+    },
+    {
+      "address": "0x0000000080000a7c",
+      "type": "T",
+      "name": "freerange",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/kalloc.c:91"
+    },
+    {
+      "address": "0x0000000080001350",
+      "type": "T",
+      "name": "freewalk",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/vm.c:263"
+    },
+    {
+      "address": "0x0000000080003494",
+      "type": "T",
+      "name": "fsinit",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/fs.c:42"
+    },
+    {
+      "address": "0x0000000080022470",
+      "type": "B",
+      "name": "ftable",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/file.c:20"
+    },
+    {
+      "address": "0x000000008000a210",
+      "type": "d",
+      "name": "_GLOBAL_OFFSET_TABLE_",
+      "source": "unknown"
+    },
+    {
+      "address": "0x0000000080001bc0",
+      "type": "T",
+      "name": "growproc",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/proc.c:249"
+    },
+    {
+      "address": "0x0000000080000b62",
+      "type": "T",
+      "name": "holding",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/spinlock.c:77"
+    },
+    {
+      "address": "0x0000000080003ea6",
+      "type": "T",
+      "name": "holdingsleep",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/sleeplock.c:44"
+    },
+    {
+      "address": "0x0000000080003032",
+      "type": "T",
+      "name": "ialloc",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/fs.c:200"
+    },
+    {
+      "address": "0x000000008000316c",
+      "type": "T",
+      "name": "idup",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/fs.c:283"
+    },
+    {
+      "address": "0x0000000080002f2e",
+      "type": "t",
+      "name": "iget",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/fs.c:248"
+    },
+    {
+      "address": "0x0000000080002fda",
+      "type": "T",
+      "name": "iinit",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/fs.c:183"
+    },
+    {
+      "address": "0x00000000800031a2",
+      "type": "T",
+      "name": "ilock",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/fs.c:294"
+    },
+    {
+      "address": "0x0000000080000b48",
+      "type": "T",
+      "name": "initlock",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/spinlock.c:12"
+    },
+    {
+      "address": "0x0000000080003b28",
+      "type": "T",
+      "name": "initlog",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/log.c:54"
+    },
+    {
+      "address": "0x000000008000a250",
+      "type": "B",
+      "name": "initproc",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/proc.c:13"
+    },
+    {
+      "address": "0x0000000080003df2",
+      "type": "T",
+      "name": "initsleeplock",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/sleeplock.c:13"
+    },
+    {
+      "address": "0x0000000080003a5c",
+      "type": "t",
+      "name": "install_trans",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/log.c:67"
+    },
+    {
+      "address": "0x0000000080003324",
+      "type": "T",
+      "name": "iput",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/fs.c:338"
+    },
+    {
+      "address": "0x00000000800033cc",
+      "type": "T",
+      "name": "ireclaim",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/fs.c:374"
+    },
+    {
+      "address": "0x000000008000154e",
+      "type": "T",
+      "name": "ismapped",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/vm.c:476"
+    },
+    {
+      "address": "0x0000000080020880",
+      "type": "B",
+      "name": "itable",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/fs.c:180"
+    },
+    {
+      "address": "0x0000000080003290",
+      "type": "T",
+      "name": "itrunc",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/fs.c:449"
+    },
+    {
+      "address": "0x0000000080003250",
+      "type": "T",
+      "name": "iunlock",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/fs.c:322"
+    },
+    {
+      "address": "0x00000000800033ac",
+      "type": "T",
+      "name": "iunlockput",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/fs.c:367"
+    },
+    {
+      "address": "0x00000000800030ee",
+      "type": "T",
+      "name": "iupdate",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/fs.c:227"
+    },
+    {
+      "address": "0x0000000080000af8",
+      "type": "T",
+      "name": "kalloc",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/kalloc.c:143"
+    },
+    {
+      "address": "0x000000008000a248",
+      "type": "B",
+      "name": "kernel_pagetable",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/vm.c:14"
+    },
+    {
+      "address": "0x0000000080002650",
+      "type": "T",
+      "name": "kerneltrap",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/trap.c:136"
+    },
+    {
+      "address": "0x0000000080005370",
+      "type": "T",
+      "name": "kernelvec",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/kernelvec.S:14"
+    },
+    {
+      "address": "0x00000000800045f4",
+      "type": "T",
+      "name": "kexec",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/exec.c:27"
+    },
+    {
+      "address": "0x0000000080001fd4",
+      "type": "T",
+      "name": "kexit",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/proc.c:339"
+    },
+    {
+      "address": "0x0000000080001c22",
+      "type": "T",
+      "name": "kfork",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/proc.c:272"
+    },
+    {
+      "address": "0x0000000080000a16",
+      "type": "T",
+      "name": "kfree",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/kalloc.c:107"
+    },
+    {
+      "address": "0x0000000080002100",
+      "type": "T",
+      "name": "killed",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/proc.c:634"
+    },
+    {
+      "address": "0x0000000080000ac4",
+      "type": "T",
+      "name": "kinit",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/kalloc.c:67"
+    },
+    {
+      "address": "0x0000000080002076",
+      "type": "T",
+      "name": "kkill",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/proc.c:605"
+    },
+    {
+      "address": "0x0000000080012338",
+      "type": "B",
+      "name": "kmem",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/kalloc.c:64"
+    },
+    {
+      "address": "0x0000000080001192",
+      "type": "T",
+      "name": "kvminit",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/vm.c:66"
+    },
+    {
+      "address": "0x0000000080000f04",
+      "type": "T",
+      "name": "kvminithart",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/vm.c:74"
+    },
+    {
+      "address": "0x00000000800010e6",
+      "type": "T",
+      "name": "kvmmake",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/vm.c:22"
+    },
+    {
+      "address": "0x00000000800010be",
+      "type": "T",
+      "name": "kvmmap",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/vm.c:58"
+    },
+    {
+      "address": "0x000000008000212a",
+      "type": "T",
+      "name": "kwait",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/proc.c:383"
+    },
+    {
+      "address": "0x0000000080022328",
+      "type": "B",
+      "name": "log",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/log.c:48"
+    },
+    {
+      "address": "0x0000000080003d30",
+      "type": "T",
+      "name": "log_write",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/log.c:216"
+    },
+    {
+      "address": "0x0000000080000e52",
+      "type": "T",
+      "name": "main",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/main.c:11"
+    },
+    {
+      "address": "0x0000000080001008",
+      "type": "T",
+      "name": "mappages",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/vm.c:146"
+    },
+    {
+      "address": "0x0000000080000cc2",
+      "type": "T",
+      "name": "memcmp",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/string.c:15"
+    },
+    {
+      "address": "0x0000000080000d60",
+      "type": "T",
+      "name": "memcpy",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/string.c:55"
+    },
+    {
+      "address": "0x0000000080000d00",
+      "type": "T",
+      "name": "memmove",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/string.c:31"
+    },
+    {
+      "address": "0x0000000080000c9c",
+      "type": "T",
+      "name": "memset",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/string.c:4"
+    },
+    {
+      "address": "0x000000008000189e",
+      "type": "T",
+      "name": "mycpu",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/proc.c:74"
+    },
+    {
+      "address": "0x00000000800018be",
+      "type": "T",
+      "name": "myproc",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/proc.c:83"
+    },
+    {
+      "address": "0x000000008000372a",
+      "type": "T",
+      "name": "namecmp",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/fs.c:567"
+    },
+    {
+      "address": "0x00000000800039cc",
+      "type": "T",
+      "name": "namei",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/fs.c:710"
+    },
+    {
+      "address": "0x00000000800039e6",
+      "type": "T",
+      "name": "nameiparent",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/fs.c:717"
+    },
+    {
+      "address": "0x00000000800037ec",
+      "type": "t",
+      "name": "namex",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/fs.c:675"
+    },
+    {
+      "address": "0x000000008000a204",
+      "type": "D",
+      "name": "nextpid",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/proc.c:15"
+    },
+    {
+      "address": "0x00000000800007de",
+      "type": "T",
+      "name": "panic",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/printf.c:137"
+    },
+    {
+      "address": "0x000000008000a230",
+      "type": "B",
+      "name": "panicked",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/printf.c:19"
+    },
+    {
+      "address": "0x000000008000a234",
+      "type": "B",
+      "name": "panicking",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/printf.c:18"
+    },
+    {
+      "address": "0x0000000080012358",
+      "type": "B",
+      "name": "pid_lock",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/proc.c:16"
+    },
+    {
+      "address": "0x00000000800042c8",
+      "type": "T",
+      "name": "pipealloc",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/pipe.c:23"
+    },
+    {
+      "address": "0x0000000080004390",
+      "type": "T",
+      "name": "pipeclose",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/pipe.c:59"
+    },
+    {
+      "address": "0x00000000800044e0",
+      "type": "T",
+      "name": "piperead",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/pipe.c:106"
+    },
+    {
+      "address": "0x00000000800043e8",
+      "type": "T",
+      "name": "pipewrite",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/pipe.c:77"
+    },
+    {
+      "address": "0x000000008000541c",
+      "type": "T",
+      "name": "plic_claim",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/plic.c:34"
+    },
+    {
+      "address": "0x000000008000543c",
+      "type": "T",
+      "name": "plic_complete",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/plic.c:43"
+    },
+    {
+      "address": "0x00000000800053ce",
+      "type": "T",
+      "name": "plicinit",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/plic.c:12"
+    },
+    {
+      "address": "0x00000000800053e8",
+      "type": "T",
+      "name": "plicinithart",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/plic.c:20"
+    },
+    {
+      "address": "0x0000000080000c10",
+      "type": "T",
+      "name": "pop_off",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/spinlock.c:103"
+    },
+    {
+      "address": "0x0000000080012308",
+      "type": "b",
+      "name": "pr",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/printf.c:24"
+    },
+    {
+      "address": "0x0000000080002400",
+      "type": "T",
+      "name": "prepare_return",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/trap.c:100"
+    },
+    {
+      "address": "0x00000000800004fa",
+      "type": "T",
+      "name": "printf",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/printf.c:64"
+    },
+    {
+      "address": "0x000000008000081a",
+      "type": "T",
+      "name": "printfinit",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/printf.c:148"
+    },
+    {
+      "address": "0x0000000080000470",
+      "type": "t",
+      "name": "printint",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/printf.c:29"
+    },
+    {
+      "address": "0x0000000080012788",
+      "type": "B",
+      "name": "proc",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/proc.c:11"
+    },
+    {
+      "address": "0x00000000800022b2",
+      "type": "T",
+      "name": "procdump",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/proc.c:678"
+    },
+    {
+      "address": "0x0000000080001a48",
+      "type": "T",
+      "name": "proc_freepagetable",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/proc.c:211"
+    },
+    {
+      "address": "0x00000000800017da",
+      "type": "T",
+      "name": "procinit",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/proc.c:48"
+    },
+    {
+      "address": "0x000000008000173c",
+      "type": "T",
+      "name": "proc_mapstacks",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/proc.c:33"
+    },
+    {
+      "address": "0x00000000800019c4",
+      "type": "T",
+      "name": "proc_pagetable",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/proc.c:177"
+    },
+    {
+      "address": "0x0000000080000b8c",
+      "type": "T",
+      "name": "push_off",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/spinlock.c:89"
+    },
+    {
+      "address": "0x0000000080003534",
+      "type": "T",
+      "name": "readi",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/fs.c:495"
+    },
+    {
+      "address": "0x0000000080000c60",
+      "type": "T",
+      "name": "release",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/spinlock.c:47"
+    },
+    {
+      "address": "0x0000000080003e6e",
+      "type": "T",
+      "name": "releasesleep",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/sleeplock.c:34"
+    },
+    {
+      "address": "0x0000000080001f7e",
+      "type": "T",
+      "name": "reparent",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/proc.c:323"
+    },
+    {
+      "address": "0x0000000080000dee",
+      "type": "T",
+      "name": "safestrcpy",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/string.c:85"
+    },
+    {
+      "address": "0x0000000080020860",
+      "type": "B",
+      "name": "sb",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/fs.c:27"
+    },
+    {
+      "address": "0x0000000080001de2",
+      "type": "T",
+      "name": "sched",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/proc.c:485"
+    },
+    {
+      "address": "0x0000000080001d30",
+      "type": "T",
+      "name": "scheduler",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/proc.c:437"
+    },
+    {
+      "address": "0x00000000800020dc",
+      "type": "T",
+      "name": "setkilled",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/proc.c:626"
+    },
+    {
+      "address": "0x0000000080001ec8",
+      "type": "T",
+      "name": "sleep",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/proc.c:555"
+    },
+    {
+      "address": "0x000000008000001a",
+      "type": "t",
+      "name": "spin",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/entry.S:21"
+    },
+    {
+      "address": "0x000000008000a260",
+      "type": "B",
+      "name": "stack0",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/start.c:25"
+    },
+    {
+      "address": "0x0000000080000064",
+      "type": "T",
+      "name": "start",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/start.c:29"
+    },
+    {
+      "address": "0x000000008000a240",
+      "type": "b",
+      "name": "started",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/main.c:7"
+    },
+    {
+      "address": "0x0000000080007728",
+      "type": "r",
+      "name": "states.0",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/proc.c:680"
+    },
+    {
+      "address": "0x0000000080003506",
+      "type": "T",
+      "name": "stati",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/fs.c:481"
+    },
+    {
+      "address": "0x0000000080000e24",
+      "type": "T",
+      "name": "strlen",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/string.c:99"
+    },
+    {
+      "address": "0x0000000080000d74",
+      "type": "T",
+      "name": "strncmp",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/string.c:61"
+    },
+    {
+      "address": "0x0000000080000dae",
+      "type": "T",
+      "name": "strncpy",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/string.c:71"
+    },
+    {
+      "address": "0x0000000080002356",
+      "type": "T",
+      "name": "swtch",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/swtch.S:10"
+    },
+    {
+      "address": "0x000000008000282a",
+      "type": "T",
+      "name": "syscall",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/syscall.c:132"
+    },
+    {
+      "address": "0x0000000080007770",
+      "type": "r",
+      "name": "syscalls",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/syscall.c:107"
+    },
+    {
+      "address": "0x0000000080005106",
+      "type": "T",
+      "name": "sys_chdir",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/sysfile.c:410"
+    },
+    {
+      "address": "0x0000000080004bf8",
+      "type": "T",
+      "name": "sys_close",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/sysfile.c:98"
+    },
+    {
+      "address": "0x0000000080004b1c",
+      "type": "T",
+      "name": "sys_dup",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/sysfile.c:55"
+    },
+    {
+      "address": "0x0000000080005186",
+      "type": "T",
+      "name": "sys_exec",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/sysfile.c:435"
+    },
+    {
+      "address": "0x000000008000288e",
+      "type": "T",
+      "name": "sys_exit",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/sysproc.c:11"
+    },
+    {
+      "address": "0x00000000800028c8",
+      "type": "T",
+      "name": "sys_fork",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/sysproc.c:26"
+    },
+    {
+      "address": "0x0000000080004c3a",
+      "type": "T",
+      "name": "sys_fstat",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/sysfile.c:111"
+    },
+    {
+      "address": "0x00000000800028b2",
+      "type": "T",
+      "name": "sys_getpid",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/sysproc.c:20"
+    },
+    {
+      "address": "0x0000000080002a1a",
+      "type": "T",
+      "name": "sys_kill",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/sysproc.c:90"
+    },
+    {
+      "address": "0x0000000080004c74",
+      "type": "T",
+      "name": "sys_link",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/sysfile.c:124"
+    },
+    {
+      "address": "0x000000008000505e",
+      "type": "T",
+      "name": "sys_mkdir",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/sysfile.c:374"
+    },
+    {
+      "address": "0x00000000800050a6",
+      "type": "T",
+      "name": "sys_mknod",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/sysfile.c:390"
+    },
+    {
+      "address": "0x0000000080004f08",
+      "type": "T",
+      "name": "sys_open",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/sysfile.c:305"
+    },
+    {
+      "address": "0x000000008000297a",
+      "type": "T",
+      "name": "sys_pause",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/sysproc.c:68"
+    },
+    {
+      "address": "0x0000000080005292",
+      "type": "T",
+      "name": "sys_pipe",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/sysfile.c:478"
+    },
+    {
+      "address": "0x0000000080004b68",
+      "type": "T",
+      "name": "sys_read",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/sysfile.c:69"
+    },
+    {
+      "address": "0x00000000800028fe",
+      "type": "T",
+      "name": "sys_sbrk",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/sysproc.c:40"
+    },
+    {
+      "address": "0x0000000080004d72",
+      "type": "T",
+      "name": "sys_unlink",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/sysfile.c:189"
+    },
+    {
+      "address": "0x0000000080002a3c",
+      "type": "T",
+      "name": "sys_uptime",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/sysproc.c:101"
+    },
+    {
+      "address": "0x00000000800028dc",
+      "type": "T",
+      "name": "sys_wait",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/sysproc.c:32"
+    },
+    {
+      "address": "0x0000000080004bb0",
+      "type": "T",
+      "name": "sys_write",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/sysfile.c:83"
+    },
+    {
+      "address": "0x000000008000a258",
+      "type": "B",
+      "name": "ticks",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/trap.c:10"
+    },
+    {
+      "address": "0x0000000080018188",
+      "type": "B",
+      "name": "tickslock",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/trap.c:9"
+    },
+    {
+      "address": "0x000000008000001c",
+      "type": "T",
+      "name": "timerinit",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/start.c:68"
+    },
+    {
+      "address": "0x0000000080006000",
+      "type": "T",
+      "name": "_trampoline",
+      "source": "unknown"
+    },
+    {
+      "address": "0x0000000080006000",
+      "type": "T",
+      "name": "trampoline",
+      "source": "unknown"
+    },
+    {
+      "address": "0x00000000800023c0",
+      "type": "T",
+      "name": "trapinit",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/trap.c:20"
+    },
+    {
+      "address": "0x00000000800023e4",
+      "type": "T",
+      "name": "trapinithart",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/trap.c:27"
+    },
+    {
+      "address": "0x000000008000a23c",
+      "type": "b",
+      "name": "tx_busy",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/uart.c:42"
+    },
+    {
+      "address": "0x000000008000a238",
+      "type": "b",
+      "name": "tx_chan",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/uart.c:43"
+    },
+    {
+      "address": "0x0000000080012320",
+      "type": "b",
+      "name": "tx_lock",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/uart.c:41"
+    },
+    {
+      "address": "0x0000000080000986",
+      "type": "T",
+      "name": "uartgetc",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/uart.c:128"
+    },
+    {
+      "address": "0x000000008000083e",
+      "type": "T",
+      "name": "uartinit",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/uart.c:49"
+    },
+    {
+      "address": "0x00000000800009ae",
+      "type": "T",
+      "name": "uartintr",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/uart.c:142"
+    },
+    {
+      "address": "0x0000000080000928",
+      "type": "T",
+      "name": "uartputc_sync",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/uart.c:106"
+    },
+    {
+      "address": "0x0000000080000894",
+      "type": "T",
+      "name": "uartwrite",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/uart.c:80"
+    },
+    {
+      "address": "0x0000000080001b84",
+      "type": "T",
+      "name": "userinit",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/proc.c:227"
+    },
+    {
+      "address": "0x000000008000609c",
+      "type": "T",
+      "name": "userret",
+      "source": "unknown"
+    },
+    {
+      "address": "0x0000000080002542",
+      "type": "T",
+      "name": "usertrap",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/trap.c:38"
+    },
+    {
+      "address": "0x0000000080006000",
+      "type": "T",
+      "name": "uservec",
+      "source": "unknown"
+    },
+    {
+      "address": "0x00000000800012a2",
+      "type": "T",
+      "name": "uvmalloc",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/vm.c:217"
+    },
+    {
+      "address": "0x0000000080001484",
+      "type": "T",
+      "name": "uvmclear",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/vm.c:329"
+    },
+    {
+      "address": "0x00000000800013e2",
+      "type": "T",
+      "name": "uvmcopy",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/vm.c:297"
+    },
+    {
+      "address": "0x00000000800011ae",
+      "type": "T",
+      "name": "uvmcreate",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/vm.c:179"
+    },
+    {
+      "address": "0x000000008000125e",
+      "type": "T",
+      "name": "uvmdealloc",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/vm.c:247"
+    },
+    {
+      "address": "0x00000000800013b0",
+      "type": "T",
+      "name": "uvmfree",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/vm.c:283"
+    },
+    {
+      "address": "0x00000000800011d4",
+      "type": "T",
+      "name": "uvmunmap",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/vm.c:193"
+    },
+    {
+      "address": "0x00000000800054d8",
+      "type": "T",
+      "name": "virtio_disk_init",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/virtio_disk.c:62"
+    },
+    {
+      "address": "0x00000000800058ac",
+      "type": "T",
+      "name": "virtio_disk_intr",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/virtio_disk.c:295"
+    },
+    {
+      "address": "0x00000000800056a0",
+      "type": "T",
+      "name": "virtio_disk_rw",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/virtio_disk.c:216"
+    },
+    {
+      "address": "0x000000008000156e",
+      "type": "T",
+      "name": "vmfault",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/vm.c:453"
+    },
+    {
+      "address": "0x0000000080012370",
+      "type": "B",
+      "name": "wait_lock",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/proc.c:27"
+    },
+    {
+      "address": "0x0000000080001f14",
+      "type": "T",
+      "name": "wakeup",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/proc.c:586"
+    },
+    {
+      "address": "0x0000000080000f30",
+      "type": "T",
+      "name": "walk",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/vm.c:98"
+    },
+    {
+      "address": "0x0000000080000fca",
+      "type": "T",
+      "name": "walkaddr",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/vm.c:121"
+    },
+    {
+      "address": "0x00000000800039fe",
+      "type": "t",
+      "name": "write_head",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/log.c:104"
+    },
+    {
+      "address": "0x0000000080003626",
+      "type": "T",
+      "name": "writei",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/fs.c:529"
+    },
+    {
+      "address": "0x0000000080001e9c",
+      "type": "T",
+      "name": "yield",
+      "source": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/proc.c:506"
+    }
+  ],
+  "symbol_statistics": {
+    "total_symbols": 249,
+    "symbol_type_counts": {
+      "t": 42,
+      "T": 175,
+      "B": 20,
+      "r": 3,
+      "b": 6,
+      "d": 2,
+      "D": 1
+    },
+    "total_bss_size": 103216,
+    "bss_variable_count": 26
+  }
+}

@@ -1,0 +1,33 @@
+# BSS Symbol to Source Code Mapping
+# Generated on Tue Oct 28 04:41:22 PM +04 2025
+# Kernel: kernel/kernel
+# Maps each BSS global variable to its source file and line number
+
+Symbol                         Address          Size      Source Location
+==============================================================================
+bcache                         0x00000000800181a0 34496 B (33.6 KB) ?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/bio.c:34
+cons                           0x0000000080012260        168 B ?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/console.c:54
+cpus                           0x0000000080012388       1024 B ?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/proc.c:9
+devsw                          0x00000000800223d0        160 B ?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/file.c:16
+disk                           0x0000000080023428        320 B ?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/virtio_disk.c:59
+end                            0x0000000080023568         11 B ?? ??:0
+ftable                         0x0000000080022470 4024 B (3.9 KB) ?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/file.c:20
+initproc                       0x000000008000a250          8 B ?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/proc.c:13
+itable                         0x0000000080020880 6824 B (6.6 KB) ?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/fs.c:180
+kernel_pagetable               0x000000008000a248          8 B ?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/vm.c:14
+kmem                           0x0000000080012338         32 B ?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/kalloc.c:64
+log                            0x0000000080022328        168 B ?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/log.c:48
+panicked                       0x000000008000a230          4 B ?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/printf.c:19
+panicking                      0x000000008000a234          4 B ?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/printf.c:18
+pid_lock                       0x0000000080012358         24 B ?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/proc.c:16
+pr                             0x0000000080012308         24 B ?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/printf.c:24
+proc                           0x0000000080012788 23040 B (22.5 KB) ?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/proc.c:11
+sb                             0x0000000080020860         32 B ?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/fs.c:27
+stack0                         0x000000008000a260 32768 B (32.0 KB) ?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/start.c:25
+started                        0x000000008000a240          4 B ?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/main.c:7
+ticks                          0x000000008000a258          4 B ?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/trap.c:10
+tickslock                      0x0000000080018188         24 B ?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/trap.c:9
+tx_busy                        0x000000008000a23c          4 B ?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/uart.c:42
+tx_chan                        0x000000008000a238          4 B ?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/uart.c:43
+tx_lock                        0x0000000080012320         24 B ?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/uart.c:41
+wait_lock                      0x0000000080012370         24 B ?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/proc.c:27

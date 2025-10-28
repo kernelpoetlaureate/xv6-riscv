@@ -1,0 +1,236 @@
+[
+  {
+    "name": "panicked",
+    "address": "0x000000008000a230",
+    "size": 4,
+    "source_file": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/printf.c",
+    "source_line": "19",
+    "source_detail": "?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/printf.c:19",
+    "section": ".bss"
+  },
+  {
+    "name": "panicking",
+    "address": "0x000000008000a234",
+    "size": 4,
+    "source_file": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/printf.c",
+    "source_line": "18",
+    "source_detail": "?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/printf.c:18",
+    "section": ".bss"
+  },
+  {
+    "name": "tx_chan",
+    "address": "0x000000008000a238",
+    "size": 4,
+    "source_file": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/uart.c",
+    "source_line": "43",
+    "source_detail": "?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/uart.c:43",
+    "section": ".bss"
+  },
+  {
+    "name": "tx_busy",
+    "address": "0x000000008000a23c",
+    "size": 4,
+    "source_file": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/uart.c",
+    "source_line": "42",
+    "source_detail": "?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/uart.c:42",
+    "section": ".bss"
+  },
+  {
+    "name": "started",
+    "address": "0x000000008000a240",
+    "size": 4,
+    "source_file": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/main.c",
+    "source_line": "7",
+    "source_detail": "?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/main.c:7",
+    "section": ".bss"
+  },
+  {
+    "name": "kernel_pagetable",
+    "address": "0x000000008000a248",
+    "size": 8,
+    "source_file": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/vm.c",
+    "source_line": "14",
+    "source_detail": "?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/vm.c:14",
+    "section": ".bss"
+  },
+  {
+    "name": "initproc",
+    "address": "0x000000008000a250",
+    "size": 8,
+    "source_file": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/proc.c",
+    "source_line": "13",
+    "source_detail": "?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/proc.c:13",
+    "section": ".bss"
+  },
+  {
+    "name": "ticks",
+    "address": "0x000000008000a258",
+    "size": 4,
+    "source_file": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/trap.c",
+    "source_line": "10",
+    "source_detail": "?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/trap.c:10",
+    "section": ".bss"
+  },
+  {
+    "name": "stack0",
+    "address": "0x000000008000a260",
+    "size": 32768,
+    "source_file": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/start.c",
+    "source_line": "25",
+    "source_detail": "?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/start.c:25",
+    "section": ".bss"
+  },
+  {
+    "name": "cons",
+    "address": "0x0000000080012260",
+    "size": 168,
+    "source_file": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/console.c",
+    "source_line": "54",
+    "source_detail": "?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/console.c:54",
+    "section": ".bss"
+  },
+  {
+    "name": "pr",
+    "address": "0x0000000080012308",
+    "size": 24,
+    "source_file": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/printf.c",
+    "source_line": "24",
+    "source_detail": "?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/printf.c:24",
+    "section": ".bss"
+  },
+  {
+    "name": "tx_lock",
+    "address": "0x0000000080012320",
+    "size": 24,
+    "source_file": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/uart.c",
+    "source_line": "41",
+    "source_detail": "?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/uart.c:41",
+    "section": ".bss"
+  },
+  {
+    "name": "kmem",
+    "address": "0x0000000080012338",
+    "size": 32,
+    "source_file": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/kalloc.c",
+    "source_line": "64",
+    "source_detail": "?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/kalloc.c:64",
+    "section": ".bss"
+  },
+  {
+    "name": "pid_lock",
+    "address": "0x0000000080012358",
+    "size": 24,
+    "source_file": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/proc.c",
+    "source_line": "16",
+    "source_detail": "?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/proc.c:16",
+    "section": ".bss"
+  },
+  {
+    "name": "wait_lock",
+    "address": "0x0000000080012370",
+    "size": 24,
+    "source_file": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/proc.c",
+    "source_line": "27",
+    "source_detail": "?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/proc.c:27",
+    "section": ".bss"
+  },
+  {
+    "name": "cpus",
+    "address": "0x0000000080012388",
+    "size": 1024,
+    "source_file": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/proc.c",
+    "source_line": "9",
+    "source_detail": "?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/proc.c:9",
+    "section": ".bss"
+  },
+  {
+    "name": "proc",
+    "address": "0x0000000080012788",
+    "size": 23040,
+    "source_file": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/proc.c",
+    "source_line": "11",
+    "source_detail": "?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/proc.c:11",
+    "section": ".bss"
+  },
+  {
+    "name": "tickslock",
+    "address": "0x0000000080018188",
+    "size": 24,
+    "source_file": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/trap.c",
+    "source_line": "9",
+    "source_detail": "?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/trap.c:9",
+    "section": ".bss"
+  },
+  {
+    "name": "bcache",
+    "address": "0x00000000800181a0",
+    "size": 34496,
+    "source_file": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/bio.c",
+    "source_line": "34",
+    "source_detail": "?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/bio.c:34",
+    "section": ".bss"
+  },
+  {
+    "name": "sb",
+    "address": "0x0000000080020860",
+    "size": 32,
+    "source_file": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/fs.c",
+    "source_line": "27",
+    "source_detail": "?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/fs.c:27",
+    "section": ".bss"
+  },
+  {
+    "name": "itable",
+    "address": "0x0000000080020880",
+    "size": 6824,
+    "source_file": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/fs.c",
+    "source_line": "180",
+    "source_detail": "?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/fs.c:180",
+    "section": ".bss"
+  },
+  {
+    "name": "log",
+    "address": "0x0000000080022328",
+    "size": 168,
+    "source_file": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/log.c",
+    "source_line": "48",
+    "source_detail": "?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/log.c:48",
+    "section": ".bss"
+  },
+  {
+    "name": "devsw",
+    "address": "0x00000000800223d0",
+    "size": 160,
+    "source_file": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/file.c",
+    "source_line": "16",
+    "source_detail": "?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/file.c:16",
+    "section": ".bss"
+  },
+  {
+    "name": "ftable",
+    "address": "0x0000000080022470",
+    "size": 4024,
+    "source_file": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/file.c",
+    "source_line": "20",
+    "source_detail": "?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/file.c:20",
+    "section": ".bss"
+  },
+  {
+    "name": "disk",
+    "address": "0x0000000080023428",
+    "size": 320,
+    "source_file": "/mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/virtio_disk.c",
+    "source_line": "59",
+    "source_detail": "?? at /mnt/c/Users/giorgi/Downloads/xv6-riscv/kernel/virtio_disk.c:59",
+    "section": ".bss"
+  },
+  {
+    "name": "end",
+    "address": "0x0000000080023568",
+    "size": 0,
+    "source_file": "unknown",
+    "source_line": "unknown",
+    "source_detail": "?? ??:0",
+    "section": ".bss"
+  }
+]
